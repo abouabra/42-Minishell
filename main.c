@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:30:57 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/07 20:32:56 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/07 21:50:25 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,9 @@ char	*set_ps1(t_args *vars)
 	return (ps1);
 }
 
+		// write(1, phrases[i], ft_strlen(phrases[i]));
+		// write(1, "\n", 1);
+
 void	start_ter(t_args *vars)
 {
 	char	*line;
@@ -51,11 +54,11 @@ void	start_ter(t_args *vars)
 
 	ps1 = set_ps1(vars);
 	line = readline(ps1);
-	// if (!line)
-	// {
-	// 	dprintf(1, "\n");
-	// 	custom_exit(vars->exit_status);
-	// }
+	if (!line)
+	{
+		dprintf(1, "\n");
+		custom_exit(vars->exit_status);
+	}
 	if (line && line[0])
 	{
 		add_history(line);

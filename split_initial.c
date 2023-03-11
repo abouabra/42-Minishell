@@ -6,10 +6,11 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 17:31:10 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/07 20:12:52 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/07 21:50:04 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft/get_next_line.h"
 #include "minishell.h"
 
 int	has_separator(char c, char c1)

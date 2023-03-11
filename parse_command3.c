@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 21:21:54 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/03/07 20:09:38 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/11 18:53:13 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,23 @@ void	remove_spaces_in_between(t_args *vars)
 		vars->initial_commands[i] = ft_strtrim(vars->initial_commands[i], " ");
 }
 
+int	has_char(char *s, char c)
+{
+	int	i;
+
+	i = -1;
+	while (s[++i])
+		if (s[i] == c)
+			return (1);
+	return (0);
+}
+
 void	parse_commands(t_args *vars, char *line)
 {
-	vars->initial_commands = initial_split(vars, line);
+	if (!has_char(line), '(')
+		vars->initial_commands = initial_split(vars, line);
+	else
+		vars->initial_commands = split_par(ft_strtrim(line, " \t"));
 	if (!vars->initial_commands)
 		return ;
 	remove_spaces_in_between(vars);
