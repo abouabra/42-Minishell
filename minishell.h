@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:30:01 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/11 21:14:06 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/13 17:27:36 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ int			count_args(char **commands);
 char		**make_new_args(char **commands);
 int			check_permision(char *command_path, char *name, int arg);
 void		parsing_commands(t_args *vars, char **commands);
+char		**split_par(char *s);
 
 //executing phase
 

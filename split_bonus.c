@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 18:37:37 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/03/11 21:34:54 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/14 17:37:19 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static int	word_len(char *s, char *c)
 	active = 1;
 	if (c[0] == ' ')
 	{
-		while (s[i] && s[i] != c[1] && s[i] != c[1])
+		while (s[i] && s[i] != c[1])
 			i++;
 	}
 	else
@@ -91,9 +91,11 @@ static void	split_par_help(char **arr, char *s, int n[4])
 static void	split_par_help2(char **arr, char *s, int n[4])
 {
 	arr[++n[j]] = my_alloc(word_len(s + n[i], " (") + 1);
-	while (s[n[i]] && s[n[i]] > 32 && s[n[i]] != '(')
+	while (s[n[i]] && s[n[i]] != '(')
 		arr[n[j]][++n[w]] = s[n[i]++];
 	arr[n[j]][++n[w]] = '\0';
+	if (s[n[i]] == '(')
+		n[i]--;
 }
 
 char	**split_par(char *s)
@@ -115,7 +117,7 @@ char	**split_par(char *s)
 		n[w] = -1;
 		if (s[n[i]] == '(')
 			split_par_help(arr, s, n);
-		else if (!n[ac] && s[n[i]] > 32)
+		else if (!n[ac] && s[n[i]] != ' ')
 			split_par_help2(arr, s, n);
 		if (!s[n[i]])
 			break ;
