@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 21:39:20 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/03/14 21:55:22 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/15 19:15:32 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,10 @@ char	*wildcard(t_args *vars, char **av)
 	char *final;
 	int k;
 	
-	dir = opendir("/Users/abouabra/1337/Cursus/MiniShell_v2/test_dir");
+	dir = opendir("/Users/ykhayri/Desktop/Cursus/Minishell");
 	arr = ft_split(av[1], '*');
 	is_valid = 0;
-	*final = "";
+	final = "";
 	k = 0;
 	i = -1;
 	while(arr[++i]);
@@ -92,4 +92,11 @@ char	*wildcard(t_args *vars, char **av)
 	}
 	closedir(dir);
 	return (final);
+}
+int main(int ac,char **av)
+{
+	t_args *vars;
+	char *s = wildcard(vars, av);
+	printf("%s\n", s);
+	return (0);
 }
