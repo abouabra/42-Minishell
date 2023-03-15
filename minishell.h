@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:30:01 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/15 18:48:50 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/15 21:43:27 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ void		the_search_env(t_env *search, char **args);
 
 //parsing commands;
 void		parse_commands(t_args *vars, char *line);
-char		**initial_split(t_args *vars, char *s);
+char		**initial_split(t_args *vars, char *s, int sw);
 char		**split_command(char *s);
 
 void		set_env(t_args *vars);
@@ -121,6 +121,8 @@ char		**make_new_args(char **commands);
 int			check_permision(char *command_path, char *name, int arg);
 void		parsing_commands(t_args *vars, char **commands);
 char		**split_par(char *s);
+int			has_char(char *s, char c);
+void		nested_par(char **arr, t_args *vars);
 
 //executing phase
 

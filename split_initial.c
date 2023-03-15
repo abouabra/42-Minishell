@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 17:31:10 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/07 21:50:04 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/15 21:39:18 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ static int	count_words(char *s)
 	phrase_count = 0;
 	while (++i < ft_strlen(s))
 	{
+		// if (s[i] == '|' && s[i + 1] != '|' && (sw == 1 || (sw == 0 && s[i + 2] != '\0')))
 		if (s[i] == '|' && s[i + 1] != '|')
 			phrase_count++;
 		else if (s[i] == '&' && s[i + 1] == '&')
@@ -92,7 +93,7 @@ static int	check_validity(char **phrases, int phrase_count)
 	return (1);
 }
 
-char	**initial_split(t_args *vars, char *s)
+char	**initial_split(t_args *vars, char *s, int sw)
 {
 	int		n[3];
 	int		phrase_count;
@@ -114,7 +115,7 @@ char	**initial_split(t_args *vars, char *s)
 	phrases[n[k]][ph_len] = '\0';
 	n[k]++;
 	phrases[n[k]] = NULL;
-	if (!check_validity(phrases, phrase_count))
+	if (!sw && !check_validity(phrases, phrase_count))
 		return (NULL);
 	return (phrases);
 }

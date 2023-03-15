@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 21:39:20 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/03/15 19:57:03 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/15 21:39:54 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	*wildcard(t_args *vars, char **av)
 	char *tmp;
 	char *final;
 	int k;
-	
+	(void)vars;
 	dir = opendir(getcwd(NULL,-1));
 	arr = ft_split(av[1], '*');
 	is_valid = 0;

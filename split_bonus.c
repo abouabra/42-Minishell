@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 18:37:37 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/03/14 17:37:19 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/15 21:56:17 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,11 @@ static void	split_par_help(char **arr, char *s, int n[4])
 			if (!n[ac])
 				break ;
 		}
+		if (!s[n[i]] && n[ac] != 0)
+		{
+			arr[n[j]] = 0;
+			return ;	
+		}
 		arr[n[j]][++n[w]] = s[n[i]];
 	}
 	arr[n[j]][++n[w]] = '\0';
@@ -119,9 +124,42 @@ char	**split_par(char *s)
 			split_par_help(arr, s, n);
 		else if (!n[ac] && s[n[i]] != ' ')
 			split_par_help2(arr, s, n);
+		if (!arr[n[j]])
+			return (0);
 		if (!s[n[i]])
 			break ;
 	}
 	arr[++n[j]] = 0;
 	return (arr);
 }
+
+void	nested_par(char **arr, t_args *vars)
+{
+	char	**tmp;
+	
+	if (!arr)
+		return ;
+	for (int f = 0; arr[f]; f++)
+	{
+		//printf("%s\n", arr[f]);
+		if (has_char(arr[f], '('))
+		{
+			nested_par(split_par(arr[f]), vars);
+		}
+		else
+		{
+			tmp = initial_split(vars, arr[f], 1);
+			for (int c = 0; tmp[c]; c++){
+				printf("%s\n", tmp[c]);}
+		}
+	}
+}
+/*
+int main(int ac, char **av)
+{
+	char **arr;
+	t_args vars;
+	arr = split_par(av[1]);
+	nested_par(arr, &vars);
+	return (0);
+}*/
