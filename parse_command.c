@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:27:14 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/07 17:10:29 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/15 23:47:13 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,8 @@ void	parsing_commands(t_args *vars, char **commands)
 	a[path] = get_path(vars);
 	while (commands[++i])
 	{
+		if (!commands[i][0])
+			continue ;
 		ft_memset(info, 0, sizeof(t_fill_info));
 		a[arr] = split_command(commands[i]);
 		remove_quotes(vars, info, a[arr]);

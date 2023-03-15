@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 18:37:37 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/03/15 21:56:17 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/15 23:48:36 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,21 +136,28 @@ char	**split_par(char *s)
 void	nested_par(char **arr, t_args *vars)
 {
 	char	**tmp;
+	int		i;
+	int		j;
 	
-	if (!arr)
-		return ;
-	for (int f = 0; arr[f]; f++)
+	i = -1;
+	while (arr[++i])
 	{
-		//printf("%s\n", arr[f]);
-		if (has_char(arr[f], '('))
-		{
-			nested_par(split_par(arr[f]), vars);
-		}
+		if (has_char(arr[i], '('))
+			nested_par(split_par(arr[i]), vars);
 		else
 		{
-			tmp = initial_split(vars, arr[f], 1);
-			for (int c = 0; tmp[c]; c++){
-				printf("%s\n", tmp[c]);}
+			j = -1;
+			tmp = initial_split(vars, arr[i], 1);
+			if (!tmp)
+				return ;
+			while (tmp[++j])
+				// printf("|%s|\n", ft_strtrim(tmp[j]," "));
+				tmp[j] = ft_strtrim(tmp[j]," ");
+			parsing_commands(vars, tmp);
+			printf("-------------------------------\n");
+			debug_menu(vars);
+			printf("-------------------------------\n");
+			vars->command_head = NULL;
 		}
 	}
 }

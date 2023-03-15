@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 21:21:54 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/03/15 21:55:53 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/15 23:27:44 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,14 +87,19 @@ int	has_char(char *s, char c)
 void	parse_commands(t_args *vars, char *line)
 {
 	if (!has_char(line, '('))
+	{
 		vars->initial_commands = initial_split(vars, line, 0);
+		if (!vars->initial_commands)
+			return ;
+		remove_spaces_in_between(vars);
+		parsing_commands(vars, vars->initial_commands);
+		execution_phase(vars);
+	}
 	else
 	{
 		vars->initial_commands = split_par(ft_strtrim(line, " \t"));
+		if (!vars->initial_commands)
+			return ;
 		nested_par(vars->initial_commands, vars);
 	}
-	if (!vars->initial_commands)
-		return ;
-	remove_spaces_in_between(vars);
-	parsing_commands(vars, vars->initial_commands);
 }

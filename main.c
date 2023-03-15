@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:30:57 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/15 21:44:59 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/15 23:27:18 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,6 @@ void	start_ter(t_args *vars)
 	{
 		add_history(line);
 		parse_commands(vars, line);
-		// if (vars->initial_commands)
-		// 	execution_phase(vars);
 		// debug_menu(vars);
 		vars->command_head = NULL;
 	}
