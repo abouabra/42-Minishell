@@ -6,12 +6,13 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:27:14 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/18 00:12:52 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/18 00:43:13 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft/ft_dprintf.h"
 #include "libft/get_next_line.h"
+#include "libft/libft.h"
 #include "minishell.h"
 
 static void	rm_qts_help(int *num, char **arr, char *q, t_fill_info *info)
@@ -72,28 +73,50 @@ char	*get_herdoc_data(char *limiter)
 	return (total);
 }
 
+int	checker(char **commands, int i)
+{
+	int	j = i;
+	char	*str;
+	
+	if (!ft_strncmp(commands[i], ">", -1))
+		str = ft_strdup(">>");
+	if (!ft_strncmp(commands[i], ">>", -1))
+		str = ft_strdup(">");
+	if (!ft_strncmp(commands[i], "<", -1))
+		str = ft_strdup("<<");
+	if (!ft_strncmp(commands[i], "<<", -1))
+		str = ft_strdup("<");
+	while (commands[++j])
+	{
+		if (!ft_strncmp(commands[j], commands[i], -1)
+			|| !ft_strncmp(commands[j], str, -1))
+			return (0);
+	}
+	return (1);
+}
+
 static void	red_help(t_fill_info *info, char **commands, int *i)
 {
-	if (!ft_strncmp(commands[*i], ">", -1))
+	if (!ft_strncmp(commands[*i], ">", -1) && checker(commands, *i))
 	{
 		check_permision(NULL, commands[*i + 1], 3);
 		info->is_output = 1;
 		info->output_file = commands[++(*i)];
 	}
-	if (!ft_strncmp(commands[*i], "<", -1))
+	if (!ft_strncmp(commands[*i], "<", -1) && checker(commands, *i))
 	{
 		check_permision(NULL, commands[*i + 1], 2);
 		info->is_input = 1;
 		info->input_file = commands[++(*i)];
 	}
-	if (!ft_strncmp(commands[*i], ">>", -1))
+	if (!ft_strncmp(commands[*i], ">>", -1) && checker(commands, *i))
 	{
 		check_permision(NULL, commands[*i + 1], 3);
 		info->is_output = 1;
 		info->is_append = 1;
 		info->append_file = commands[++(*i)];
 	}
-	if (!ft_strncmp(commands[*i], "<<", -1))
+	if (!ft_strncmp(commands[*i], "<<", -1) && checker(commands, *i))
 	{
 		info->is_herdoc = 1;
 		info->herdoc_limiter = commands[++(*i)];
