@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 11:08:47 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/07 17:59:48 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/17 19:01:37 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	execute_built_in(t_args *vars, t_command *command)
 	if (!ft_strncmp("env", command->command_args[0], -1))
 		env(vars);
 	if (!ft_strncmp("exit", command->command_args[0], -1))
-		my_exit(command->command_args[0]);
+		my_exit(command->command_args[1]);
 	if (!ft_strncmp("export", command->command_args[0], -1))
 		env_export(vars, command);
 	if (!ft_strncmp("unset", command->command_args[0], -1))
