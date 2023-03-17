@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 22:10:27 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/03/15 23:20:50 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/17 22:17:01 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,9 @@ void	execution_phase(t_args *vars)
 	i = -1;
 	while (++i < vars->command_count)
 	{
-		if (is_built_in(tmp->command_args[0]) && ft_strncmp("echo",
+		if(!tmp->command_args[0])
+			tmp->is_valid_command = 69;
+		if (tmp->command_args[0] && is_built_in(tmp->command_args[0]) && ft_strncmp("echo",
 				tmp->command_args[0], -1))
 			execute_built_in(vars, tmp);
 		else

@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 11:08:47 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/17 19:01:37 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/17 22:15:40 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ static void	handle_child2(t_args *vars, t_command *tmp, int fd)
 		dup2(fd, 0);
 		close(fd);
 	}
+
 	handle_child3(vars, tmp);
 }
 
@@ -72,6 +73,8 @@ static void	handle_child(t_args *vars, t_command *tmp, int fd, int i)
 {
 	if (tmp->is_valid_command == 0)
 		custom_exit(127);
+	if (tmp->is_valid_command == 69)
+		custom_exit(0);
 	if (i > 0)
 	{
 		dup2(vars->prev_pipefd[0], 0);

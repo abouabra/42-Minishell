@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 21:21:54 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/03/17 20:18:37 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/17 22:03:47 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ char	**make_new_args(char **commands)
 			k[j]++;
 		}
 		k[i]++;
+		
 	}
 	args[k[j]] = NULL;
 	return (args);

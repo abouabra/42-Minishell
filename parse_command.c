@@ -6,10 +6,11 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:27:14 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/15 23:47:13 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/17 22:09:45 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft/ft_dprintf.h"
 #include "minishell.h"
 
 static void	check_permision_help(char *command_path, char *name, int a)
