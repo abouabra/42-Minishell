@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:27:14 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/17 22:22:41 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/18 00:12:52 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,17 +108,20 @@ void	parse_redirections(t_fill_info *info, char **commands)
 	i = 0;
 	while (commands[i])
 	{
-		if ((!ft_strncmp(commands[i], ">", -1) || !ft_strncmp(commands[i], "<", -1)
-			|| !ft_strncmp(commands[i], ">>", -1) || !ft_strncmp(commands[i], "<<", -1))
-				&& !commands[i + 1])
+		if ((!ft_strncmp(commands[i], ">", -1) || !ft_strncmp(commands[i],
+					"<", -1) || !ft_strncmp(commands[i], ">>", -1)
+				|| !ft_strncmp(commands[i], "<<", -1)) && !commands[i + 1])
 		{
-			ft_dprintf(1, "minishell: syntax error near unexpected token `newline'\n");
+			ft_dprintf(1,
+				"minishell: syntax error near unexpected token `newline'\n");
 			custom_exit(2);
 		}
-		if (commands[i + 1] && (!ft_strncmp(commands[i], ">", -1) || !ft_strncmp(commands[i], "<", -1)
-			|| !ft_strncmp(commands[i], ">>", -1) || !ft_strncmp(commands[i], "<<", -1))
-			&& (!ft_strncmp(commands[i + 1], ">", -1) || !ft_strncmp(commands[i + 1], "<", -1)
-			|| !ft_strncmp(commands[i + 1], ">>", -1) || !ft_strncmp(commands[i + 1], "<<", -1)))
+		if (commands[i + 1] && (!ft_strncmp(commands[i], ">", -1)
+				|| !ft_strncmp(commands[i], "<", -1) || !ft_strncmp(commands[i],
+					">>", -1) || !ft_strncmp(commands[i], "<<", -1)) && (
+				!ft_strncmp(commands[i + 1], ">", -1) || !ft_strncmp(commands[i + 1],
+					"<", -1) || !ft_strncmp(commands[i + 1], ">>", -1)
+				|| !ft_strncmp(commands[i + 1], "<<", -1)))
 		{
 			ft_dprintf(1, "minishell: syntax error near unexpected token `%s'\n", commands[i + 1]);
 			custom_exit(2);

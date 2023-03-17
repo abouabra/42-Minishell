@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:27:14 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/17 23:51:17 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/18 00:06:28 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ void	expand_variables(t_args *vars, t_fill_info *info, char **args)
 			data = get_env_data(vars, tmp);
 			n[j] = ft_strchr_num(args[n[i]], '$');
 			new = ft_substr(args[n[i]], 0, n[j]);
-			
 			if (!ft_strncmp(str + 1, "?", -1))
 				args[n[i]] = ft_strjoin(new, ft_itoa(vars->exit_status));
 			else

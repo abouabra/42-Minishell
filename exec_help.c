@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 22:10:27 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/03/17 22:54:31 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/18 00:03:57 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,24 +27,25 @@ int	is_built_in(char *name)
 	return (0);
 }
 
-void    execution_phase(t_args *vars)
+void	execution_phase(t_args *vars)
 {
-    t_command    *tmp;
-    int            i;
+	t_command	*tmp;
+	int			i;
 
-    tmp = vars->command_head;
-    i = -1;
-    while (++i < vars->command_count)
-    {
-        if(!tmp->command_args[0])
-            tmp->is_valid_command = 69;
-        if (tmp->command_args[0] && is_built_in(tmp->command_args[0]) && ft_strncmp("echo",
-                tmp->command_args[0], -1) && ft_strncmp("env", tmp->command_args[0], -1))
-            execute_built_in(vars, tmp);
-        else
-            execute(vars, tmp, i);
-        tmp = tmp->next;
-    }
+	tmp = vars->command_head;
+	i = -1;
+	while (++i < vars->command_count)
+	{
+		if (!tmp->command_args[0])
+			tmp->is_valid_command = 69;
+		if (tmp->command_args[0] && is_built_in(tmp->command_args[0])
+			&& ft_strncmp("echo", tmp->command_args[0], -1)
+			&& ft_strncmp("env", tmp->command_args[0], -1))
+			execute_built_in(vars, tmp);
+		else
+			execute(vars, tmp, i);
+		tmp = tmp->next;
+	}
 }
 
 char	**convert_env_to_arr(t_env *head)

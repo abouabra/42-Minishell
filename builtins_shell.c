@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 11:55:49 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/17 21:58:32 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/18 00:01:58 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,31 +53,31 @@ void	cd(t_args *vars, t_command *command)
 	the_search_built(search);
 }
 
-void    echo(t_command *command)
+void	echo(t_command *command)
 {
-    int    is_arg;
-    int    i;
+	int	is_arg;
+	int	i;
 
-    is_arg = 1;
-    i = 0;
-    if(!command->command_args[1])
-    {
-        printf("\n");
-        return;
-    }
-    if (!ft_strncmp("-n", command->command_args[1], -1))
-    {
-        is_arg = 0;
-        i++;
-    }
-    while (command->command_args[++i])
-    {
-        printf("%s", command->command_args[i]);
-        if(command->command_args[i +1])
-            printf(" ");
-    }
-    if (is_arg)
-        printf("\n");
+	is_arg = 1;
+	i = 0;
+	if (!command->command_args[1])
+	{
+		printf("\n");
+		return ;
+	}
+	if (!ft_strncmp("-n", command->command_args[1], -1))
+	{
+		is_arg = 0;
+		i++;
+	}
+	while (command->command_args[++i])
+	{
+		printf("%s", command->command_args[i]);
+		if (command->command_args[i +1])
+			printf(" ");
+	}
+	if (is_arg)
+		printf("\n");
 }
 
 void	my_exit(char *arg)

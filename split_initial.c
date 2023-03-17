@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 17:31:10 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/17 20:28:56 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/17 23:54:29 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ static int	count_words(char *s)
 	phrase_count = 0;
 	while (++i < ft_strlen(s))
 	{
-		// if (s[i] == '|' && s[i + 1] != '|' && (sw == 1 || (sw == 0 && s[i + 2] != '\0')))
 		if (s[i] == '|' && s[i + 1] != '|')
 			phrase_count++;
 		else if (s[i] == '&' && s[i + 1] == '&')
