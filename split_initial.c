@@ -6,14 +6,11 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 17:31:10 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/17 23:54:29 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/18 00:17:11 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/ft_dprintf.h"
-#include "libft/get_next_line.h"
 #include "minishell.h"
-#include <stdio.h>
 
 int	has_separator(char c, char c1)
 {

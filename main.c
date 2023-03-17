@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:30:57 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/15 23:27:18 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/18 00:17:56 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	start_ter(t_args *vars)
 	line = readline(ps1);
 	if (!line)
 	{
-		dprintf(1, "\n");
+		ft_dprintf(1, "\n");
 		custom_exit(vars->exit_status);
 	}
 	if (line && line[0])
