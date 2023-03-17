@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 11:08:47 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/17 22:15:40 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/17 22:54:19 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,19 +28,24 @@ void	execute_built_in(t_args *vars, t_command *command)
 		unset(vars, command->command_args[1]);
 }
 
-static void	handle_child3(t_args *vars, t_command *tmp)
+static void    handle_child3(t_args *vars, t_command *tmp)
 {
-	if (!ft_strncmp("echo", tmp->command_args[0], -1))
-	{
-		echo(tmp);
-		custom_exit(0);
-	}
-	else
-	{
-		execve(tmp->command_path, tmp->command_args,
-			convert_env_to_arr(vars->env_head));
-		custom_exit(1);
-	}
+    if (!ft_strncmp("echo", tmp->command_args[0], -1))
+    {
+        echo(tmp);
+        custom_exit(0);
+    }
+    else if (!ft_strncmp("env", tmp->command_args[0], -1))
+    {
+        env(vars);
+        custom_exit(0);
+    }
+    else
+    {
+        execve(tmp->command_path, tmp->command_args,
+            convert_env_to_arr(vars->env_head));
+        custom_exit(1);
+    }
 }
 
 static void	handle_child2(t_args *vars, t_command *tmp, int fd)

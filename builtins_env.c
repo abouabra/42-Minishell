@@ -6,37 +6,37 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 12:03:37 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/06 19:53:53 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/17 23:30:39 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	env_export(t_args *vars, t_command *command)
+void    env_export(t_args *vars, t_command *command)
 {
-	t_env	*new_env;
-	t_env	*search;
-	t_env	*env;
-	char	**args;
+    t_env    *new_env;
+    t_env    *search;
+    t_env    *env;
+    char    **args;
 
-	if (!command->command_args[1])
-	{
-		env = vars->env_head;
-		while (env)
-		{
-			printf("declare -x %s=\"%s\"\n", env->env_id, env->env_data);
-			env = env->next;
-		}	
-		return ;
-	}
-	args = ft_split(command->command_args[1], '=');
-	search = vars->env_head;
-	the_search_env(search, args);
-	if (!search)
-	{
-		new_env = ft_new_env_node(args[0], args[1]);
-		add_env_in_back(&vars->env_head, new_env);
-	}
+    if (!command->command_args[1])
+    {
+        env = vars->env_head;
+        while (env)
+        {
+            printf("declare -x %s=\"%s\"\n", env->env_id, env->env_data);
+            env = env->next;
+        }    
+        return ;
+    }
+    args = ft_split(command->command_args[1], '=');
+    search = vars->env_head;
+    the_search_env(&search, args);
+    if (!search)
+    {
+        new_env = ft_new_env_node(args[0], ft_strtrim(args[1],"\'\""));
+        add_env_in_back(&vars->env_head, new_env);
+    }
 }
 
 void	env(t_args *vars)

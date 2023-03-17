@@ -6,11 +6,13 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:27:14 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/17 22:09:45 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/17 23:20:42 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft/ft_dprintf.h"
+#include "libft/get_next_line.h"
+#include "libft/libft.h"
 #include "minishell.h"
 
 static void	check_permision_help(char *command_path, char *name, int a)
@@ -60,10 +62,11 @@ int	check_permision(char *command_path, char *name, int arg)
 
 void	expand_variables(t_args *vars, t_fill_info *info, char **args)
 {
-	int		n[2];
+	int		n[3];
 	char	*data;
 	char	*str;
 	char	*new;
+	char	*tmp;
 
 	n[i] = -1;
 	while (args[++n[i]])
@@ -71,15 +74,25 @@ void	expand_variables(t_args *vars, t_fill_info *info, char **args)
 		str = ft_strchr(args[n[i]], '$');
 		if (str && info->quote_type != 1)
 		{
-			data = get_env_data(vars, ++str);
+			n[k] = -1;
+			while (str[++n[k]] && str[n[k]] != '\'' && str[n[k]] != '"' && str[n[k]] != ' ')
+				;
+			if (!str[n[k]])
+				n[k]++;
+			tmp = ft_substr(str, 1, n[k] - 1);
+			data = get_env_data(vars, tmp);
 			n[j] = ft_strchr_num(args[n[i]], '$');
 			new = ft_substr(args[n[i]], 0, n[j]);
+			
 			if (!ft_strncmp(str, "?", -1))
 				args[n[i]] = ft_strjoin(new, ft_itoa(vars->exit_status));
 			else
 			{
 				if (data)
+				{
 					args[n[i]] = ft_strjoin(new, data);
+					args[n[i]] = ft_strjoin(args[n[i]], ft_substr(str, n[k], -1));
+				}
 				else
 					args[n[i]] = ft_strjoin(new, "");
 			}

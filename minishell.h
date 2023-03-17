@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:30:01 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/15 21:43:27 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/17 23:30:10 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ void		add_env_in_front(t_env **head, t_env *node);
 t_env		*ft_new_env_node(char *env_id, char *env_data);
 void		ft_node_remove_if(t_env **head, char *env_id);
 int			ft_env_list_size(t_env **head);
-void		the_search_env(t_env *search, char **args);
+void		the_search_env(t_env **search, char **args);
 
 //parsing commands;
 void		parse_commands(t_args *vars, char *line);
