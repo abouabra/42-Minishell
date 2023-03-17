@@ -6,10 +6,11 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:27:14 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/07 19:15:11 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/17 19:49:34 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft/ft_dprintf.h"
 #include "minishell.h"
 
 static void	rm_qts_help(int *num, char **arr, char *q, t_fill_info *info)
@@ -28,7 +29,10 @@ static void	rm_qts_help(int *num, char **arr, char *q, t_fill_info *info)
 	else
 	{
 		arr[0] = ft_strtrim(arr[0], q);
-		info->quote_type = 1;
+		if (q[0] == '\'')
+			info->quote_type = 1;
+		else
+			info->quote_type = 2;
 	}
 }
 
@@ -60,7 +64,7 @@ char	*get_herdoc_data(char *limiter)
 	{
 		ft_dprintf(1, "> ");
 		str = get_next_line(0);
-		if (!ft_strncmp(str, limiter, -1))
+		if (!str || !ft_strncmp(str, limiter, -1))
 			break ;
 		total = ft_strjoin(total, str);
 	}

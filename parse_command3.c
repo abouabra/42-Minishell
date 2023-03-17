@@ -6,10 +6,11 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 21:21:54 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/03/15 23:27:44 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/17 20:18:37 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft/ft_dprintf.h"
 #include "minishell.h"
 
 int	count_args(char **commands)
@@ -90,7 +91,9 @@ void	parse_commands(t_args *vars, char *line)
 	{
 		vars->initial_commands = initial_split(vars, line, 0);
 		if (!vars->initial_commands)
+		{
 			return ;
+		}
 		remove_spaces_in_between(vars);
 		parsing_commands(vars, vars->initial_commands);
 		execution_phase(vars);
