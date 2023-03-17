@@ -6,11 +6,12 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:27:14 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/17 19:49:34 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/17 21:47:59 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft/ft_dprintf.h"
+#include "libft/get_next_line.h"
 #include "minishell.h"
 
 static void	rm_qts_help(int *num, char **arr, char *q, t_fill_info *info)
@@ -107,6 +108,21 @@ void	parse_redirections(t_fill_info *info, char **commands)
 	i = 0;
 	while (commands[i])
 	{
+		if ((!ft_strncmp(commands[i], ">", -1) || !ft_strncmp(commands[i], "<", -1)
+			|| !ft_strncmp(commands[i], ">>", -1) || !ft_strncmp(commands[i], "<<", -1))
+				&& !commands[i + 1])
+		{
+			ft_dprintf(1, "minishell: parse error near `\\n'\n");
+			custom_exit(1);
+		}
+		if (commands[i + 1] && (!ft_strncmp(commands[i], ">", -1) || !ft_strncmp(commands[i], "<", -1)
+			|| !ft_strncmp(commands[i], ">>", -1) || !ft_strncmp(commands[i], "<<", -1))
+			&& (!ft_strncmp(commands[i + 1], ">", -1) || !ft_strncmp(commands[i + 1], "<", -1)
+			|| !ft_strncmp(commands[i + 1], ">>", -1) || !ft_strncmp(commands[i + 1], "<<", -1)))
+		{
+			ft_dprintf(1, "minishell: parse error near `%s'\n", commands[i + 1]);
+			custom_exit(1);
+		}
 		red_help(info, commands, &i);
 		i++;
 	}
