@@ -6,11 +6,13 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:31:51 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/17 23:29:48 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/17 23:49:27 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft/libft.h"
 #include "minishell.h"
+#include <stdio.h>
 
 char    **get_path(t_args *vars)
 {
@@ -29,6 +31,8 @@ char	*get_command_path(char **path, char *command)
 	char	*str;
 	char	*stt;
 
+	if(!access(command, F_OK))
+		return command;
 	i = -1;
 	while (path[++i])
 	{
