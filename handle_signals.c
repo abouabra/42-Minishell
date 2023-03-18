@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   handle_signals.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abouabra < abouabra@student.1337.ma >      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 18:30:46 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/18 18:34:04 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/18 18:44:11 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/get_next_line.h"
 #include "minishell.h"
-#include <sys/signal.h>
 
 void    init_termio(t_args *vars)
 {

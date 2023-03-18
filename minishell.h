@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abouabra < abouabra@student.1337.ma >      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:30:01 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/18 18:37:44 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/18 18:43:38 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 # define MINISHELL_H
 
 # include "libft/libft.h"
-# include <readline/history.h>
-# include <readline/readline.h>
 # include <signal.h>
 # include <stdio.h>
 # include <fcntl.h>
 # include <sys/wait.h>
 # include <termios.h>
 # include <dirent.h>
+# include <readline/history.h>
+# include <readline/readline.h>
 
 typedef struct t_fill_info
 {
@@ -161,7 +161,8 @@ void		my_exit(char *arg);
 void		print_command(t_command *command);
 
 //signals
-void		init_signal(void);
+void    init_termio(t_args *vars);
+void	handle_signals(int sig);
 
 //extra 
 void		print_command(t_command *command);
