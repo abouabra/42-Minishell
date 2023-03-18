@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 12:03:37 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/17 23:58:29 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/18 15:54:48 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,17 @@ void	unset(t_args *vars, char *env_id)
 		env = env->next;
 	}
 	ft_node_remove_if(&vars->env_head, env_id);
+}
+
+void	the_search_env(t_env **search, char **args)
+{
+	while (*search)
+	{
+		if (!ft_strncmp((*search)->env_id, args[0], -1))
+		{
+			(*search)->env_data = ft_strtrim(args[1], "\'\"");
+			break ;
+		}
+		(*search) = (*search)->next;
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:27:14 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/18 00:43:13 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/18 15:53:55 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,28 +73,6 @@ char	*get_herdoc_data(char *limiter)
 	return (total);
 }
 
-int	checker(char **commands, int i)
-{
-	int	j = i;
-	char	*str;
-	
-	if (!ft_strncmp(commands[i], ">", -1))
-		str = ft_strdup(">>");
-	if (!ft_strncmp(commands[i], ">>", -1))
-		str = ft_strdup(">");
-	if (!ft_strncmp(commands[i], "<", -1))
-		str = ft_strdup("<<");
-	if (!ft_strncmp(commands[i], "<<", -1))
-		str = ft_strdup("<");
-	while (commands[++j])
-	{
-		if (!ft_strncmp(commands[j], commands[i], -1)
-			|| !ft_strncmp(commands[j], str, -1))
-			return (0);
-	}
-	return (1);
-}
-
 static void	red_help(t_fill_info *info, char **commands, int *i)
 {
 	if (!ft_strncmp(commands[*i], ">", -1) && checker(commands, *i))
@@ -131,24 +109,7 @@ void	parse_redirections(t_fill_info *info, char **commands)
 	i = 0;
 	while (commands[i])
 	{
-		if ((!ft_strncmp(commands[i], ">", -1) || !ft_strncmp(commands[i],
-					"<", -1) || !ft_strncmp(commands[i], ">>", -1)
-				|| !ft_strncmp(commands[i], "<<", -1)) && !commands[i + 1])
-		{
-			ft_dprintf(1,
-				"minishell: syntax error near unexpected token `newline'\n");
-			custom_exit(2);
-		}
-		if (commands[i + 1] && (!ft_strncmp(commands[i], ">", -1)
-				|| !ft_strncmp(commands[i], "<", -1) || !ft_strncmp(commands[i],
-					">>", -1) || !ft_strncmp(commands[i], "<<", -1)) && (
-				!ft_strncmp(commands[i + 1], ">", -1) || !ft_strncmp(commands[i + 1],
-					"<", -1) || !ft_strncmp(commands[i + 1], ">>", -1)
-				|| !ft_strncmp(commands[i + 1], "<<", -1)))
-		{
-			ft_dprintf(1, "minishell: syntax error near unexpected token `%s'\n", commands[i + 1]);
-			custom_exit(2);
-		}
+		rederiction_error(commands, i);
 		red_help(info, commands, &i);
 		i++;
 	}
