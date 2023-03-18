@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:30:01 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/18 13:52:15 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/18 15:26:08 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,12 @@ typedef struct t_env
 	char			*env_data;
 	struct t_env	*next;
 }						t_env;
+
+typedef struct t_chars
+{
+	char	**arr;
+	char	*strings[2];
+}	t_chars;
 
 typedef struct t_command
 {
@@ -123,7 +129,7 @@ void		parsing_commands(t_args *vars, char **commands);
 char		**split_par(char *s);
 int			has_char(char *s, char c);
 void		nested_par(char **arr, t_args *vars);
-char		*wildcard(t_args *vars, char *av);
+char		*wildcard(char *av);
 
 //executing phase
 
@@ -155,5 +161,6 @@ enum	e_nums {i, j, k, ph_len, si, dou};
 enum	e_quotes {sin, doub, in_word};
 enum	e_arrays {arr, args, path};
 enum	e_split {w = 2, ac};
+enum	e_wild {tmp, final, len = 3, valid};
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 21:39:20 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/03/18 14:14:56 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/18 15:38:34 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,69 +29,85 @@ int	ft_strrevcmp(char *s1, char *s2)
 	return (s1[i] - s2[j]);
 }
 
-char	*wildcard(t_args *vars, char *av)
+void	double_wild(int n[5], char *av, struct dirent *read, t_chars *chars)
 {
-	DIR *dir;
-	struct dirent *read;
-	int	v;
-	char **arr;
-	int i;
-	int j;
-	int is_valid;
-	char *tmp;
-	char *final;
-	int k;
-	(void)vars;
-	dir = opendir(getcwd(NULL,-1));
-	arr = ft_split(av, '*');
-	is_valid = 0;
-	final = "";
-	k = 0;
-	i = -1;
-	while(arr[++i]);
-	while(++k)
+	n[len] = ft_strlen(chars->arr[0]) - 1;
+	if (n[len] < 1)
+		n[len] = 1;
+	if (av[0] == '*' && av[ft_strlen(av) - 1] != '*'
+		&& !ft_strrevcmp(read->d_name, chars->arr[0]))
+		chars->strings[final] = ft_strjoin(chars->strings[final],
+				ft_strjoin(read->d_name, " "));
+	else if (av[0] != '*' && av[ft_strlen(av) - 1] == '*'
+		&& !ft_strncmp(read->d_name, chars->arr[0], n[len]))
+		chars->strings[final] = ft_strjoin(chars->strings[final],
+				ft_strjoin(read->d_name, " "));
+	else if (av[0] == '*' && av[ft_strlen(av) - 1] == '*'
+		&& ft_strnstr(read->d_name, chars->arr[0], -1))
+		chars->strings[final] = ft_strjoin(chars->strings[final],
+				ft_strjoin(read->d_name, " "));
+}
+
+void	many_wild(int n[5], char *av, struct dirent *read, t_chars *chars)
+{
+	n[j] = -1;
+	n[valid] = 0;
+	while (++n[j] < n[i])
 	{
-		read = readdir(dir);
-		if(!read)
-			break;
-		if(k > 2 && i == 0 && read->d_name[0] != '.')
-			final = ft_strjoin(final,ft_strjoin(read->d_name," "));
-		else if(k > 2 && i == 1)
+		chars->strings[tmp] = read->d_name;
+		if (n[j] == n[i] - 1 && av[ft_strlen(av) - 1] != '*'
+			&& !ft_strrevcmp(read->d_name, chars->arr[n[j]]))
+			n[valid]++;
+		else if (n[j] == 0 && av[0] != '*' && !ft_strncmp(read->d_name,
+				chars->arr[n[j]], ft_strlen(chars->arr[n[j]]) - 1))
+			n[valid]++;
+		else if ((n[j] > 0 && n[j] < n[i] - 1) || (av[ft_strlen(av) - 1] == '*'
+				&& n[j] == n[i] - 1) || (av[0] == '*' && n[j] == 0))
 		{
-			v = ft_strlen(arr[0]) - 1;
-			if (v < 1)
-				v = 1;
-			if(av[0] == '*' && av[ft_strlen(av)-1] != '*' && !ft_strrevcmp(read->d_name,arr[0]))
-				final = ft_strjoin(final,ft_strjoin(read->d_name," "));
-			else if (av[0] != '*' && av[ft_strlen(av)-1] == '*' && !ft_strncmp(read->d_name, arr[0], v))
-				final = ft_strjoin(final,ft_strjoin(read->d_name," "));
-			else if (av[0] == '*' && av[ft_strlen(av)-1] == '*' && ft_strnstr(read->d_name, arr[0], -1))
-				final = ft_strjoin(final,ft_strjoin(read->d_name," "));
-		}
-		else if (k > 2 && i > 1)
-		{
-			j = -1;
-			is_valid = 0;
-			while (++j < i)
-			{
-				tmp = read->d_name;
-				if(j == i-1 && av[ft_strlen(av)-1] != '*' && !ft_strrevcmp(read->d_name,arr[j]))
-					is_valid++;
-				else if(j == 0 && av[0] != '*' && !ft_strncmp(read->d_name, arr[j], ft_strlen(arr[j])-1))
-					is_valid++;
-				else if((j > 0 && j < i -1) || (av[ft_strlen(av)-1] == '*' && j == i-1) || (av[0] == '*' && j == 0))
-				{
-					// printf("===> %s %s %s\n", read->d_name, tmp, arr[j]);
-					// if (tmp)
-						tmp = ft_strnstr(tmp, arr[j], -1);
-					if(tmp)
-						is_valid++;	
-				}
-			}
-			if (is_valid == i)
-				final = ft_strjoin(final,ft_strjoin(read->d_name," "));
+			chars->strings[tmp] = ft_strnstr(chars->strings[tmp],
+					chars->arr[j], -1);
+			if (chars->strings[tmp])
+				n[valid]++;
 		}
 	}
+	if (n[valid] == n[i])
+		chars->strings[final] = ft_strjoin(chars->strings[final],
+				ft_strjoin(read->d_name, " "));
+}
+
+void	initialize_vals(DIR **dir, t_chars *chars, int n[5], char *av)
+{
+	*dir = opendir(getcwd(NULL, -1));
+	chars->arr = ft_split(av, '*');
+	n[valid] = 0;
+	chars->strings[final] = "";
+	n[k] = 0;
+	n[i] = -1;
+	while (chars->arr[++n[i]])
+		;
+}
+
+char	*wildcard(char *av)
+{
+	DIR				*dir;
+	struct dirent	*read;
+	t_chars			chars;
+	int				n[5];
+
+	initialize_vals(&dir, &chars, n, av);
+	while (++n[k])
+	{
+		read = readdir(dir);
+		if (!read)
+			break ;
+		if (n[k] > 2 && n[i] == 0 && read->d_name[0] != '.')
+			chars.strings[final] = ft_strjoin(chars.strings[final],
+					ft_strjoin(read->d_name, " "));
+		else if (n[k] > 2 && n[i] == 1)
+			double_wild(n, av, read, &chars);
+		else if (n[k] > 2 && n[i] > 1)
+			many_wild(n, av, read, &chars);
+	}
 	closedir(dir);
-	return (final);
+	return (chars.strings[final]);
 }
