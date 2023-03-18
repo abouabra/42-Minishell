@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 19:52:24 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/03/18 16:46:14 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/18 18:40:07 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	dollar_active(int n[4], char *strings[4], char **args, t_args *vars)
 	n[j] = ft_strchr_num(args[n[i]], '$');
 	strings[news] = ft_substr(args[n[i]], 0, n[j]);
 	if (!ft_strncmp(strings[str] + 1, "?", -1))
-		args[n[i]] = ft_strjoin(strings[news], ft_itoa(vars->exit_status));
+		args[n[i]] = ft_strjoin(strings[news], ft_itoa(*(vars->ex_status)));
 	else
 	{
 		if (strings[data])
@@ -104,12 +104,9 @@ void	nested_par(char **arr, t_args *vars)
 			if (!tmp)
 				return ;
 			while (tmp[++j])
-				// printf("|%s|\n", ft_strtrim(tmp[j]," "));
 				tmp[j] = ft_strtrim(tmp[j], " ");
 			parsing_commands(vars, tmp);
-			printf("-------------------------------\n");
-			debug_menu(vars);
-			printf("-------------------------------\n");
+			//execute(vars, vars->command_head, 1);
 			vars->command_head = NULL;
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 22:11:02 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/18 16:56:24 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/18 18:33:20 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,5 @@ void	debug_menu(t_args *vars)
 		print_command(tst);
 		tst = tst->next;
 	}
-	ft_dprintf(1, "EXIT_CODE: %d\n", vars->exit_status);
+	ft_dprintf(1, "EXIT_CODE: %d\n", *(vars->ex_status));
 }

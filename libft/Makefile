@@ -24,7 +24,6 @@ $(NAME): $(OBJS)
 	@$(AR) $@ $^
 
 %.o:%.c libft.h
-	@printf "hana kan compili f$(GREEN) $< $(RESET) \n"
 	@$(CC) -Wall -Wextra -Werror -c $<  -o $@
 
 clean:

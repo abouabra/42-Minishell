@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 11:08:47 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/18 00:05:16 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/18 18:37:18 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static void	handle_child2(t_args *vars, t_command *tmp, int fd)
 	handle_child3(vars, tmp);
 }
 
-static void	handle_child(t_args *vars, t_command *tmp, int fd, int i)
+void	handle_child(t_args *vars, t_command *tmp, int fd, int i)
 {
 	if (tmp->is_valid_command == 0)
 		custom_exit(127);
@@ -100,32 +100,4 @@ static void	handle_child(t_args *vars, t_command *tmp, int fd, int i)
 		close(fd);
 	}
 	handle_child2(vars, tmp, fd);
-}
-
-void	execute(t_args *vars, t_command *tmp, int i)
-{
-	pid_t	pid;
-	int		status;
-	int		fd;
-
-	fd = 0;
-	if (i < vars->command_count - 1)
-		pipe(vars->next_pipefd);
-	pid = fork();
-	if (pid == -1)
-		return ;
-	if (pid == 0)
-		handle_child(vars, tmp, fd, i);
-	if (i > 0)
-	{
-		close(vars->prev_pipefd[0]);
-		close(vars->prev_pipefd[1]);
-	}
-	if (i < vars->command_count - 1)
-	{
-		vars->prev_pipefd[0] = vars->next_pipefd[0];
-		vars->prev_pipefd[1] = vars->next_pipefd[1];
-	}
-	waitpid(pid, &status, 0);
-	vars->exit_status = WEXITSTATUS(status);
 }

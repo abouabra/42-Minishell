@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:30:01 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/18 16:56:38 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/18 18:37:44 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,13 @@ typedef struct t_args
 	int			is_quote;
 	int			prev_pipefd[2];
 	int			next_pipefd[2];
-	int			exit_status;
 	t_command	*command_head;
 	t_env		*env_head;
+	struct termios new_term;
+    struct termios old_term;
+    int *is_running;
+    int *ex_status;
+    int *is_interupted;
 }						t_args;
 
 void		prepare_commands(t_args *vars, char **commands);
@@ -135,6 +139,7 @@ int			checker(char **commands, int i);
 void		dollar_active(int n[4], char *strings[4], char **args, t_args *vars);
 void		split_char_init(int n[4]);
 void		doub_sin_skip(int *sin, int *doub, char *s, int i);
+void		handle_child(t_args *vars, t_command *tmp, int fd, int i);
 
 //executing phase
 
