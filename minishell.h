@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:30:01 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/18 13:30:48 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/18 13:52:15 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,7 @@ void		parsing_commands(t_args *vars, char **commands);
 char		**split_par(char *s);
 int			has_char(char *s, char c);
 void		nested_par(char **arr, t_args *vars);
+char		*wildcard(t_args *vars, char *av);
 
 //executing phase
 

@@ -6,14 +6,12 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:27:14 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/18 00:06:28 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/18 14:54:14 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/ft_dprintf.h"
-#include "libft/get_next_line.h"
-#include "libft/libft.h"
 #include "minishell.h"
+#include <stdio.h>
 
 static void	check_permision_help(char *command_path, char *name, int a)
 {
@@ -60,15 +58,16 @@ int	check_permision(char *command_path, char *name, int arg)
 	return (0);
 }
 
-void	expand_variables(t_args *vars, t_fill_info *info, char **args)
+char	**expand_variables(t_args *vars, t_fill_info *info, char **args)
 {
-	int		n[3];
+	int		n[4];
 	char	*data;
 	char	*str;
 	char	*new;
 	char	*tmp;
 
 	n[i] = -1;
+	n[3] = -1;
 	while (args[++n[i]])
 	{
 		str = ft_strchr(args[n[i]], '$');
@@ -96,7 +95,23 @@ void	expand_variables(t_args *vars, t_fill_info *info, char **args)
 					args[n[i]] = ft_strjoin(new, "");
 			}
 		}
+		else if (ft_strchr(args[n[i]], '*') && info->quote_type == 0)
+		{
+			tmp = "";
+			while (args[++n[3]])
+			{
+				if (ft_strchr(args[n[3]], '*') && info->quote_type == 0)
+					args[n[3]] = wildcard(vars, args[n[3]]);
+				tmp = ft_strjoin(tmp, args[n[3]]);
+				tmp = ft_strjoin(tmp, " ");
+			}
+			args = split_command(tmp);
+			
+			args = make_new_args(args);
+		}
 	}
+	return args;
+	
 }
 
 static void	retrieve_comm(char *c_p, t_fill_info *in, char **a[3], t_args *v)
@@ -108,7 +123,7 @@ static void	retrieve_comm(char *c_p, t_fill_info *in, char **a[3], t_args *v)
 		else
 			in->is_valid_command = 1;
 	}
-	expand_variables(v, in, a[args]);
+	a[args] = expand_variables(v, in, a[args]);
 	in->command_path = c_p;
 	in->command_args = a[args];
 }
