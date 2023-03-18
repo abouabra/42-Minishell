@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_initial.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abouabra < abouabra@student.1337.ma >      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 17:31:10 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/18 16:58:04 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/18 19:43:29 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ static int	check_validity(char **phrases, int phrase_count)
 			if (phrase_count > 1)
 			{
 				ft_dprintf(1, "minishell: Invalid input!\n");
-				custom_exit(2);
+				return (0);
 			}
 			else
 				return (0);
