@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 21:39:20 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/03/18 15:38:34 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/18 16:37:23 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ char	*wildcard(char *av)
 		if (n[k] > 2 && n[i] == 0 && read->d_name[0] != '.')
 			chars.strings[final] = ft_strjoin(chars.strings[final],
 					ft_strjoin(read->d_name, " "));
-		else if (n[k] > 2 && n[i] == 1)
+		else if (n[k] > 2 && n[i] == 1 && read->d_name[0] != '.')
 			double_wild(n, av, read, &chars);
 		else if (n[k] > 2 && n[i] > 1)
 			many_wild(n, av, read, &chars);

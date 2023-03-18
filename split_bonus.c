@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 18:37:37 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/03/15 23:48:36 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/18 16:16:18 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ static void	split_par_help(char **arr, char *s, int n[4])
 		if (!s[n[i]] && n[ac] != 0)
 		{
 			arr[n[j]] = 0;
-			return ;	
+			return ;
 		}
 		arr[n[j]][++n[w]] = s[n[i]];
 	}
@@ -138,7 +138,7 @@ void	nested_par(char **arr, t_args *vars)
 	char	**tmp;
 	int		i;
 	int		j;
-	
+
 	i = -1;
 	while (arr[++i])
 	{
@@ -152,7 +152,7 @@ void	nested_par(char **arr, t_args *vars)
 				return ;
 			while (tmp[++j])
 				// printf("|%s|\n", ft_strtrim(tmp[j]," "));
-				tmp[j] = ft_strtrim(tmp[j]," ");
+				tmp[j] = ft_strtrim(tmp[j], " ");
 			parsing_commands(vars, tmp);
 			printf("-------------------------------\n");
 			debug_menu(vars);
