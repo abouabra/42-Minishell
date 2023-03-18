@@ -6,15 +6,34 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 17:31:10 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/18 00:17:11 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/18 13:39:19 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	has_separator(char c, char c1)
+int	has_separator(int i, int j, char *s)
 {
-	if (c == '|' || (c == '&' && c1 == '&'))
+	int	k;
+	int	f;
+	int		q[2];
+
+	k = 0;
+	f = -1;
+	q[sin] = 0;
+	q[doub] = 0;
+	if (s[i] == '|' || (s[i] == '&' && s[j] == '&'))
+		k++;
+	while (++f < i)
+	{
+		if (s[i] == '\'')
+			if (!q[doub])
+				q[sin] = !q[sin];
+		if (s[i] == '"')
+			if (!q[sin])
+				q[doub] = !q[doub];
+	}
+	if (k && !q[doub] && !q[sin])
 		return (1);
 	return (0);
 }
@@ -23,19 +42,28 @@ static int	count_words(char *s)
 {
 	int		i;
 	int		phrase_count;
+	int		q[2];
 
 	i = -1;
 	phrase_count = 0;
+	q[sin] = 0;
+	q[doub] = 0;
 	while (++i < ft_strlen(s))
 	{
-		if (s[i] == '|' && s[i + 1] != '|')
+		if (s[i] == '\'')
+			if (!q[doub])
+				q[sin] = !q[sin];
+		if (s[i] == '"')
+			if (!q[sin])
+				q[doub] = !q[doub];
+		if (s[i] == '|' && s[i + 1] != '|' && !q[doub] && !q[doub])
 			phrase_count++;
-		else if (s[i] == '&' && s[i + 1] == '&')
+		else if (s[i] == '&' && s[i + 1] == '&' && !q[doub] && !q[doub])
 		{
 			phrase_count++;
 			i++;
 		}
-		else if (s[i] == '|' && s[i + 1] == '|')
+		else if (s[i] == '|' && s[i + 1] == '|' && !q[doub] && !q[doub])
 		{
 			phrase_count++;
 			i++;
@@ -45,27 +73,33 @@ static int	count_words(char *s)
 	return (phrase_count);
 }
 
-static void	split_cases(int n[3], int ph_len, char *s, char **phrases)
+static void	split_cases(int n[6], int ph_len, char *s, char **phrases)
 {
-	if (has_separator(s[n[i]], s[n[i] + 1]))
+	if (s[n[i]] == '\'')
+		if (!n[dou])
+			n[si] = !n[si];
+	if (s[n[i]] == '"')
+		if (!n[si])
+			n[dou] = !n[dou];
+	if (has_separator(n[i], n[i] + 1, s))
 	{
 		ph_len = n[i] - n[j];
 		phrases[n[k]] = (char *)my_alloc((ph_len + 1) * sizeof(char));
 		ft_memcpy(phrases[n[k]], s + n[j], ph_len);
 		phrases[n[k]][ph_len] = '\0';
 	}
-	if (s[n[i]] == '|' && s[n[i] + 1] != '|')
+	if (s[n[i]] == '|' && s[n[i] + 1] != '|' && !n[si] && !n[dou])
 	{
 		n[k]++;
 		n[j] = n[i] + 1;
 	}
-	else if (s[n[i]] == '&' && s[n[i] + 1] == '&')
+	else if (s[n[i]] == '&' && s[n[i] + 1] == '&' && !n[si] && !n[dou])
 	{
 		n[k]++;
 		n[j] = n[i] + 2;
 		n[i]++;
 	}
-	else if (s[n[i]] == '|' && s[n[i] + 1] == '|')
+	else if (s[n[i]] == '|' && s[n[i] + 1] == '|' && !n[si] && !n[dou])
 	{
 		n[k]++;
 		n[j] = n[i] + 2;
@@ -96,7 +130,7 @@ static int	check_validity(char **phrases, int phrase_count)
 
 char	**initial_split(t_args *vars, char *s, int sw)
 {
-	int		n[3];
+	int		n[6];
 	int		phrase_count;
 	int		ph_len;
 	char	**phrases;
@@ -104,6 +138,8 @@ char	**initial_split(t_args *vars, char *s, int sw)
 	n[i] = -1;
 	n[j] = 0;
 	n[k] = 0;
+	n[si] = 0;
+	n[dou] = 0;
 	ph_len = 0;
 	phrase_count = count_words(s);
 	vars->command_count = phrase_count;

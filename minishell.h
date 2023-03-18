@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:30:01 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/17 23:30:10 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/18 13:30:48 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,7 @@ void		init_signal(void);
 void		print_command(t_command *command);
 void		debug_menu(t_args *vars);
 
-enum	e_nums {i, j, k, ph_len};
+enum	e_nums {i, j, k, ph_len, si, dou};
 enum	e_quotes {sin, doub, in_word};
 enum	e_arrays {arr, args, path};
 enum	e_split {w = 2, ac};
