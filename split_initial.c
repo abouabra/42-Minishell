@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 17:31:10 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/18 13:39:19 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/18 16:58:04 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	has_separator(int i, int j, char *s)
 {
 	int	k;
 	int	f;
-	int		q[2];
+	int	q[2];
 
 	k = 0;
 	f = -1;
@@ -25,14 +25,7 @@ int	has_separator(int i, int j, char *s)
 	if (s[i] == '|' || (s[i] == '&' && s[j] == '&'))
 		k++;
 	while (++f < i)
-	{
-		if (s[i] == '\'')
-			if (!q[doub])
-				q[sin] = !q[sin];
-		if (s[i] == '"')
-			if (!q[sin])
-				q[doub] = !q[doub];
-	}
+		doub_sin_skip(&q[sin], &q[doub], s, f);
 	if (k && !q[doub] && !q[sin])
 		return (1);
 	return (0);
@@ -50,12 +43,7 @@ static int	count_words(char *s)
 	q[doub] = 0;
 	while (++i < ft_strlen(s))
 	{
-		if (s[i] == '\'')
-			if (!q[doub])
-				q[sin] = !q[sin];
-		if (s[i] == '"')
-			if (!q[sin])
-				q[doub] = !q[doub];
+		doub_sin_skip(&q[sin], &q[doub], s, i);
 		if (s[i] == '|' && s[i + 1] != '|' && !q[doub] && !q[doub])
 			phrase_count++;
 		else if (s[i] == '&' && s[i + 1] == '&' && !q[doub] && !q[doub])
@@ -69,18 +57,12 @@ static int	count_words(char *s)
 			i++;
 		}
 	}
-	phrase_count++;
-	return (phrase_count);
+	return (++phrase_count);
 }
 
 static void	split_cases(int n[6], int ph_len, char *s, char **phrases)
 {
-	if (s[n[i]] == '\'')
-		if (!n[dou])
-			n[si] = !n[si];
-	if (s[n[i]] == '"')
-		if (!n[si])
-			n[dou] = !n[dou];
+	doub_sin_skip(&n[si], &n[dou], s, n[i]);
 	if (has_separator(n[i], n[i] + 1, s))
 	{
 		ph_len = n[i] - n[j];

@@ -6,11 +6,21 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 22:11:02 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/18 00:17:56 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/18 16:56:24 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	doub_sin_skip(int *sin, int *doub, char *s, int i)
+{
+	if (s[i] == '\'')
+		if (!*(doub))
+			*(sin) = !*(sin);
+	if (s[i] == '"')
+		if (!*(sin))
+			*(doub) = !*(doub);
+}
 
 void	print_command(t_command *command)
 {

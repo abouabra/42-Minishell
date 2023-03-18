@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:30:01 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/18 16:46:23 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/18 16:56:38 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,7 @@ void		rederiction_error(char **commands, int i);
 int			checker(char **commands, int i);
 void		dollar_active(int n[4], char *strings[4], char **args, t_args *vars);
 void		split_char_init(int n[4]);
+void		doub_sin_skip(int *sin, int *doub, char *s, int i);
 
 //executing phase
 
