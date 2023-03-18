@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 18:37:37 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/03/18 16:16:18 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/18 16:46:07 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,9 +108,7 @@ char	**split_par(char *s)
 	char	**arr;
 	int		n[4];
 
-	n[i] = -1;
-	n[j] = -1;
-	n[ac] = 0;
+	split_char_init(n);
 	if (!s || !s[0])
 		return (0);
 	n[w] = count_par(s);
@@ -132,41 +130,3 @@ char	**split_par(char *s)
 	arr[++n[j]] = 0;
 	return (arr);
 }
-
-void	nested_par(char **arr, t_args *vars)
-{
-	char	**tmp;
-	int		i;
-	int		j;
-
-	i = -1;
-	while (arr[++i])
-	{
-		if (has_char(arr[i], '('))
-			nested_par(split_par(arr[i]), vars);
-		else
-		{
-			j = -1;
-			tmp = initial_split(vars, arr[i], 1);
-			if (!tmp)
-				return ;
-			while (tmp[++j])
-				// printf("|%s|\n", ft_strtrim(tmp[j]," "));
-				tmp[j] = ft_strtrim(tmp[j], " ");
-			parsing_commands(vars, tmp);
-			printf("-------------------------------\n");
-			debug_menu(vars);
-			printf("-------------------------------\n");
-			vars->command_head = NULL;
-		}
-	}
-}
-/*
-int main(int ac, char **av)
-{
-	char **arr;
-	t_args vars;
-	arr = split_par(av[1]);
-	nested_par(arr, &vars);
-	return (0);
-}*/

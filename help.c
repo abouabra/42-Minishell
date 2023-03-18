@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 19:52:24 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/03/18 16:13:17 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/18 16:46:14 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,4 +84,40 @@ void	dollar_active(int n[4], char *strings[4], char **args, t_args *vars)
 		else
 			args[n[i]] = ft_strjoin(strings[news], "");
 	}
+}
+
+void	nested_par(char **arr, t_args *vars)
+{
+	char	**tmp;
+	int		i;
+	int		j;
+
+	i = -1;
+	while (arr[++i])
+	{
+		if (has_char(arr[i], '('))
+			nested_par(split_par(arr[i]), vars);
+		else
+		{
+			j = -1;
+			tmp = initial_split(vars, arr[i], 1);
+			if (!tmp)
+				return ;
+			while (tmp[++j])
+				// printf("|%s|\n", ft_strtrim(tmp[j]," "));
+				tmp[j] = ft_strtrim(tmp[j], " ");
+			parsing_commands(vars, tmp);
+			printf("-------------------------------\n");
+			debug_menu(vars);
+			printf("-------------------------------\n");
+			vars->command_head = NULL;
+		}
+	}
+}
+
+void	split_char_init(int n[4])
+{
+	n[i] = -1;
+	n[j] = -1;
+	n[ac] = 0;
 }
