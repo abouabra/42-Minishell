@@ -21,12 +21,13 @@ all: $(NAME)
 
 $(NAME): $(OSRC) main.c
 	@make -C libft
-	@$(CC) main.c $(READ_LINE) $(WWW)  $(INCLUDE) $(OSRC) libft/libft.a -o $@
+	@$(CC) $(READ_LINE) $(WWW)  $(INCLUDE) $(OSRC) main.c  libft/libft.a -o $@
 	@printf "$(RED)--------MINI SHELL DONE--------$(RESET)\n"
 
 %.o : %.c minishell.h
 #    @printf "hana kan compili f$(GREEN) $< $(RESET) \n"
 	@$(CC) -Wall -Wextra -Werror -c $<
+bonus: all
 
 clean:
 	@make -C libft clean
@@ -38,4 +39,4 @@ fclean:
 
 re:fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re bonus

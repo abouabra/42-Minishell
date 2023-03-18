@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_shell.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abouabra < abouabra@student.1337.ma >      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 11:55:49 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/18 00:01:58 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/18 19:11:48 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft/libft.h"
 #include "minishell.h"
+#include <stdio.h>
 
 static void	the_search_built(t_env *search)
 {
@@ -80,15 +82,34 @@ void	echo(t_command *command)
 		printf("\n");
 }
 
+int is_all_numbers(char *str)
+{
+	int i = -1;
+
+	while(str[++i])
+	{
+		if(str[i] > '9' || str[i] < '0')
+			return (0);
+	}
+	return (1);
+}
 void	my_exit(char *arg)
 {
 	int	status;
 
 	if (!arg)
 		status = 0;
-	else
+	else if (is_all_numbers(arg))
+	{
+		printf("exit\n");
 		status = ft_atoi(arg);
-	printf("exit\n");
+	}
+	else
+	{
+	 	status = 255;
+		printf("exit\n");
+		printf("minishell: exit: %s: numeric argument required\n",arg);
+	}
 	custom_exit(status);
 }
 
