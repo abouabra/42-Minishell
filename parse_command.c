@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:27:14 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/18 16:26:09 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/18 16:42:43 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,17 +74,13 @@ char	**expand_variables(t_args *vars, t_fill_info *info, char **args)
 			strings[tmp] = "";
 			while (args[++n[3]])
 			{
-				if (ft_strchr(args[n[3]], '*') && info->quote_type == 0)
-				{
-					if (wildcard(args[n[3]])[0])
+				if (ft_strchr(args[n[3]], '*') && info->quote_type == 0
+					&& wildcard(args[n[3]])[0])
 						args[n[3]] = wildcard(args[n[3]]);
-				}
-				// printf("|%s|\n\n\n\n",args[n[3]]);
 				strings[tmp] = ft_strjoin(strings[tmp], args[n[3]]);
 				strings[tmp] = ft_strjoin(strings[tmp], " ");
 			}
-			args = split_command(strings[tmp]);
-			args = make_new_args(args);
+			args = make_new_args(split_command(strings[tmp]));
 		}
 	}
 	return (args);
