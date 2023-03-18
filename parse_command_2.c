@@ -6,13 +6,10 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:27:14 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/18 15:53:55 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/18 15:59:07 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/ft_dprintf.h"
-#include "libft/get_next_line.h"
-#include "libft/libft.h"
 #include "minishell.h"
 
 static void	rm_qts_help(int *num, char **arr, char *q, t_fill_info *info)

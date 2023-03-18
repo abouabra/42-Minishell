@@ -6,12 +6,11 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:27:14 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/18 14:56:45 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/18 16:13:11 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <stdio.h>
 
 static void	check_permision_help(char *command_path, char *name, int a)
 {
@@ -61,57 +60,30 @@ int	check_permision(char *command_path, char *name, int arg)
 char	**expand_variables(t_args *vars, t_fill_info *info, char **args)
 {
 	int		n[4];
-	char	*data;
-	char	*str;
-	char	*new;
-	char	*tmp;
+	char	*strings[4];
 
 	n[i] = -1;
 	n[3] = -1;
 	while (args[++n[i]])
 	{
-		str = ft_strchr(args[n[i]], '$');
-		if (str && info->quote_type != 1)
-		{
-			n[k] = -1;
-			while (str[++n[k]] && str[n[k]] != '\'' && str[n[k]] != '"' && str[n[k]] != ' ')
-				;
-			if (!str[n[k]])
-				n[k]++;
-			tmp = ft_substr(str, 1, n[k] - 1);
-			data = get_env_data(vars, tmp);
-			n[j] = ft_strchr_num(args[n[i]], '$');
-			new = ft_substr(args[n[i]], 0, n[j]);
-			if (!ft_strncmp(str + 1, "?", -1))
-				args[n[i]] = ft_strjoin(new, ft_itoa(vars->exit_status));
-			else
-			{
-				if (data)
-				{
-					args[n[i]] = ft_strjoin(new, data);
-					args[n[i]] = ft_strjoin(args[n[i]], ft_substr(str, n[k], -1));
-				}
-				else
-					args[n[i]] = ft_strjoin(new, "");
-			}
-		}
+		strings[str] = ft_strchr(args[n[i]], '$');
+		if (strings[str] && info->quote_type != 1)
+			dollar_active(n, strings, args, vars);
 		else if (ft_strchr(args[n[i]], '*') && info->quote_type == 0)
 		{
-			tmp = "";
+			strings[tmp] = "";
 			while (args[++n[3]])
 			{
 				if (ft_strchr(args[n[3]], '*') && info->quote_type == 0)
 					args[n[3]] = wildcard(args[n[3]]);
-				tmp = ft_strjoin(tmp, args[n[3]]);
-				tmp = ft_strjoin(tmp, " ");
+				strings[tmp] = ft_strjoin(strings[tmp], args[n[3]]);
+				strings[tmp] = ft_strjoin(strings[tmp], " ");
 			}
-			args = split_command(tmp);
-			
+			args = split_command(strings[tmp]);
 			args = make_new_args(args);
 		}
 	}
-	return args;
-	
+	return (args);
 }
 
 static void	retrieve_comm(char *c_p, t_fill_info *in, char **a[3], t_args *v)

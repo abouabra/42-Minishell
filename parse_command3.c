@@ -6,11 +6,10 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 21:21:54 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/03/18 00:52:26 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/18 15:58:55 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/ft_dprintf.h"
 #include "minishell.h"
 
 int	count_args(char **commands)

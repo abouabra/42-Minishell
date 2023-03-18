@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:30:01 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/18 15:54:15 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/18 16:13:32 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,7 @@ void		nested_par(char **arr, t_args *vars);
 char		*wildcard(char *av);
 void		rederiction_error(char **commands, int i);
 int			checker(char **commands, int i);
+void		dollar_active(int n[4], char *strings[4], char **args, t_args *vars);
 
 //executing phase
 
@@ -164,5 +165,6 @@ enum	e_quotes {sin, doub, in_word};
 enum	e_arrays {arr, args, path};
 enum	e_split {w = 2, ac};
 enum	e_wild {tmp, final, len = 3, valid};
+enum	e_expand {data = 1, news, str};
 
 #endif
