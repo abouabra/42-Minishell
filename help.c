@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   help.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abouabra < abouabra@student.1337.ma >      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 19:52:24 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/03/18 18:40:07 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/18 19:36:17 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,6 @@ void	nested_par(char **arr, t_args *vars)
 			while (tmp[++j])
 				tmp[j] = ft_strtrim(tmp[j], " ");
 			parsing_commands(vars, tmp);
-			//execute(vars, vars->command_head, 1);
 			vars->command_head = NULL;
 		}
 	}

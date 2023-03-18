@@ -6,7 +6,7 @@
 /*   By: abouabra < abouabra@student.1337.ma >      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 11:55:49 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/18 19:11:48 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/03/18 19:35:24 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	the_search_built(t_env *search)
 }
 
 void	cd(t_args *vars, t_command *command)
-{	
+{
 	t_env	*search;
 	char	*data;
 	int		ofsset;
@@ -40,7 +40,7 @@ void	cd(t_args *vars, t_command *command)
 	{
 		data = get_env_data(vars, "HOME");
 		ofsset = ft_strchr_num(command->command_args[1], '~');
-		new = ft_substr(command->command_args[1], ofsset +1,
+		new = ft_substr(command->command_args[1], ofsset + 1,
 				ft_strlen(command->command_args[1]));
 		command->command_args[1] = ft_strjoin(data, new);
 	}
@@ -75,24 +75,13 @@ void	echo(t_command *command)
 	while (command->command_args[++i])
 	{
 		printf("%s", command->command_args[i]);
-		if (command->command_args[i +1])
+		if (command->command_args[i + 1])
 			printf(" ");
 	}
 	if (is_arg)
 		printf("\n");
 }
 
-int is_all_numbers(char *str)
-{
-	int i = -1;
-
-	while(str[++i])
-	{
-		if(str[i] > '9' || str[i] < '0')
-			return (0);
-	}
-	return (1);
-}
 void	my_exit(char *arg)
 {
 	int	status;
@@ -106,9 +95,9 @@ void	my_exit(char *arg)
 	}
 	else
 	{
-	 	status = 255;
+		status = 255;
 		printf("exit\n");
-		printf("minishell: exit: %s: numeric argument required\n",arg);
+		printf("minishell: exit: %s: numeric argument required\n", arg);
 	}
 	custom_exit(status);
 }

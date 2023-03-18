@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   extra.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abouabra < abouabra@student.1337.ma >      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 22:11:02 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/18 18:33:20 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/03/18 19:40:46 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,36 +22,29 @@ void	doub_sin_skip(int *sin, int *doub, char *s, int i)
 			*(doub) = !*(doub);
 }
 
-void	print_command(t_command *command)
+int	is_all_numbers(char *str)
 {
 	int	i;
 
-	printf("COMMAND_PATH: %s\n", command->command_path);
 	i = -1;
-	while (command->command_args[++i])
-		printf("\tSUB COMMAND: %s\n", command->command_args[i]);
-	printf("QUOTE_TYPE: %d\n", command->quote_type);
-	printf("IS_INPUT: %d\n", command->is_input);
-	printf("INPUT_FILE: %s\n", command->input_file);
-	printf("IS_OUTPUT: %d\n", command->is_output);
-	printf("OUTPUT_FILE: %s\n", command->output_file);
-	printf("IS_APPEND: %d\n", command->is_append);
-	printf("APPEND_FILE: %s\n", command->append_file);
-	printf("IS_HERDOC: %d\n", command->is_herdoc);
-	printf("HERDOC_DATA: %s\n", command->herdoc_data);
-	printf("HERDOC_LIMITER: %s\n", command->herdoc_limiter);
-	printf("\n");
+	while (str[++i])
+	{
+		if (str[i] > '9' || str[i] < '0')
+			return (0);
+	}
+	return (1);
 }
 
-void	debug_menu(t_args *vars)
+void	fd_handler(t_args *vars, int i)
 {
-	t_command	*tst;
-
-	tst = vars->command_head;
-	while (tst)
+	if (i > 0)
 	{
-		print_command(tst);
-		tst = tst->next;
+		close(vars->prev_pipefd[0]);
+		close(vars->prev_pipefd[1]);
 	}
-	ft_dprintf(1, "EXIT_CODE: %d\n", *(vars->ex_status));
+	if (i < vars->command_count - 1)
+	{
+		vars->prev_pipefd[0] = vars->next_pipefd[0];
+		vars->prev_pipefd[1] = vars->next_pipefd[1];
+	}
 }
