@@ -1,5 +1,5 @@
 SRC = main.c env_stuff.c env_linked_list_stuff.c command_linked_list_stuff.c parse_command.c split_command.c \
-	split_initial.c parse_command.c path_stuff.c extra.c parse_command_2.c execution_phase.c \
+	split_initial.c path_stuff.c extra.c parse_command_2.c execution_phase.c \
 	builtins_env.c builtins_shell.c handle_signals.c help.c parse_command3.c exec_help.c\
 	split_bonus.c wildcard_bonus.c
 
