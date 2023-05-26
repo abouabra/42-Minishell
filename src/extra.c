@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 22:11:02 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/26 22:14:01 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/26 23:54:46 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,20 +22,40 @@ void	doub_sin_skip(int *sin, int *doub, char *s, int i)
 			*(doub) = !*(doub);
 }
 
-int	is_all_numbers(char *str)
+int	is_second_arg_number(char **str)
 {
 	int	i;
+	int	j;
 
-	i = -1;
+	i = 1;
 	while (str[++i])
 	{
-		if (str[i] > '9' || str[i] < '0')
-			return (0);
+		j = -1;
+		while (str[i][++j])
+		{
+			if (str[i][j] > '9' || str[i][j] < '0')
+				return (0);
+		}
 	}
 	return (1);
 }
 
-void	fd_handler(t_args *vars, int i)
+char	*is_arg_number(char *str)
+{
+	int	j;
+
+	j = -1;
+	while (str[++j])
+	{
+		if(str[j] == '-' && str[j + 2] == '\0')
+			return (0);
+		if (str[j] > '9' || str[j] < '0')
+			return (&str[j]);
+	}
+	return (0);
+}
+
+void	fd_handler(int i)
 {
 	if (i > 0)
 	{

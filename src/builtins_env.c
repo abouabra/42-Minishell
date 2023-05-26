@@ -6,13 +6,13 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 12:03:37 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/26 22:13:20 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/26 22:45:11 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	env_export(t_args *vars, t_command *command)
+void	env_export(t_command *command)
 {
 	t_env	*new_env;
 	t_env	*search;
@@ -42,7 +42,7 @@ void	env_export(t_args *vars, t_command *command)
 	}
 }
 
-void	env(t_args *vars)
+void	env()
 {
 	t_env	*env;
 
@@ -54,7 +54,7 @@ void	env(t_args *vars)
 	}	
 }
 
-void	unset(t_args *vars, char *env_id)
+void	unset(char *env_id)
 {
 	t_env	*env;
 

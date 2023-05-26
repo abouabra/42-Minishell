@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:27:14 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/26 22:14:01 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/26 22:45:01 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void	rm_qts_help(int *num, char **arr, char *q, t_fill_info *info)
 	}
 }
 
-void	remove_quotes(t_args *vars, t_fill_info *info, char **arr)
+void	remove_quotes(t_fill_info *info, char **arr)
 {
 	int		i;
 	int		num_1;

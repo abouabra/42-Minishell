@@ -6,17 +6,17 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:31:51 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/26 22:14:01 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/26 22:49:48 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	**get_path(t_args *vars)
+char	**get_path()
 {
 	char	*path;
 
-	path = get_env_data(vars, "PATH");
+	path = get_env_data( "PATH");
 	if (!path)
 		path = "";
 	return (ft_split(path, ':'));

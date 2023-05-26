@@ -6,13 +6,13 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 11:33:03 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/26 22:14:01 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/26 22:45:11 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*get_env_data(t_args *vars, char *id)
+char	*get_env_data(char *id)
 {
 	t_env	*env;
 
@@ -26,7 +26,7 @@ char	*get_env_data(t_args *vars, char *id)
 	return (NULL);
 }
 
-void	set_env(t_args *vars)
+void	set_env()
 {
 	t_env	*env;
 	char	**arr;

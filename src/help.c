@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 19:52:24 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/05/26 22:14:01 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/26 22:51:57 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	rederiction_error(char **commands, int i)
 	}
 }
 
-void	dollar_active(int n[4], char *strings[4], char **args, t_args *vars)
+void	dollar_active(int n[4], char *strings[4], char **args)
 {
 	n[k] = -1;
 	while (strings[str][++n[k]] && strings[str][n[k]] != '\''
@@ -68,7 +68,7 @@ void	dollar_active(int n[4], char *strings[4], char **args, t_args *vars)
 	if (!strings[str][n[k]])
 		n[k]++;
 	strings[tmp] = ft_substr(strings[str], 1, n[k] - 1);
-	strings[data] = get_env_data(vars, strings[tmp]);
+	strings[data] = get_env_data( strings[tmp]);
 	n[j] = ft_strchr_num(args[n[i]], '$');
 	strings[news] = ft_substr(args[n[i]], 0, n[j]);
 	if (!ft_strncmp(strings[str] + 1, "?", -1))
@@ -86,7 +86,7 @@ void	dollar_active(int n[4], char *strings[4], char **args, t_args *vars)
 	}
 }
 
-void	nested_par(char **arr, t_args *vars)
+void	nested_par(char **arr)
 {
 	char	**tmp;
 	int		i;
@@ -96,16 +96,16 @@ void	nested_par(char **arr, t_args *vars)
 	while (arr[++i])
 	{
 		if (has_char(arr[i], '('))
-			nested_par(split_par(arr[i]), vars);
+			nested_par(split_par(arr[i]));
 		else
 		{
 			j = -1;
-			tmp = initial_split(vars, arr[i], 1);
+			tmp = initial_split( arr[i], 1);
 			if (!tmp)
 				return ;
 			while (tmp[++j])
 				tmp[j] = ft_strtrim(tmp[j], " ");
-			parsing_commands(vars, tmp);
+			parsing_commands( tmp);
 			vars->command_head = NULL;
 		}
 	}

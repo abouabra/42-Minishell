@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 21:21:54 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/05/26 22:14:01 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/26 22:52:11 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ char	**make_new_args(char **commands)
 	return (args);
 }
 
-void	remove_spaces_in_between(t_args *vars)
+void	remove_spaces_in_between()
 {
 	int	i;
 
@@ -84,14 +84,14 @@ int	has_char(char *s, char c)
 	return (0);
 }
 
-void	parse_commands(t_args *vars, char *line)
+void	parse_commands(char *line)
 {
-	vars->initial_commands = initial_split(vars, line, 0);
+	vars->initial_commands = initial_split( line, 0);
 	if (!vars->initial_commands)
 	{
 		return ;
 	}
-	remove_spaces_in_between(vars);
-	parsing_commands(vars, vars->initial_commands);
-	execution_phase(vars);
+	remove_spaces_in_between();
+	parsing_commands( vars->initial_commands);
+	execution_phase();
 }

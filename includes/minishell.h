@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:30:01 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/26 22:13:03 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/26 23:52:45 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,9 +95,10 @@ typedef struct t_args
 	int					*is_interupted;
 }						t_args;
 
-void					prepare_commands(t_args *vars, char **commands);
-void					parsing_initial_split(t_args *vars, char **commands);
-char					**get_path(t_args *vars);
+
+void					prepare_commands(char **commands);
+void					parsing_initial_split(char **commands);
+char					**get_path();
 char					*get_command_path(char **path, char *command);
 
 //command linked list stuff
@@ -117,13 +118,13 @@ int						ft_env_list_size(t_env **head);
 void					the_search_env(t_env **search, char **args);
 
 //parsing commands;
-void					parse_commands(t_args *vars, char *line);
-char					**initial_split(t_args *vars, char *s, int sw);
+void					parse_commands(char *line);
+char					**initial_split(char *s, int sw);
 char					**split_command(char *s);
 
-void					set_env(t_args *vars);
-char					*get_env_data(t_args *vars, char *id);
-void					remove_quotes(t_args *vars, t_fill_info *info,
+void					set_env();
+char					*get_env_data(char *id);
+void					remove_quotes(t_fill_info *info,
 							char **arr);
 char					*get_herdoc_data(char *limiter);
 void					parse_redirections(t_fill_info *info, char **commands);
@@ -131,45 +132,48 @@ int						count_args(char **commands);
 char					**make_new_args(char **commands);
 int						check_permision(char *command_path, char *name,
 							int arg);
-void					parsing_commands(t_args *vars, char **commands);
+void					parsing_commands(char **commands);
 char					**split_par(char *s);
 int						has_char(char *s, char c);
-void					nested_par(char **arr, t_args *vars);
+void					nested_par(char **arr);
 char					*wildcard(char *av);
 void					rederiction_error(char **commands, int i);
 int						checker(char **commands, int i);
-void					dollar_active(int n[4], char *strings[4], char **args,
-							t_args *vars);
+void					dollar_active(int n[4], char *strings[4], char **args);
 void					split_char_init(int n[4]);
 void					doub_sin_skip(int *sin, int *doub, char *s, int i);
-void					handle_child(t_args *vars, t_command *tmp, int fd,
+void					handle_child(t_command *tmp, int fd,
 							int i);
 
 //executing phase
 
-void					execution_phase(t_args *vars);
-void					execute_built_in(t_args *vars, t_command *command);
-void					execute(t_args *vars, t_command *tmp, int i);
+void					execution_phase();
+void					execute_built_in(t_command *command);
+void					execute(t_command *tmp, int i);
 char					**convert_env_to_arr(t_env *head);
 
 //builtins
 int						is_built_in(char *name);
 void					echo(t_command *command);
-void					cd(t_args *vars, t_command *command);
+void					cd(t_command *command);
 void					pwd(void);
-void					env_export(t_args *vars, t_command *command);
-void					unset(t_args *vars, char *env_id);
-void					env(t_args *vars);
-void					my_exit(char *arg);
+void					env_export(t_command *command);
+void					unset(char *env_id);
+void					env();
+void					my_exit(t_command *command);
 
 void					print_command(t_command *command);
 
 //signals
-void					init_termio(t_args *vars);
+void					init_termio();
 void					handle_signals(int sig);
 
-int						is_all_numbers(char *str);
-void					fd_handler(t_args *vars, int i);
+int						is_second_arg_number(char **str);
+void					fd_handler(int i);
+char	*is_arg_number(char *str);
+
+extern t_args			*vars;
+
 
 enum					e_nums
 {

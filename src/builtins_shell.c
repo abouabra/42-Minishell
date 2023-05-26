@@ -6,26 +6,31 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 11:55:49 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/26 22:16:46 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/26 23:53:28 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static void	the_search_built(t_env *search)
+static void	the_search_built(t_env *search, char *old_path)
 {
 	while (search)
 	{
 		if (!ft_strncmp(search->env_id, "PWD", -1))
 		{
 			search->env_data = getcwd(NULL, -1);
-			break ;
+			// break ;
+		}
+		else if (!ft_strncmp(search->env_id, "OLDPWD", -1))
+		{
+			search->env_data = old_path;
+			// break ;
 		}
 		search = search->next;
 	}
 }
 
-void	cd(t_args *vars, t_command *command)
+void	cd(t_command *command)
 {
 	t_env	*search;
 	char	*data;
@@ -33,10 +38,10 @@ void	cd(t_args *vars, t_command *command)
 	char	*new;
 
 	if (!command->command_args[1])
-		command->command_args[1] = get_env_data(vars, "HOME");
+		command->command_args[1] = get_env_data( "HOME");
 	else if (ft_strchr(command->command_args[1], '~'))
 	{
-		data = get_env_data(vars, "HOME");
+		data = get_env_data( "HOME");
 		ofsset = ft_strchr_num(command->command_args[1], '~');
 		new = ft_substr(command->command_args[1], ofsset + 1,
 				ft_strlen(command->command_args[1]));
@@ -49,9 +54,10 @@ void	cd(t_args *vars, t_command *command)
 		*vars->ex_status = 1;
 		return ;
 	}
+	char *old_path = getcwd(NULL, -1);
 	chdir(command->command_args[1]);
 	search = vars->env_head;
-	the_search_built(search);
+	the_search_built(search,old_path);
 }
 
 void	echo(t_command *command)
@@ -81,27 +87,39 @@ void	echo(t_command *command)
 		printf("\n");
 }
 
-void	my_exit(char *arg)
+void					my_exit(t_command *command)
 {
-	int	status;
+	int	status = 0;
 
-	if (!arg)
-		status = 0;
-	else if (is_all_numbers(arg))
+	if (!command->command_args[1])
+		status = *vars->ex_status;
+	else if(command->command_args[1] && command->command_args[2])
 	{
-		printf("exit\n");
-		status = ft_atoi(arg);
+		status = 1;
+		// if(!is_second_arg_number(command->command_args))
+		// 	ft_dprintf(2,"minishell: exit: %s: numeric argument required\n",command->command_args[2]);
+		// else
+		ft_dprintf(2,"minishell: exit: too many arguments\n");
 	}
+	else if(is_arg_number(command->command_args[1]))
+	{
+		ft_dprintf(2,"minishell: exit: %s: numeric argument required\n", is_arg_number(command->command_args[1]));
+		status = 255;
+	}	
 	else
 	{
-		status = 255;
-		printf("exit\n");
-		printf("minishell: exit: %s: numeric argument required\n", arg);
+		status = ft_atoi(command->command_args[1]);;
 	}
+	// else if (is_second_arg_number(command->command_args))
+	// {
+	// 	// printf("exit\n");
+	// 	status = ft_atoi(command->command_args[1]);
+	// }
 	custom_exit(status);
 }
 
 void	pwd(void)
 {
 	printf("%s\n", getcwd(NULL, -1));
+	// *vars->ex_status = 0;
 }

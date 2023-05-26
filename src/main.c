@@ -6,13 +6,14 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:30:57 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/26 22:27:54 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/26 23:24:12 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 int		g_var[3];
+t_args	*vars;
 
 void	handle_signals(int signum)
 {
@@ -41,7 +42,7 @@ void	handle_signals(int signum)
 	}
 }
 
-void	execute(t_args *vars, t_command *tmp, int i)
+void	execute(t_command *tmp, int i)
 {
 	pid_t	pid;
 	int		status;
@@ -54,8 +55,8 @@ void	execute(t_args *vars, t_command *tmp, int i)
 	if (pid == -1)
 		return ;
 	if (pid == 0)
-		handle_child(vars, tmp, fd, i);
-	fd_handler(vars, i);
+		handle_child( tmp, fd, i);
+	fd_handler( i);
 	waitpid(pid, &status, 0);
 	if (g_var[is_interupted] && (g_var[ex_status] == 130
 			|| g_var[ex_status] == 131))
@@ -67,7 +68,7 @@ void	execute(t_args *vars, t_command *tmp, int i)
 		*(vars->ex_status) = WEXITSTATUS(status);
 }
 
-void	execution_phase(t_args *vars)
+void	execution_phase()
 {
 	t_command	*tmp;
 	int			i;
@@ -79,22 +80,27 @@ void	execution_phase(t_args *vars)
 		if (!tmp->command_args[0])
 			tmp->is_valid_command = 69;
 		if (tmp->command_args[0] && is_built_in(tmp->command_args[0])
-			&& ft_strncmp("echo", tmp->command_args[0], -1) && ft_strncmp("env",
+			&& ft_strncmp("echo", tmp->command_args[0], -1) && ft_strncmp("pwd", tmp->command_args[0], -1)
+			&& ft_strncmp("export", tmp->command_args[0], -1) && ft_strncmp("env",
 				tmp->command_args[0], -1))
-			execute_built_in(vars, tmp);
+			execute_built_in( tmp);
 		else
-			execute(vars, tmp, i);
+			execute( tmp, i);
 		tmp = tmp->next;
 	}
 }
 
-void	start_ter(t_args *vars)
+void	start_ter()
 {
 	char	*line;
 
-	// line = readline("minishell> ");
-	// garbage_collector(line, 0);
-	line = ft_strtrim(get_next_line(0)," \t\n\v\f\r");
+	if(isatty(STDIN_FILENO))
+	{	
+		line = readline("minishell> ");
+		garbage_collector(line, 0);
+	}
+	else
+		line = ft_strtrim(get_next_line(0)," \t\n\v\f\r");
 	g_var[is_running] = 0;
 	tcsetattr(STDIN_FILENO, TCSANOW, &vars->old_term);
 	if (!line)
@@ -106,7 +112,7 @@ void	start_ter(t_args *vars)
 	if (line && line[0])
 	{
 		add_history(line);
-		parse_commands(vars, line);
+		parse_commands( line);
 		vars->command_head = NULL;
 	}
 	g_var[is_running] = 1;
@@ -115,7 +121,6 @@ void	start_ter(t_args *vars)
 
 int	main(int ac, char **av, char **ev)
 {
-	t_args	*vars;
 
 	(void)ac;
 	(void)av;
@@ -123,8 +128,8 @@ int	main(int ac, char **av, char **ev)
 	if (!vars)
 		return (0);
 	vars->ev = ev;
-	set_env(vars);
-	init_termio(vars);
+	set_env();
+	init_termio();
 	signal(SIGINT, handle_signals);
 	signal(SIGQUIT, handle_signals);
 	g_var[is_running] = 1;
@@ -132,7 +137,7 @@ int	main(int ac, char **av, char **ev)
 	vars->ex_status = &g_var[ex_status];
 	vars->is_interupted = &g_var[is_interupted];
 	while (1)
-		start_ter(vars);
+		start_ter();
 	custom_exit(0);
 	return (0);
 }
