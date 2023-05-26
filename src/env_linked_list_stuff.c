@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   env_linked_list_stuff.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:41:16 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/06 19:39:33 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/05/26 22:14:01 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
 
 t_env	*ft_last_env(t_env *lst)
 {

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   exec_help.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 22:10:27 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/03/18 18:30:39 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/05/26 22:14:01 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
 
 int	is_built_in(char *name)
 {

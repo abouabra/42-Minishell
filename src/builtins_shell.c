@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_shell.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abouabra < abouabra@student.1337.ma >      +#+  +:+       +#+        */
+/*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 11:55:49 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/18 19:35:24 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/26 22:16:46 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/libft.h"
-#include "minishell.h"
-#include <stdio.h>
+#include "../includes/minishell.h"
 
 static void	the_search_built(t_env *search)
 {
@@ -48,6 +46,7 @@ void	cd(t_args *vars, t_command *command)
 	{
 		ft_dprintf(2, "minishell: cd: %s: No such file or directory\n",
 			command->command_args[1]);
+		*vars->ex_status = 1;
 		return ;
 	}
 	chdir(command->command_args[1]);

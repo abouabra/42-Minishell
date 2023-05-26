@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abouabra < abouabra@student.1337.ma >      +#+  +:+       +#+        */
+/*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:30:57 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/18 19:40:37 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/26 22:27:54 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
 
 int		g_var[3];
 
@@ -92,14 +92,16 @@ void	start_ter(t_args *vars)
 {
 	char	*line;
 
-	line = readline("minishell> ");
+	// line = readline("minishell> ");
+	// garbage_collector(line, 0);
+	line = ft_strtrim(get_next_line(0)," \t\n\v\f\r");
 	g_var[is_running] = 0;
 	tcsetattr(STDIN_FILENO, TCSANOW, &vars->old_term);
 	if (!line)
 	{
-		ft_dprintf(1, "exit\n");
+		// ft_dprintf(1, "exit\n");
 		tcsetattr(STDIN_FILENO, TCSANOW, &vars->old_term);
-		custom_exit(0);
+		custom_exit(*vars->ex_status);
 	}
 	if (line && line[0])
 	{

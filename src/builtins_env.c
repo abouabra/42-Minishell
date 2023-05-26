@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_env.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 12:03:37 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/18 15:54:48 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/05/26 22:13:20 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
 
 void	env_export(t_args *vars, t_command *command)
 {
@@ -34,7 +34,10 @@ void	env_export(t_args *vars, t_command *command)
 	the_search_env(&search, args);
 	if (!search)
 	{
-		new_env = ft_new_env_node(args[0], ft_strtrim(args[1], "\'\""));
+		if(!args[1])
+			new_env = ft_new_env_node(args[0], "");
+		else
+			new_env = ft_new_env_node(args[0], ft_strtrim(args[1], "\'\""));
 		add_env_in_back(&vars->env_head, new_env);
 	}
 }

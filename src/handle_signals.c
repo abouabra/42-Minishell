@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   handle_signals.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abouabra < abouabra@student.1337.ma >      +#+  +:+       +#+        */
+/*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 18:30:46 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/18 19:35:37 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/26 22:14:01 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
 
 void	init_termio(t_args *vars)
 {
