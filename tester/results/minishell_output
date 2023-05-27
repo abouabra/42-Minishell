@@ -1,2 +1,2 @@
-FOO=BAR
+declare -x FOO="BAR"
 0

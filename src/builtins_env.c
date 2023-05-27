@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 12:03:37 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/27 21:33:16 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/27 23:19:49 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,12 @@ char **split_arg(char *arg)
 {
 	char **arr;
 
-	arr = my_alloc(3 * sizeof(char *));
-	if(!arr)
-		return 0;
 	int i=-1;
 	while(arg[++i])
 	{
 		if(arg[i] == '=')
 		{
+			arr = my_alloc(3 * sizeof(char *));
 			arr[0] = ft_substr(arg, 0, i);
 			arr[1] = ft_substr(arg, i + 1, ft_strlen(arg));
 			if(!arr[1])
@@ -32,7 +30,30 @@ char **split_arg(char *arg)
 			return arr;
 		}
 	}
-	return 0;
+	arr = my_alloc(2 * sizeof(char *));
+	arr[0] = arg;
+	arr[1] = NULL;
+	return arr;
+}
+
+int analyze_args(char **arg)
+{
+	int i = -1;
+
+	while(arg[++i])
+	{
+		int j = -1;
+		while(arg[i][++j])
+		{
+			if(arg[i][j] == '_')
+				j++;
+			if(arg[i][j] && ft_isdigit(arg[i][j]) && j==0)
+				return 0;
+			if(arg[i][j] && arg[i][j] == '@')
+				return 0;
+		}
+	}
+	return 1;
 }
 
 void	env_export(t_command *command)
@@ -47,28 +68,56 @@ void	env_export(t_command *command)
 		env = vars->env_head;
 		while (env)
 		{
-			printf("declare -x %s=\"%s\"\n", env->env_id, env->env_data);
+			char *tmp = env->env_data;
+			if(env->not_declared == no_value && !tmp[0])
+				ft_dprintf(1,"declare -x %s\n", env->env_id);
+			else
+			{
+				int j = -1;
+				ft_dprintf(1,"declare -x %s=\"", env->env_id);
+				while(tmp[++j])
+				{
+					if(tmp[j] == '\"' || tmp[j] == '$' || tmp[j] == '\\')
+						ft_dprintf(1,"\\");
+					ft_dprintf(1,"%c", tmp[j]);
+				}
+				ft_dprintf(1,"\"\n");
+			}
 			env = env->next;
 		}
 		return;
 	}
-	args = split_arg(command->command_args[1]);
-	if(!args)
+	int		i = 0;
+	while(command->command_args[++i])
 	{
-		new_env = ft_new_env_node(command->command_args[1], "");
-		new_env->not_declared = 1;
-		add_env_in_back(&vars->env_head, new_env);
-		return;
-	}
-	search = vars->env_head;
-	the_search_env(&search, args);
-	if (!search)
-	{
-		if(!args[1])
-			new_env = ft_new_env_node(args[0], "");
+		args = split_arg(command->command_args[i]);
+		if(!analyze_args(args))
+		{
+			ft_dprintf(2,"minishell: not a valid identifier\n");
+			*vars->ex_status = 1;
+		}
 		else
-			new_env = ft_new_env_node(args[0], ft_strtrim(args[1], "\'\""));
-		add_env_in_back(&vars->env_head, new_env);
+		{	
+			if(!args[1])
+			{
+				new_env = ft_new_env_node(command->command_args[i], "");
+				new_env->not_declared = no_value;
+				add_env_in_back(&vars->env_head, new_env);
+				return;
+			}
+			
+			search = vars->env_head;
+			the_search_env(&search, args);
+			if (!search)
+			{
+				if(!args[1])
+					new_env = ft_new_env_node(args[0], "");
+				else
+					new_env = ft_new_env_node(args[0], ft_strtrim(args[1], "\'\""));
+				new_env->not_declared = user_defined;
+				add_env_in_back(&vars->env_head, new_env);
+			}
+		}
 	}
 }
 
@@ -79,7 +128,7 @@ void	env()
 	env = vars->env_head;
 	while (env)
 	{
-		if(!env->not_declared)
+		if(env->not_declared != no_value)
 		{
 			char *tmp = env->env_data;
 			if(!tmp)

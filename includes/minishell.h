@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:30:01 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/27 21:28:56 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/27 22:00:55 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,6 +204,12 @@ enum					e_split
 {
 	w = 2,
 	ac
+};
+enum tt
+{
+	system_defined,
+	user_defined,
+	no_value
 };
 enum					e_wild
 {

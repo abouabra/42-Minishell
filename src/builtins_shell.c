@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 11:55:49 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/27 17:00:36 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/27 22:55:06 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,6 @@ void					my_exit(t_command *command)
 
 void	pwd(void)
 {
-	printf("%s\n", getcwd(NULL, -1));
+	ft_dprintf(1,"%s\n", getcwd(NULL, -1));
 	// *vars->ex_status = 0;
 }
