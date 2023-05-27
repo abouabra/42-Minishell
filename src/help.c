@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 19:52:24 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/05/26 22:51:57 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/27 19:31:54 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,30 +59,87 @@ void	rederiction_error(char **commands, int i)
 	}
 }
 
+//echo 1$USER$USER-
+
 void	dollar_active(int n[4], char *strings[4], char **args)
 {
-	n[k] = -1;
-	while (strings[str][++n[k]] && strings[str][n[k]] != '\''
-		&& strings[str][n[k]] != '"' && strings[str][n[k]] != ' ')
-		;
-	if (!strings[str][n[k]])
-		n[k]++;
-	strings[tmp] = ft_substr(strings[str], 1, n[k] - 1);
-	strings[data] = get_env_data( strings[tmp]);
-	n[j] = ft_strchr_num(args[n[i]], '$');
-	strings[news] = ft_substr(args[n[i]], 0, n[j]);
-	if (!ft_strncmp(strings[str] + 1, "?", -1))
-		args[n[i]] = ft_strjoin(strings[news], ft_itoa(*(vars->ex_status)));
-	else
-	{
-		if (strings[data])
+	// ft_dprintf(1, "Start: |%s|\n",strings[str]);
+	n[k] = 0;
+	while(strings[str][n[k]])
+	{		
+		if(!ft_strchr(strings[str], '$'))
+			return;
+		// ft_dprintf(1, "loop: |%s|\n",strings[str]);
+		while (strings[str][++n[k]] && strings[str][n[k]] != '\''
+			&& strings[str][n[k]] != '"' && strings[str][n[k]] != ' '
+			&& strings[str][n[k]] != '-')
 		{
-			args[n[i]] = ft_strjoin(strings[news], strings[data]);
-			args[n[i]] = ft_strjoin(args[n[i]],
-					ft_substr(strings[str], n[k], -1));
+			if(strings[str][n[k]] == '?')
+			{
+				n[k]++;
+				break;
+			}
+			if(strings[str][n[k]] == '$')
+				break;
+			if(strings[str][n[k]] == '@')
+			{
+				n[k]++;
+				break;
+			}
+			if(ft_isdigit(strings[str][n[k]]))
+			{
+				n[k]++;
+				break;
+			}
+		}
+
+
+		if (!strings[str][n[k]])
+			n[k]++;
+		strings[tmp] = ft_substr(strings[str], 1, n[k] - 1);
+
+		if(!strings[tmp][0])
+			strings[data] = "$";
+		else if(strings[tmp][0] == '?')
+			strings[data] = ft_itoa(*vars->ex_status);
+		else if(strings[tmp][0] == '@')
+			strings[data] = "";
+		else if(ft_isdigit(strings[tmp][0]))
+		{
+			strings[data] = args[ft_atoi(strings[tmp])];
+			strings[data] = "";
 		}
 		else
-			args[n[i]] = ft_strjoin(strings[news], "");
+			strings[data] = get_env_data( strings[tmp]);
+		
+		// ft_dprintf(1, "substr: |%s|      n[k]: |%d|    data: |%s|\n\n\n\n\n",strings[tmp],n[k],strings[data]);
+
+
+
+
+
+
+		n[j] = ft_strchr_num(args[n[i]], '$');
+		strings[news] = ft_substr(args[n[i]], 0, n[j]);
+		
+		
+		if (!ft_strncmp(strings[str] + 1, "?", -1))
+			args[n[i]] = ft_strjoin(strings[news], ft_itoa(*(vars->ex_status)));
+		else
+		{
+			if (strings[data])
+			{
+				args[n[i]] = ft_strjoin(strings[news], strings[data]);
+				args[n[i]] = ft_strjoin(args[n[i]],
+						ft_substr(strings[str], n[k], -1));
+			}
+			else
+				args[n[i]] = ft_strjoin(strings[news], "");
+		}
+		
+		strings[str] += n[k];
+		n[k] = 0;
+		// ft_dprintf(1, "end: |%s|  %d\n",strings[str],n[k]);
 	}
 }
 

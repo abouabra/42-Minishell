@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:30:01 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/27 16:59:13 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/27 21:28:56 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ typedef struct t_env
 {
 	char				*env_id;
 	char				*env_data;
+	int					not_declared;
 	struct t_env		*next;
 }						t_env;
 
@@ -154,7 +155,7 @@ char					**convert_env_to_arr(t_env *head);
 
 //builtins
 int						is_built_in(char *name);
-int built_in_should_execute_in_main(t_args *vars ,char *name);
+int						built_in_should_execute_in_main(t_args *vars ,t_command *tmp);
 void					echo(t_command *command);
 void					cd(t_command *command);
 void					pwd(void);
@@ -169,9 +170,11 @@ void					print_command(t_command *command);
 void					init_termio();
 void					handle_signals(int sig);
 
-char *are_two_args_number(char **str);
+char		*are_two_args_number(char **str);
 void					fd_handler(int i);
 char	*is_arg_number(char *str);
+
+char **split_arg(char *arg);
 
 extern t_args			*vars;
 

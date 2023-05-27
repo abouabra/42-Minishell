@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 11:08:47 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/27 16:57:02 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/27 21:14:03 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ void	execute_built_in(t_command *command)
 		cd(command);
 	else if (!ft_strncmp("exit", command->command_args[0], -1))
 		my_exit(command);
+	else if (!ft_strncmp("export", command->command_args[0], -1))
+		env_export(command);
 	else if (!ft_strncmp("unset", command->command_args[0], -1))
 		unset( command->command_args[1]);
 }

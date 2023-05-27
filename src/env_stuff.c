@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 11:33:03 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/26 22:45:11 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/27 20:24:14 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	set_env()
 	i = -1;
 	while (vars->ev[++i])
 	{
-		arr = ft_split(vars->ev[i], '=');
+		arr = split_arg(vars->ev[i]);
 		env = ft_new_env_node(arr[0], arr[1]);
 		add_env_in_back(&vars->env_head, env);
 	}	

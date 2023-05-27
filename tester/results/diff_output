@@ -1,2 +1,2 @@
-rmdir: .: Invalid argument       rmdir: .: Invalid argument
-1                                1
+FOO=BAR       FOO=BAR
+0             0
