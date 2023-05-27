@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:30:01 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/27 22:00:55 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/27 23:54:23 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,7 @@ void					echo(t_command *command);
 void					cd(t_command *command);
 void					pwd(void);
 void					env_export(t_command *command);
-void					unset(char *env_id);
+void					unset(t_command *command);
 void					env();
 void					my_exit(t_command *command);
 

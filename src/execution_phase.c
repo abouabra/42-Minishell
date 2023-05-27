@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 11:08:47 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/27 21:14:03 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/27 23:54:27 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	execute_built_in(t_command *command)
 	else if (!ft_strncmp("export", command->command_args[0], -1))
 		env_export(command);
 	else if (!ft_strncmp("unset", command->command_args[0], -1))
-		unset( command->command_args[1]);
+		unset( command);
 }
 
 int	builtin_should_execute_in_child(t_command *tmp)

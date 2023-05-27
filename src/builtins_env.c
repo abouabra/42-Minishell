@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 12:03:37 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/27 23:19:49 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/27 23:55:36 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,18 +140,22 @@ void	env()
 	}	
 }
 
-void	unset(char *env_id)
+void	unset(t_command *cmd)
 {
 	t_env	*env;
 
-	env = vars->env_head;
-	while (env)
+	int i = 0;
+	while(cmd->command_args[++i])
 	{
-		if (!ft_strncmp(env_id, env->env_id, -1))
-			break ;
-		env = env->next;
+		env = vars->env_head;
+		while (env)
+		{
+			if (!ft_strncmp(cmd->command_args[i], env->env_id, -1))
+				break ;
+			env = env->next;
+		}
+		ft_node_remove_if(&vars->env_head, cmd->command_args[i]);
 	}
-	ft_node_remove_if(&vars->env_head, env_id);
 }
 
 void	the_search_env(t_env **search, char **args)
