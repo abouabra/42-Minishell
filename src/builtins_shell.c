@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 11:55:49 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/27 14:38:47 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/27 17:00:36 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,9 @@ static void	the_search_built(t_env *search, char *old_path)
 	while (search)
 	{
 		if (!ft_strncmp(search->env_id, "PWD", -1))
-		{
 			search->env_data = getcwd(NULL, -1);
-			// break ;
-		}
 		else if (!ft_strncmp(search->env_id, "OLDPWD", -1))
-		{
 			search->env_data = old_path;
-			// break ;
-		}
 		search = search->next;
 	}
 }
@@ -72,7 +66,8 @@ void	echo(t_command *command)
 		printf("\n");
 		return ;
 	}
-	if (!ft_strncmp("-n", command->command_args[1], -1))
+	while (!ft_strncmp("-n", command->command_args[i +1], -1)
+		|| !ft_strncmp("-nn", command->command_args[i +1], -1))
 	{
 		is_arg = 0;
 		i++;

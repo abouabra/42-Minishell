@@ -6,11 +6,31 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 22:10:27 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/05/26 22:14:01 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/27 16:58:57 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int built_in_should_execute_in_main(t_args *vars ,char *name)
+{
+	int		i;
+	char	*built_in;
+	char	**arr;
+
+	if(!ft_strncmp(name, "cd", -1) && vars->command_count == 1)
+		return 1;
+	built_in = "export|unset|exit";
+	arr = ft_split(built_in, '|');
+	i = -1;
+	while (arr[++i])
+	{
+		if (!ft_strncmp(name, arr[i], -1))
+			return (1);
+
+	}
+	return (0);
+}
 
 int	is_built_in(char *name)
 {

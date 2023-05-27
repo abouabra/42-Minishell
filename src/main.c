@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:30:57 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/26 23:24:12 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/27 16:59:18 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,10 +79,8 @@ void	execution_phase()
 	{
 		if (!tmp->command_args[0])
 			tmp->is_valid_command = 69;
-		if (tmp->command_args[0] && is_built_in(tmp->command_args[0])
-			&& ft_strncmp("echo", tmp->command_args[0], -1) && ft_strncmp("pwd", tmp->command_args[0], -1)
-			&& ft_strncmp("export", tmp->command_args[0], -1) && ft_strncmp("env",
-				tmp->command_args[0], -1))
+		if (tmp->command_args[0] && built_in_should_execute_in_main(vars, tmp->command_args[0])
+			&& ft_strncmp("export", tmp->command_args[0], -1))
 			execute_built_in( tmp);
 		else
 			execute( tmp, i);

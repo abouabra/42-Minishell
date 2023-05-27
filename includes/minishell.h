@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:30:01 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/27 13:35:38 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/27 16:59:13 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,7 @@ char					**convert_env_to_arr(t_env *head);
 
 //builtins
 int						is_built_in(char *name);
+int built_in_should_execute_in_main(t_args *vars ,char *name);
 void					echo(t_command *command);
 void					cd(t_command *command);
 void					pwd(void);
