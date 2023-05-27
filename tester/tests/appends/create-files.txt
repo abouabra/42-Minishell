@@ -1,0 +1,4 @@
+pwd >> a >> b >> b
+cat a
+cat b
+ls

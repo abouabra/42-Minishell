@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:30:01 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/26 23:52:45 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/27 13:35:38 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,7 +168,7 @@ void					print_command(t_command *command);
 void					init_termio();
 void					handle_signals(int sig);
 
-int						is_second_arg_number(char **str);
+char *are_two_args_number(char **str);
 void					fd_handler(int i);
 char	*is_arg_number(char *str);
 

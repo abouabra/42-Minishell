@@ -1,0 +1,2 @@
+export a=""
+ls foo $a bar

@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 11:55:49 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/26 23:53:28 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/27 14:38:47 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,26 +95,28 @@ void					my_exit(t_command *command)
 		status = *vars->ex_status;
 	else if(command->command_args[1] && command->command_args[2])
 	{
-		status = 1;
-		// if(!is_second_arg_number(command->command_args))
-		// 	ft_dprintf(2,"minishell: exit: %s: numeric argument required\n",command->command_args[2]);
-		// else
-		ft_dprintf(2,"minishell: exit: too many arguments\n");
+		if((is_arg_number(command->command_args[1]) && !is_arg_number(command->command_args[2]))
+		|| (is_arg_number(command->command_args[1]) && is_arg_number(command->command_args[2])))
+		{
+			status = 255;
+			ft_dprintf(2,"minishell: exit: %s: numeric argument required\n",are_two_args_number(command->command_args));
+		}
+		else
+		{
+			status = 1;
+			ft_dprintf(2,"minishell: exit: too many arguments\n");
+		}
 	}
-	else if(is_arg_number(command->command_args[1]))
-	{
-		ft_dprintf(2,"minishell: exit: %s: numeric argument required\n", is_arg_number(command->command_args[1]));
-		status = 255;
-	}	
 	else
 	{
-		status = ft_atoi(command->command_args[1]);;
+		if(is_arg_number(command->command_args[1]))
+		{
+			ft_dprintf(2,"minishell: exit: %s: numeric argument required\n",is_arg_number(command->command_args[1]));
+			status = 255;
+		}
+		else
+			status = ft_atoi(command->command_args[1]);
 	}
-	// else if (is_second_arg_number(command->command_args))
-	// {
-	// 	// printf("exit\n");
-	// 	status = ft_atoi(command->command_args[1]);
-	// }
 	custom_exit(status);
 }
 

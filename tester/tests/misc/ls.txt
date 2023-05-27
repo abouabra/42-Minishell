@@ -1,0 +1,3 @@
+ls
+ls nonexistent
+ls -la /

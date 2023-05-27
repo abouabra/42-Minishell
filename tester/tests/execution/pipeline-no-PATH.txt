@@ -1,0 +1,3 @@
+unset PATH
+echo hi > foo | asd
+cat foo
