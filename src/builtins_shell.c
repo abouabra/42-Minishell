@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 11:55:49 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/27 22:55:06 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/28 21:21:25 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,12 @@ void	cd(t_command *command)
 
 	if (!command->command_args[1])
 		command->command_args[1] = get_env_data( "HOME");
+	if(!command->command_args[1])
+	{
+		ft_dprintf(2, "minishell: cd: HOME not set\n");
+		*vars->ex_status = 1;
+		return ;
+	}
 	else if (ft_strchr(command->command_args[1], '~'))
 	{
 		data = get_env_data( "HOME");
