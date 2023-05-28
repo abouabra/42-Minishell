@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:27:14 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/26 22:45:01 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/28 22:35:27 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,35 +67,39 @@ char	*get_herdoc_data(char *limiter)
 			break ;
 		total = ft_strjoin(total, str);
 	}
-	return (total);
+	char *name = "/tmp/herdoc_data";
+	int fd = open(name, O_WRONLY | O_TRUNC | O_CREAT, 0644);
+	write(fd, total, ft_strlen(total));
+	close(fd);
+	return (name);
 }
 
 static void	red_help(t_fill_info *info, char **commands, int *i)
 {
-	if (!ft_strncmp(commands[*i], ">", -1) && checker(commands, *i))
+	if (!ft_strncmp(commands[*i], ">", -1) )
 	{
 		check_permision(NULL, commands[*i + 1], 3);
-		info->is_output = 1;
-		info->output_file = commands[++(*i)];
+		t_cmd_redir *redir =ft_new_redir(OUTPUT, commands[++(*i)]);
+		add_redir_in_back(&info->redir, redir);
 	}
-	if (!ft_strncmp(commands[*i], "<", -1) && checker(commands, *i))
+	if (!ft_strncmp(commands[*i], "<", -1) )
 	{
 		check_permision(NULL, commands[*i + 1], 2);
-		info->is_input = 1;
-		info->input_file = commands[++(*i)];
+		t_cmd_redir *redir =ft_new_redir(INPUT, commands[++(*i)]);
+		add_redir_in_back(&info->redir, redir);
 	}
-	if (!ft_strncmp(commands[*i], ">>", -1) && checker(commands, *i))
+	if (!ft_strncmp(commands[*i], ">>", -1))
 	{
 		check_permision(NULL, commands[*i + 1], 3);
-		info->is_output = 1;
-		info->is_append = 1;
-		info->append_file = commands[++(*i)];
+		t_cmd_redir *redir =ft_new_redir(APPEND, commands[++(*i)]);
+		add_redir_in_back(&info->redir, redir);
 	}
-	if (!ft_strncmp(commands[*i], "<<", -1) && checker(commands, *i))
+	if (!ft_strncmp(commands[*i], "<<", -1))
 	{
-		info->is_herdoc = 1;
-		info->herdoc_limiter = commands[++(*i)];
-		info->herdoc_data = get_herdoc_data(info->herdoc_limiter);
+		char *heredoc_file = get_herdoc_data(commands[++(*i)]);
+		t_cmd_redir *redir =ft_new_redir(HEREDOC, heredoc_file);
+		add_redir_in_back(&info->redir, redir);
+
 	}
 }
 
@@ -103,11 +107,10 @@ void	parse_redirections(t_fill_info *info, char **commands)
 {
 	int	i;
 
-	i = 0;
-	while (commands[i])
+	i = -1;
+	while (commands[++i])
 	{
 		rederiction_error(commands, i);
 		red_help(info, commands, &i);
-		i++;
 	}
 }

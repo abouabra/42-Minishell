@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   command_linked_list_stuff.c                        :+:      :+:    :+:   */
+/*   redir_command_linked_list.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:41:16 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/28 22:34:28 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/28 21:29:39 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-t_command	*ft_last_command(t_command *lst)
+t_cmd_redir	*ft_last_redir(t_cmd_redir *lst)
 {
 	if (lst)
 	{
@@ -22,55 +22,29 @@ t_command	*ft_last_command(t_command *lst)
 	return (lst);
 }
 
-void	add_command_in_back(t_command **head, t_command *node)
+void	add_redir_in_back(t_cmd_redir **head, t_cmd_redir *node)
 {
-	t_command	*tmp;
+	t_cmd_redir	*tmp;
 
 	if (*head)
 	{
-		tmp = ft_last_command(*head);
+		tmp = ft_last_redir(*head);
 		tmp->next = node;
 	}
 	else
 		*head = node;
 }
 
-void	add_command_in_front(t_command **head, t_command *node)
-{
-	if (*head && node)
-		node->next = *head;
-	if (node)
-		*head = node;
-}
 
-t_command	*ft_new_command(t_fill_info *info)
+t_cmd_redir	*ft_new_redir(int type, char *file)
 {
-	t_command	*node;
+	t_cmd_redir	*node;
 
-	node = my_alloc(sizeof(t_command));
+	node = my_alloc(sizeof(t_cmd_redir));
 	if (!node)
 		return (0);
-	node->command_path = info->command_path;
-	node->command_args = info->command_args;
-	node->quote_type = info->quote_type;
-	node->is_valid_command = info->is_valid_command;
-
-	node->redir = info->redir;
+	node->type = type;
+	node->file = file;
 	node->next = NULL;
 	return (node);
-}
-
-int	ft_command_list_size(t_command **head)
-{
-	t_command	*tmp;
-	int			i;
-
-	i = 0;
-	tmp = *head;
-	while (tmp)
-	{
-		i++;
-		tmp = tmp->next;
-	}
-	return (i);
 }

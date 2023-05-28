@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:30:01 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/27 23:54:23 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/28 22:40:21 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,24 +23,6 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 
-typedef struct t_fill_info
-{
-	char				*command_path;
-	char				**command_args;
-
-	int					quote_type;
-	int					is_valid_command;
-
-	int					is_input;
-	char				*input_file;
-	int					is_output;
-	char				*output_file;
-	int					is_append;
-	char				*append_file;
-	int					is_herdoc;
-	char				*herdoc_limiter;
-	char				*herdoc_data;
-}						t_fill_info;
 
 //sort < input.txt | uniq -l  -a >>
 // unique_sorted_output.txt > outfile.txt << HEREDOC
@@ -59,6 +41,31 @@ typedef struct t_chars
 	char				*strings[2];
 }						t_chars;
 
+typedef struct t_cmd_redir
+{
+	int type;
+	char *file;
+	struct t_cmd_redir		*next;
+}						t_cmd_redir;
+
+enum e_redir{
+	INPUT,
+	OUTPUT,
+	APPEND,
+	HEREDOC
+};
+
+typedef struct t_fill_info
+{
+	char				*command_path;
+	char				**command_args;
+
+	int					quote_type;
+	int					is_valid_command;
+
+	t_cmd_redir			*redir;
+} t_fill_info;
+
 typedef struct t_command
 {
 	char				*command_path;
@@ -67,15 +74,9 @@ typedef struct t_command
 	int					quote_type;
 	int					is_valid_command;
 
-	int					is_input;
-	char				*input_file;
-	int					is_output;
-	char				*output_file;
-	int					is_append;
-	char				*append_file;
-	int					is_herdoc;
-	char				*herdoc_data;
-	char				*herdoc_limiter;
+
+	t_cmd_redir			*redir;
+
 	struct t_command	*next;
 }						t_command;
 
@@ -85,6 +86,7 @@ typedef struct t_args
 	char				**ev;
 	int					command_count;
 	int					is_quote;
+	int					*pid;
 	int					prev_pipefd[2];
 	int					next_pipefd[2];
 	t_command			*command_head;
@@ -143,14 +145,13 @@ int						checker(char **commands, int i);
 void					dollar_active(int n[4], char *strings[4], char **args);
 void					split_char_init(int n[4]);
 void					doub_sin_skip(int *sin, int *doub, char *s, int i);
-void					handle_child(t_command *tmp, int fd,
-							int i);
+void					handle_child(t_command *tmp, int i);
 
 //executing phase
 
 void					execution_phase();
 void					execute_built_in(t_command *command);
-void					execute(t_command *tmp, int i);
+void	execute(t_args *vars, t_command *tmp, int i);
 char					**convert_env_to_arr(t_env *head);
 
 //builtins
@@ -170,11 +171,17 @@ void					print_command(t_command *command);
 void					init_termio();
 void					handle_signals(int sig);
 
-char		*are_two_args_number(char **str);
+char					*are_two_args_number(char **str);
 void					fd_handler(int i);
-char	*is_arg_number(char *str);
+char					*is_arg_number(char *str);
 
-char **split_arg(char *arg);
+char					**split_arg(char *arg);
+
+t_cmd_redir	*ft_last_redir(t_cmd_redir *lst);
+void	add_redir_in_back(t_cmd_redir **head, t_cmd_redir *node);
+t_cmd_redir	*ft_new_redir(int type, char *file);
+
+
 
 extern t_args			*vars;
 

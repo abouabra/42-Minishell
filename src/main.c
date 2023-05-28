@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:30:57 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/27 23:17:11 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/28 22:42:33 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,37 +42,34 @@ void	handle_signals(int signum)
 	}
 }
 
-void	execute(t_command *tmp, int i)
+void	execute(t_args *vars, t_command *tmp, int i)
 {
-	pid_t	pid;
-	int		status;
-	int		fd;
-
-	fd = 0;
+	// int		status;
 	if (i < vars->command_count - 1)
 		pipe(vars->next_pipefd);
-	pid = fork();
-	if (pid == -1)
+	vars->pid[i] = fork();
+	if (vars->pid[i] == -1)
 		return ;
-	if (pid == 0)
-		handle_child( tmp, fd, i);
-	fd_handler( i);
-	waitpid(pid, &status, 0);
+	if (vars->pid[i] == 0)
+		handle_child( tmp, i);
+	fd_handler(i);
 	if (g_var[is_interupted] && (g_var[ex_status] == 130
 			|| g_var[ex_status] == 131))
 	{
 		*(vars->ex_status) = g_var[ex_status];
 		g_var[is_interupted] = 0;
 	}
-	else
-		*(vars->ex_status) = WEXITSTATUS(status);
+	// else
+	// 	*(vars->ex_status) = WEXITSTATUS(status);
 }
 
 void	execution_phase()
 {
 	t_command	*tmp;
 	int			i;
-
+	int			status;
+	
+	vars->pid = my_alloc(sizeof(int) * vars->command_count);
 	tmp = vars->command_head;
 	i = -1;
 	while (++i < vars->command_count)
@@ -82,9 +79,13 @@ void	execution_phase()
 		if (tmp->command_args[0] && built_in_should_execute_in_main(vars, tmp))
 			execute_built_in( tmp);
 		else
-			execute(tmp, i);
+			execute(vars, tmp, i);
 		tmp = tmp->next;
 	}
+	i = -1;
+	while (++i < vars->command_count)
+		waitpid(vars->pid[i], &status, 0);
+	*(vars->ex_status) = WEXITSTATUS(status);
 }
 
 void	start_ter()
