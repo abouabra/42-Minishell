@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:30:57 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/29 12:06:25 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/29 13:14:42 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ void	start_ter()
 	if (line && line[0])
 	{
 		add_history(line);
-		parse_commands( line);
+		parse_commands(line);
 		vars->command_head = NULL;
 	}
 	g_var[is_running] = 1;

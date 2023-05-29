@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 19:52:24 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/05/27 19:31:54 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/29 13:17:02 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,24 @@ int	checker(char **commands, int i)
 	return (1);
 }
 
-void	rederiction_error(char **commands, int i)
+int rederiction_error(char **commands, int i)
 {
+	if (ft_strnstr(commands[i], "><", -1) || ft_strnstr(commands[i], "<>", -1)
+	|| ft_strnstr(commands[i], "<<<", -1) || ft_strnstr(commands[i], ">>>", -1)
+	|| ft_strnstr(commands[i], "=>", -1))
+	{
+		ft_dprintf(2, "minishell: syntax error\n");
+		*vars->ex_status = 2;
+		return 0;
+	}
 	if ((!ft_strncmp(commands[i], ">", -1) || !ft_strncmp(commands[i],
 				"<", -1) || !ft_strncmp(commands[i], ">>", -1)
 			|| !ft_strncmp(commands[i], "<<", -1)) && !commands[i + 1])
 	{
-		ft_dprintf(1,
+		ft_dprintf(2,
 			"minishell: syntax error near unexpected token `newline'\n");
-		custom_exit(2);
+		*vars->ex_status = 2;
+		return(0);
 	}
 	if (commands[i + 1] && (!ft_strncmp(commands[i], ">", -1)
 			|| !ft_strncmp(commands[i], "<", -1) || !ft_strncmp(commands[i],
@@ -55,11 +64,11 @@ void	rederiction_error(char **commands, int i)
 	{
 		ft_dprintf(1, "minishell: syntax error near unexpected token `%s'\n",
 			commands[i + 1]);
-		custom_exit(2);
+		*vars->ex_status = 2;
+		return 0;
 	}
+	return 1;
 }
-
-//echo 1$USER$USER-
 
 void	dollar_active(int n[4], char *strings[4], char **args)
 {

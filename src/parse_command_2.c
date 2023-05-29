@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:27:14 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/28 22:35:27 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/29 13:11:08 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,21 +35,42 @@ static void	rm_qts_help(int *num, char **arr, char *q, t_fill_info *info)
 	}
 }
 
-void	remove_quotes(t_fill_info *info, char **arr)
+int	remove_quotes(t_fill_info *info, char **arr)
 {
 	int		i;
 	int		num_1;
 	int		num_2;
-
+	int		sin = 0;
+	int		dubl = 0;
+	
 	(void) vars;
 	i = -1;
 	while (arr[++i])
 	{
-		if (arr[i][0] == '\'')
+		int j = -1;
+		while (arr[i][++j])
+		{
+			if(arr[i][j] == '\'')
+				sin++;	
+			else if(arr[i][j] == '\"')
+				dubl++;
+		}
+	}
+	if(sin % 2 != 0 || dubl % 2 != 0)
+	{
+		ft_dprintf(2, "minishell: unexpected EOF while looking for matching\n");
+		*vars->ex_status = 2;
+		return 0;
+	}
+	i = -1;
+	while (arr[++i])
+	{
+		if (arr[i][0] == '\'' && arr[i][1]  && arr[i][1] != '\'')
 			rm_qts_help(&num_1, &arr[i], "\'", info);
-		else if (arr[i][0] == '\"')
+		else if (arr[i][0] == '\"'  && arr[i][1]  && arr[i][1] != '\"')
 			rm_qts_help(&num_2, &arr[i], "\"", info);
 	}
+	return 1;
 }
 
 char	*get_herdoc_data(char *limiter)
@@ -103,14 +124,16 @@ static void	red_help(t_fill_info *info, char **commands, int *i)
 	}
 }
 
-void	parse_redirections(t_fill_info *info, char **commands)
+int	parse_redirections(t_fill_info *info, char **commands)
 {
 	int	i;
 
 	i = -1;
 	while (commands[++i])
 	{
-		rederiction_error(commands, i);
+		if(!rederiction_error(commands, i))
+			return 0;
 		red_help(info, commands, &i);
 	}
+	return 1;
 }

@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:30:01 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/28 22:40:21 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/29 13:03:51 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,20 +127,20 @@ char					**split_command(char *s);
 
 void					set_env();
 char					*get_env_data(char *id);
-void					remove_quotes(t_fill_info *info,
+int					remove_quotes(t_fill_info *info,
 							char **arr);
 char					*get_herdoc_data(char *limiter);
-void					parse_redirections(t_fill_info *info, char **commands);
+int					parse_redirections(t_fill_info *info, char **commands);
 int						count_args(char **commands);
 char					**make_new_args(char **commands);
 int						check_permision(char *command_path, char *name,
 							int arg);
-void					parsing_commands(char **commands);
+int					parsing_commands(char **commands);
 char					**split_par(char *s);
 int						has_char(char *s, char c);
 void					nested_par(char **arr);
 char					*wildcard(char *av);
-void					rederiction_error(char **commands, int i);
+int					rederiction_error(char **commands, int i);
 int						checker(char **commands, int i);
 void					dollar_active(int n[4], char *strings[4], char **args);
 void					split_char_init(int n[4]);

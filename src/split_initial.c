@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 17:31:10 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/26 22:45:01 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/29 12:45:23 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,8 @@ static int	check_validity(char **phrases, int phrase_count)
 		{
 			if (phrase_count > 1)
 			{
-				ft_dprintf(1, "minishell: Invalid input!\n");
+				ft_dprintf(1, "minishell: syntax error\n");
+				*vars->ex_status = 2;
 				return (0);
 			}
 			else

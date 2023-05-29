@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:27:14 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/27 17:40:02 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/29 13:06:36 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ static void	retrieve_comm(char *c_p, t_fill_info *in, char **a[3])
 	in->command_args = a[args];
 }
 
-void	parsing_commands(char **commands)
+int	parsing_commands(char **commands)
 {
 	int			i;
 	char		**a[3];
@@ -117,12 +117,15 @@ void	parsing_commands(char **commands)
 			continue ;
 		ft_memset(info, 0, sizeof(t_fill_info));
 		a[arr] = split_command(commands[i]);
-		remove_quotes( info, a[arr]);
-		parse_redirections(info, a[arr]);
+		if(!remove_quotes( info, a[arr]))
+			return 0;
+		if(!parse_redirections(info, a[arr]))
+			return 0;
 		a[args] = make_new_args(a[arr]);
 		command_path = get_command_path(a[path], a[args][0]);
 		retrieve_comm(command_path, info, a);
 		node = ft_new_command(info);
 		add_command_in_back(&vars->command_head, node);
 	}
+	return 1;
 }
