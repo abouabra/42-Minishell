@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:30:57 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/28 22:42:33 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/29 12:06:25 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,10 +82,13 @@ void	execution_phase()
 			execute(vars, tmp, i);
 		tmp = tmp->next;
 	}
-	i = -1;
-	while (++i < vars->command_count)
-		waitpid(vars->pid[i], &status, 0);
-	*(vars->ex_status) = WEXITSTATUS(status);
+	if(!built_in_should_execute_in_main(vars,vars->command_head))
+	{
+		i = -1;
+		while (++i < vars->command_count)
+			waitpid(vars->pid[i], &status, 0);
+		*(vars->ex_status) = WEXITSTATUS(status);
+	}
 }
 
 void	start_ter()

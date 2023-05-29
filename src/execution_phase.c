@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 11:08:47 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/28 22:36:22 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/29 11:57:08 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,10 @@ void do_redirections(t_cmd_redir *head)
 }
 void	handle_child(t_command *tmp, int i)
 {
+	if (tmp->is_valid_command == 0)
+		custom_exit(127);
+	if (tmp->is_valid_command == 69)
+		custom_exit(0);
 	if (i > 0)
 	{
 		dup2(vars->prev_pipefd[0], 0);
@@ -121,9 +125,5 @@ void	handle_child(t_command *tmp, int i)
 		close(vars->next_pipefd[1]);
 	}
 	do_redirections(tmp->redir);
-	if (tmp->is_valid_command == 0)
-		custom_exit(127);
-	if (tmp->is_valid_command == 69)
-		custom_exit(0);
 	handle_child3(tmp);
 }
