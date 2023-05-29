@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:27:14 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/29 13:06:36 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/29 15:33:24 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ char	**expand_variables(t_fill_info *info, char **args)
 	{
 		strings[str] = ft_strchr(args[n[i]], '$');
 		if (strings[str] && info->quote_type != 1)
-			dollar_active(n, strings, args);
+			dollar_active(info, n, strings, args);
 		else if (ft_strchr(args[n[i]], '*') && info->quote_type == 0)
 		{
 			strings[tmp] = "";
@@ -86,17 +86,20 @@ char	**expand_variables(t_fill_info *info, char **args)
 	return (args);
 }
 
-static void	retrieve_comm(char *c_p, t_fill_info *in, char **a[3])
+static void	retrieve_comm(t_fill_info *in, char **a[3])
 {
+	a[args] = expand_variables(in, a[args]);
+	char *command_path = get_command_path(a[path], a[args][0]);
+
+	// printf("command: |%s|\n", a[args][0]);
 	if (a[args] && a[args][0])
 	{
-		if (check_permision(c_p, a[args][0], 1))
+		if (check_permision(command_path, a[args][0], 1))
 			in->is_valid_command = 0;
 		else
 			in->is_valid_command = 1;
 	}
-	a[args] = expand_variables(in, a[args]);
-	in->command_path = c_p;
+	in->command_path = command_path;
 	in->command_args = a[args];
 }
 
@@ -104,7 +107,6 @@ int	parsing_commands(char **commands)
 {
 	int			i;
 	char		**a[3];
-	char		*command_path;
 	t_command	*node;
 	t_fill_info	*info;
 
@@ -122,8 +124,7 @@ int	parsing_commands(char **commands)
 		if(!parse_redirections(info, a[arr]))
 			return 0;
 		a[args] = make_new_args(a[arr]);
-		command_path = get_command_path(a[path], a[args][0]);
-		retrieve_comm(command_path, info, a);
+		retrieve_comm(info, a);
 		node = ft_new_command(info);
 		add_command_in_back(&vars->command_head, node);
 	}

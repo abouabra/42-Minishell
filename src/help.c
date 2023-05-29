@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 19:52:24 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/05/29 13:17:02 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/29 15:30:18 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,15 @@ int rederiction_error(char **commands, int i)
 	return 1;
 }
 
-void	dollar_active(int n[4], char *strings[4], char **args)
+void	dollar_active(t_fill_info *info, int n[4], char *strings[4], char **args)
 {
-	// ft_dprintf(1, "Start: |%s|\n",strings[str]);
+	// ft_dprintf(1, "Start: |%s|   |%d|\n", strings[str],info->quote_type);
 	n[k] = 0;
+	if(strings[str][n[k] -1] && strings[str][n[k] -1] == '\'')
+	{
+		info->quote_type = 1;
+		return;	
+	}
 	while(strings[str][n[k]])
 	{		
 		if(!ft_strchr(strings[str], '$'))

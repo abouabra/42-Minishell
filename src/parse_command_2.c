@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:27:14 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/29 13:11:08 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/29 15:53:32 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,8 @@ char	*get_herdoc_data(char *limiter)
 	total = "";
 	while (1)
 	{
-		ft_dprintf(1, "> ");
+		if(isatty(STDIN_FILENO))
+			ft_dprintf(1, "> ");
 		str = get_next_line(0);
 		if (!str || !ft_strncmp(str, limiter, -1))
 			break ;

@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:30:01 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/29 13:03:51 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/29 15:20:41 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ void					nested_par(char **arr);
 char					*wildcard(char *av);
 int					rederiction_error(char **commands, int i);
 int						checker(char **commands, int i);
-void					dollar_active(int n[4], char *strings[4], char **args);
+void					dollar_active(t_fill_info *info, int n[4], char *strings[4], char **args);
 void					split_char_init(int n[4]);
 void					doub_sin_skip(int *sin, int *doub, char *s, int i);
 void					handle_child(t_command *tmp, int i);
