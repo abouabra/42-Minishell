@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 17:31:17 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/26 22:14:01 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/29 22:25:09 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,3 +107,18 @@ char	**split_command(char *s)
 	phrases[n[k]] = NULL;
 	return (phrases);
 }
+
+// int main()
+// {
+// 	char **phrases;
+// 	char *s = "echo 'hello world' \"h'e'l'l'o world\" hello world";
+// 	phrases = split_command(s);
+
+// 	int i = 0;
+// 	while (phrases[i])
+// 	{
+// 		printf("%s\n", phrases[i]);
+// 		i++;
+// 	}
+// 	return (0);
+// }

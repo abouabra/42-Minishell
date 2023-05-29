@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:27:14 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/29 20:16:04 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/29 23:57:01 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,42 @@ static void	rm_qts_help(int *num, char **arr, char *q, t_fill_info *info)
 	}
 }
 
+void fix_string(t_fill_info *info, char **arr)
+{
+    char *str = *arr;
+    int len = ft_strlen(str);
+    char *new_str = (char *)my_alloc(len + 1);
+    if (!new_str)
+        return;
+    int i = 0;
+    int j = 0;
+    while (str[i] != '\0')
+    {
+		if(str[0] != '\"' && str[ft_strlen(str)-1] != '\"')
+		{
+			if (str[i] == '\'' && str[i + 1] && str[i + 1] == '\'')
+            	i+= 2;
+			else if(str[i] == '\'')
+				i++;
+			info->quote_type = 1;
+		}
+		if(str[0] != '\'' && str[ft_strlen(str)-1] != '\'')
+		{
+			if (str[i] == '\"' && str[i + 1] && str[i + 1] == '\"')
+            	i+= 2;
+			else if(str[i] == '\"')
+				i++;
+			info->quote_type = 2;
+		}
+
+		new_str[j] = str[i];
+		j++;
+        i++;
+    }
+    new_str[j] = '\0';
+    *arr = new_str;
+}
+
 int	remove_quotes(t_fill_info *info, char **arr)
 {
 	int		i;
@@ -64,6 +100,9 @@ int	remove_quotes(t_fill_info *info, char **arr)
 		*vars->ex_status = 2;
 		return 0;
 	}
+	// i = -1;
+	// while (arr[++i])
+	// 	fix_string(info, &arr[i]);
 	i = -1;
 	while (arr[++i])
 	{
