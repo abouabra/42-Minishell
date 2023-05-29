@@ -18,7 +18,7 @@ YELLOW = \033[1;33m
 RESET = \033[0m
 
 READ_LINE = -lreadline -L ${HOME}/brew/homebrew/opt/readline/lib -I${HOME}/brew/homebrew/opt/readline/include
-WWW = -Wall -Wextra -Werror
+WWW = -Wall -Wextra -Werror -fsanitize=address
 
 all: $(NAME)
 

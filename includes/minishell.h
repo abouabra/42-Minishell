@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:30:01 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/29 15:20:41 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/29 19:51:02 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,8 +129,8 @@ void					set_env();
 char					*get_env_data(char *id);
 int					remove_quotes(t_fill_info *info,
 							char **arr);
-char					*get_herdoc_data(char *limiter);
-int					parse_redirections(t_fill_info *info, char **commands);
+char					*get_herdoc_data(t_fill_info *info, char *limiter);
+int						parse_redirections(t_fill_info *info, char **commands);
 int						count_args(char **commands);
 char					**make_new_args(char **commands);
 int						check_permision(char *command_path, char *name,

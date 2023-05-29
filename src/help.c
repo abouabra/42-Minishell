@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 19:52:24 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/05/29 15:30:18 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/29 16:03:22 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,6 @@ void	dollar_active(t_fill_info *info, int n[4], char *strings[4], char **args)
 			}
 		}
 
-
 		if (!strings[str][n[k]])
 			n[k]++;
 		strings[tmp] = ft_substr(strings[str], 1, n[k] - 1);
@@ -127,10 +126,6 @@ void	dollar_active(t_fill_info *info, int n[4], char *strings[4], char **args)
 			strings[data] = get_env_data( strings[tmp]);
 		
 		// ft_dprintf(1, "substr: |%s|      n[k]: |%d|    data: |%s|\n\n\n\n\n",strings[tmp],n[k],strings[data]);
-
-
-
-
 
 
 		n[j] = ft_strchr_num(args[n[i]], '$');
@@ -153,7 +148,6 @@ void	dollar_active(t_fill_info *info, int n[4], char *strings[4], char **args)
 		
 		strings[str] += n[k];
 		n[k] = 0;
-		// ft_dprintf(1, "end: |%s|  %d\n",strings[str],n[k]);
 	}
 }
 

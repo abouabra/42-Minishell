@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 22:10:27 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/05/27 21:22:01 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/29 16:32:35 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ int built_in_should_execute_in_main(t_args *vars , t_command *cmd)
 	int		i;
 	char	*built_in;
 	char	**arr;
-
+	if(!cmd->command_args[0])
+		return 0;
 	if(!ft_strncmp(cmd->command_args[0], "cd", -1) && vars->command_count == 1)
 		return 1;
 	if(!ft_strncmp(cmd->command_args[0], "export", -1) && cmd->command_args[1])
