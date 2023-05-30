@@ -6,13 +6,13 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:31:51 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/26 22:49:48 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/30 17:28:13 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	**get_path()
+char	**get_path(void)
 {
 	char	*path;
 

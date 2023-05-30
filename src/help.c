@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 19:52:24 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/05/29 16:03:22 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/30 18:56:08 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	checker(char **commands, int i)
 
 int rederiction_error(char **commands, int i)
 {
-	if (ft_strnstr(commands[i], "><", -1) || ft_strnstr(commands[i], "<>", -1)
+	if ((ft_strnstr(commands[i], "><", -1)) || ft_strnstr(commands[i], "<>", -1)
 	|| ft_strnstr(commands[i], "<<<", -1) || ft_strnstr(commands[i], ">>>", -1)
 	|| ft_strnstr(commands[i], "=>", -1))
 	{
@@ -73,6 +73,10 @@ int rederiction_error(char **commands, int i)
 void	dollar_active(t_fill_info *info, int n[4], char *strings[4], char **args)
 {
 	// ft_dprintf(1, "Start: |%s|   |%d|\n", strings[str],info->quote_type);
+	int sould_remove_space = 0;
+	if(info->quote_type == 0)
+		sould_remove_space = 1;
+	
 	n[k] = 0;
 	if(strings[str][n[k] -1] && strings[str][n[k] -1] == '\'')
 	{
@@ -125,13 +129,16 @@ void	dollar_active(t_fill_info *info, int n[4], char *strings[4], char **args)
 		else
 			strings[data] = get_env_data( strings[tmp]);
 		
-		// ft_dprintf(1, "substr: |%s|      n[k]: |%d|    data: |%s|\n\n\n\n\n",strings[tmp],n[k],strings[data]);
 
 
 		n[j] = ft_strchr_num(args[n[i]], '$');
 		strings[news] = ft_substr(args[n[i]], 0, n[j]);
+		if(sould_remove_space)
+			strings[data] = ft_strtrim(strings[data], " ");
 		
-		
+
+		// ft_dprintf(1, "substr: |%s|   %d   data: |%s|\n\n\n\n\n",strings[tmp],sould_remove_space,strings[data]);
+
 		if (!ft_strncmp(strings[str] + 1, "?", -1))
 			args[n[i]] = ft_strjoin(strings[news], ft_itoa(*(vars->ex_status)));
 		else

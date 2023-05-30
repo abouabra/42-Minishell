@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:27:14 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/29 23:57:01 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/30 19:42:03 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,16 +52,16 @@ void fix_string(t_fill_info *info, char **arr)
 		{
 			if (str[i] == '\'' && str[i + 1] && str[i + 1] == '\'')
             	i+= 2;
-			else if(str[i] == '\'')
-				i++;
+			// else if(str[i] == '\'')
+			// 	i++;
 			info->quote_type = 1;
 		}
 		if(str[0] != '\'' && str[ft_strlen(str)-1] != '\'')
 		{
 			if (str[i] == '\"' && str[i + 1] && str[i + 1] == '\"')
             	i+= 2;
-			else if(str[i] == '\"')
-				i++;
+			// else if(str[i] == '\"')
+			// 	i++;
 			info->quote_type = 2;
 		}
 
@@ -238,16 +238,127 @@ static void	red_help(t_fill_info *info, char **commands, int *i)
 	}
 }
 
-int	parse_redirections(t_fill_info *info, char **commands)
+int count_redirections(char *command)
+{
+    int count = 0;
+    int len = ft_strlen(command);
+    int i = 0;
+    int is_parsing_command = 1;
+
+    while (i < len)
+    {
+        if (command[i] == '<' || command[i] == '>')
+        {
+            if (command[i] == '<')
+            {
+				if (i + 1 < len && command[i + 1] != ' ' && command[i + 1] == '<')
+				{
+					i++;
+                    count++;
+				}
+				else if(i + 1 < len && command[i + 1] != ' ' && command[i + 1] != '<')
+                    count++;
+
+            }
+            else if (command[i] == '>')
+            {
+				if ((i + 1 < len) && command[i + 1] != ' ' && command[i + 1] != '>')
+				{
+					i++;
+                    count++;
+				}
+				else if(command[i + 1] != ' ' && command[i + 1] == '>')
+                    count++;
+            }
+            is_parsing_command = 0; // Switch to parsing redirection
+        }
+        else if (command[i] == ' ' && !is_parsing_command)
+        {
+            is_parsing_command = 1; // Switch to parsing command
+        }
+        i++;
+    }
+
+    if (is_parsing_command && (len > 0 && command[len - 1] != ' '))
+        count++; // If the command ends with a non-space character, increment count
+    return count;
+}
+
+
+
+char **fix_redirections(char **commands)
+{
+	int i = -1;
+	int count = 0;
+	
+	while (commands[i])
+    {
+        count += count_redirections(commands[i]);
+        i++;
+    }
+	printf("count :%d\n",count);
+	char **arr = my_alloc(sizeof(char *) * (count + 1));
+	i = 0;
+	int j = 0;
+	int n;
+	while(commands[i])
+	{
+		if(ft_strnstr(commands[i], "<<", -1) && commands[i][ft_strchr_num(commands[i], '<') + 2] && commands[i][ft_strchr_num(commands[i], '<') + 2] != ' ')
+		{
+				n = ft_strchr_num(commands[i], '<');
+				char *tmp_1 = ft_substr(commands[i], 0, n + 2 );
+				char *tmp_2 = ft_substr(commands[i], n + 2, ft_strlen(commands[i]));
+				arr[j++] = tmp_1;
+				arr[j] = tmp_2;
+		}
+		if(ft_strnstr(commands[i], ">>", -1) && commands[i][ft_strchr_num(commands[i], '>') + 2] && commands[i][ft_strchr_num(commands[i], '>') + 2] != ' ')
+		{
+				n = ft_strchr_num(commands[i], '>');
+				char *tmp_1 = ft_substr(commands[i], 0, n + 2 );
+				char *tmp_2 = ft_substr(commands[i], n + 2, ft_strlen(commands[i]));
+				arr[j++] = tmp_1;
+				arr[j] = tmp_2;
+		}
+		if(ft_strnstr(commands[i], ">", -1) && commands[i][ft_strchr_num(commands[i], '>') + 1] && commands[i][ft_strchr_num(commands[i], '>') + 1] != ' ' && commands[i][ft_strchr_num(commands[i], '>') + 1] != '>')
+		{
+				n = ft_strchr_num(commands[i], '>');
+				char *tmp_1 = ft_substr(commands[i], 0, n + 1 );
+				char *tmp_2 = ft_substr(commands[i], n + 1, ft_strlen(commands[i]));
+				arr[j++] = tmp_1;
+				arr[j] = tmp_2;
+		}
+		if(ft_strnstr(commands[i], "<", -1) && commands[i][ft_strchr_num(commands[i], '<') + 1] && commands[i][ft_strchr_num(commands[i], '<') + 1] != ' ' && commands[i][ft_strchr_num(commands[i], '>') + 1] != '<')
+		{
+				n = ft_strchr_num(commands[i], '<');
+				char *tmp_1 = ft_substr(commands[i], 0, n + 1 );
+				char *tmp_2 = ft_substr(commands[i], n + 1, ft_strlen(commands[i]));
+				arr[j++] = tmp_1;
+				arr[j] = tmp_2;
+		}
+		else
+			arr[j] = commands[i];
+		i++;
+		j++;
+	}
+	arr[j] = NULL;
+
+	i = -1;
+	while(arr[++i])
+		printf("arr[%d]: %s\n",i,arr[i]);
+	return arr;
+}
+
+int	parse_redirections(t_fill_info *info, char ***commands)
 {
 	int	i;
 
+	// *commands = fix_redirections(*commands);
 	i = -1;
-	while (commands[++i])
+	while (commands[0][++i])
 	{
-		if(!rederiction_error(commands, i))
+		if(!rederiction_error(*commands, i))
 			return 0;
-		red_help(info, commands, &i);
+		red_help(info, *commands, &i);
 	}
 	return 1;
 }

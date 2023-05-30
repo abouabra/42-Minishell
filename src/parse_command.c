@@ -6,18 +6,28 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:27:14 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/29 23:53:34 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/30 18:36:22 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include <unistd.h>
 
 static void	check_permision_help(char *command_path, char *name, int a)
 {
 	if (a == 1)
 	{
 		if (!command_path)
-			ft_dprintf(2, "minishell: %s: command not found\n", name);
+		{
+			// char *tmp = get_command_path(get_path(vars->backup_path), name);
+			if(!get_env_data("PATH") || ft_strchr(name, '/'))
+				ft_dprintf(2, "minishell: %s: No such file or directory\n", name);
+			else
+				ft_dprintf(2, "minishell: %s: command not found\n", name);
+			// else if (ft_strchr(name, '/'))
+			// 	ft_dprintf(2, "minishell: %s: No such file or directory\n", name);
+
+		}
 		else if (command_path && access(command_path, X_OK) == -1)
 			ft_dprintf(2, "minishell: %s: Permission denied\n", name);
 	}
@@ -127,7 +137,7 @@ int	parsing_commands(char **commands)
 		// 	printf("a[arr][%d]: |%s|\n", i, a[arr][i]);
 		// printf("\n\n\n\n");
 		
-		if(!parse_redirections(info, a[arr]))
+		if(!parse_redirections(info, &a[arr]))
 			return 0;
 		a[args] = make_new_args(a[arr]);
 		retrieve_comm(info, a);
