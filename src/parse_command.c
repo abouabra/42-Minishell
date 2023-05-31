@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:27:14 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/31 19:49:32 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/31 20:23:30 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,13 @@ char	**expand_variables(t_fill_info *info, char **args)
 
 static void	retrieve_comm(t_fill_info *in, char **a[3])
 {
-	a[args] = expand_variables(in, a[args]);
+	// printf("\n\n\n\n");
+	a[args] = expand_variables(in, a[arr]);
+	a[args] = make_new_args(a[args]);
+	// int i = -1;
+	// while (a[args][++i])
+	// 	printf("a[arr][%d]: |%s|\n", i, a[args][i]);
+	
 	char *command_path = get_command_path(a[path], a[args][0]);
 
 	// printf("command: |%s|\n", a[args][0]);
@@ -129,17 +135,16 @@ int	parsing_commands(char **commands)
 			continue ;
 		ft_memset(info, 0, sizeof(t_fill_info));
 		a[arr] = split_command(commands[i]);
-		// int i = -1;
-		// while (a[arr][++i])
-		// 	printf("a[arr][%d]: |%s|\n", i, a[arr][i]);
-		// printf("\n\n\n\n");
 		if(!remove_quotes( info, a[arr]))
 			return 0;
 
 		
 		if(!parse_redirections(info, &a[arr]))
 			return 0;
-		a[args] = make_new_args(a[arr]);
+		// int i = -1;
+		// while (a[arr][++i])
+		// 	printf("a[arr][%d]: |%s|\n", i, a[arr][i]);
+		// printf("\n\n\n\n");
 		retrieve_comm(info, a);
 		node = ft_new_command(info);
 		add_command_in_back(&vars->command_head, node);

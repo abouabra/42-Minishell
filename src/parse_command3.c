@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 21:21:54 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/05/29 12:49:43 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/31 20:25:01 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,11 @@ int	count_args(char **commands)
 	i = 0;
 	while (commands[i])
 	{
+		// if(!commands[i][0])
+		// {
+		// 	counter--;
+		// 	i++;
+		// }
 		if (!ft_strncmp(commands[i], ">", -1)
 			|| !ft_strncmp(commands[i], "<", -1)
 			||!ft_strncmp(commands[i], ">>", -1)
@@ -42,12 +47,15 @@ char	**make_new_args(char **commands)
 	int		k[2];
 
 	args = my_alloc((count_args(commands) + 1) * sizeof(char *));
+	// printf("count: %d\n", count_args(commands));
 	k[i] = 0;
 	k[j] = 0;
 	if (!commands)
 		return (NULL);
 	while (commands[k[i]])
 	{
+		// if(!commands[i][0])
+		// 	k[i]++;
 		if (!ft_strncmp(commands[k[i]], ">", -1)
 			|| !ft_strncmp(commands[k[i]], "<", -1)
 			||!ft_strncmp(commands[k[i]], ">>", -1)
@@ -55,9 +63,14 @@ char	**make_new_args(char **commands)
 			k[i]++;
 		else
 		{
-			args[k[j]] = commands[k[i]];
-			k[j]++;
+			// if(commands[k[i]][0])
+			// {
+				args[k[j]] = commands[k[i]];
+				k[j]++;
+			// }
 		}
+		// printf("arg: %s\n", args[k[j]]);
+
 		k[i]++;
 	}
 	args[k[j]] = NULL;
