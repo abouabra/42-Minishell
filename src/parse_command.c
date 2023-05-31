@@ -6,11 +6,12 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:27:14 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/31 20:23:30 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/31 23:30:06 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include <stdio.h>
 #include <unistd.h>
 
 static void	check_permision_help(char *command_path, char *name, int a)
@@ -19,13 +20,10 @@ static void	check_permision_help(char *command_path, char *name, int a)
 	{
 		if (!command_path)
 		{
-			// char *tmp = get_command_path(get_path(vars->backup_path), name);
 			if(!get_env_data("PATH") || ft_strchr(name, '/'))
 				ft_dprintf(2, "minishell: %s: No such file or directory\n", name);
 			else
 				ft_dprintf(2, "minishell: %s: command not found\n", name);
-			// else if (ft_strchr(name, '/'))
-			// 	ft_dprintf(2, "minishell: %s: No such file or directory\n", name);
 
 		}
 		else if (command_path && access(command_path, X_OK) == -1)
@@ -34,7 +32,10 @@ static void	check_permision_help(char *command_path, char *name, int a)
 	else
 	{
 		if (access(name, F_OK) == -1)
+		{
 			ft_dprintf(2, "minishell: %s: No such file or directory\n", name);
+			*vars->ex_status = 1;
+		}
 		else if (access(name, R_OK) == -1)
 			ft_dprintf(2, "minishell: %s: Permission denied\n", name);
 	}
@@ -96,14 +97,49 @@ char	**expand_variables(t_fill_info *info, char **args)
 	return (args);
 }
 
-static void	retrieve_comm(t_fill_info *in, char **a[3])
+int	test_ambiguous(t_fill_info *in, char **arg)
+{
+	int i = -1;
+	while (arg[++i])
+	{
+		if(does_redirection_exist(arg[i]) && arg[i +1])
+		{
+			char *name = ft_strdup(arg[i + 1]);
+			// printf("name: |%s|\n", name);
+			char **arr = my_alloc(sizeof(char *) * 2);
+			arr[0] = ft_strdup(arg[i + 1]);;
+			arr[1] = NULL;
+			// int k = -1;
+			// while (arr[++k])
+			// 	printf("before: |%s|\n", arr[k]);
+			arr = expand_variables(in, arr);
+			arr = split_command(*arr);
+			int k = -1;
+			while (arr[++k]);
+				// printf("after: |%s|\n", arr[k]);
+			if(k != 1)
+			{
+				ft_dprintf(2, "minishell: %s: ambiguous redirect\n", name);
+				*vars->ex_status = 1;
+				return 0;
+			}
+		}
+	}
+	return 1;
+		// printf("a[arr][%d]: |%s|\n", i, arg[i]);
+}
+
+static int	retrieve_comm(t_fill_info *in, char **a[3])
 {
 	// printf("\n\n\n\n");
-	a[args] = expand_variables(in, a[arr]);
-	a[args] = make_new_args(a[args]);
+	if(!test_ambiguous(in, a[arr]))
+		return 0;
+	a[args] = make_new_args(a[arr]);
+	a[args] = expand_variables(in, a[args]);
 	// int i = -1;
 	// while (a[args][++i])
 	// 	printf("a[arr][%d]: |%s|\n", i, a[args][i]);
+	a[args] = remove_empty_args(a[args]);
 	
 	char *command_path = get_command_path(a[path], a[args][0]);
 
@@ -117,6 +153,7 @@ static void	retrieve_comm(t_fill_info *in, char **a[3])
 	}
 	in->command_path = command_path;
 	in->command_args = a[args];
+	return 1;
 }
 
 int	parsing_commands(char **commands)
@@ -141,13 +178,17 @@ int	parsing_commands(char **commands)
 		
 		if(!parse_redirections(info, &a[arr]))
 			return 0;
+		if(!retrieve_comm(info, a))
+			return 0;
+			
 		// int i = -1;
 		// while (a[arr][++i])
 		// 	printf("a[arr][%d]: |%s|\n", i, a[arr][i]);
 		// printf("\n\n\n\n");
-		retrieve_comm(info, a);
+
 		node = ft_new_command(info);
 		add_command_in_back(&vars->command_head, node);
+
 	}
 	return 1;
 }

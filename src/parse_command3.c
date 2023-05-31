@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 21:21:54 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/05/31 20:25:01 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/31 23:26:21 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,18 @@ int	count_args(char **commands)
 	return (counter);
 }
 
+char	**remove_empty_args(char **commands)
+{
+	int i = -1;
+	char *total = "";
+	while (commands[++i])
+	{
+		total = ft_strjoin(total, commands[i]);
+		total = ft_strjoin(total, " ");
+	}
+	return split_command(total);
+}
+
 char	**make_new_args(char **commands)
 {
 	char	**args;
@@ -54,8 +66,6 @@ char	**make_new_args(char **commands)
 		return (NULL);
 	while (commands[k[i]])
 	{
-		// if(!commands[i][0])
-		// 	k[i]++;
 		if (!ft_strncmp(commands[k[i]], ">", -1)
 			|| !ft_strncmp(commands[k[i]], "<", -1)
 			||!ft_strncmp(commands[k[i]], ">>", -1)
@@ -63,13 +73,9 @@ char	**make_new_args(char **commands)
 			k[i]++;
 		else
 		{
-			// if(commands[k[i]][0])
-			// {
-				args[k[j]] = commands[k[i]];
-				k[j]++;
-			// }
+			args[k[j]] = commands[k[i]];
+			k[j]++;
 		}
-		// printf("arg: %s\n", args[k[j]]);
 
 		k[i]++;
 	}

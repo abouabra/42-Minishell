@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:30:01 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/30 18:36:26 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/31 23:55:43 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,7 @@ char					**convert_env_to_arr(t_env *head);
 
 //builtins
 int						is_built_in(char *name);
-int						built_in_should_execute_in_main(t_args *vars ,t_command *tmp);
+int						built_in_should_execute_in_main(t_args *vars ,t_command *tmp); 
 void					echo(t_command *command);
 void					cd(t_command *command);
 void					pwd(void);
@@ -180,6 +180,8 @@ char					**split_arg(char *arg);
 t_cmd_redir	*ft_last_redir(t_cmd_redir *lst);
 void	add_redir_in_back(t_cmd_redir **head, t_cmd_redir *node);
 t_cmd_redir	*ft_new_redir(int type, char *file);
+char	**remove_empty_args(char **commands);
+int does_redirection_exist(char *str);
 
 
 

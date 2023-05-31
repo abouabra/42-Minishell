@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 19:52:24 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/05/30 18:56:08 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/31 21:38:03 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,8 +133,8 @@ void	dollar_active(t_fill_info *info, int n[4], char *strings[4], char **args)
 
 		n[j] = ft_strchr_num(args[n[i]], '$');
 		strings[news] = ft_substr(args[n[i]], 0, n[j]);
-		if(sould_remove_space)
-			strings[data] = ft_strtrim(strings[data], " ");
+		// if(sould_remove_space)
+			// strings[data] = ft_strtrim(strings[data], " ");
 		
 
 		// ft_dprintf(1, "substr: |%s|   %d   data: |%s|\n\n\n\n\n",strings[tmp],sould_remove_space,strings[data]);
