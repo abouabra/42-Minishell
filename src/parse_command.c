@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:27:14 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/30 18:36:22 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/31 19:49:32 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,13 +129,13 @@ int	parsing_commands(char **commands)
 			continue ;
 		ft_memset(info, 0, sizeof(t_fill_info));
 		a[arr] = split_command(commands[i]);
-		if(!remove_quotes( info, a[arr]))
-			return 0;
-		
 		// int i = -1;
 		// while (a[arr][++i])
 		// 	printf("a[arr][%d]: |%s|\n", i, a[arr][i]);
 		// printf("\n\n\n\n");
+		if(!remove_quotes( info, a[arr]))
+			return 0;
+
 		
 		if(!parse_redirections(info, &a[arr]))
 			return 0;

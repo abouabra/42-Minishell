@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:27:14 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/30 19:42:03 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/05/31 15:40:22 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -285,74 +285,10 @@ int count_redirections(char *command)
 }
 
 
-
-char **fix_redirections(char **commands)
-{
-	int i = -1;
-	int count = 0;
-	
-	while (commands[i])
-    {
-        count += count_redirections(commands[i]);
-        i++;
-    }
-	printf("count :%d\n",count);
-	char **arr = my_alloc(sizeof(char *) * (count + 1));
-	i = 0;
-	int j = 0;
-	int n;
-	while(commands[i])
-	{
-		if(ft_strnstr(commands[i], "<<", -1) && commands[i][ft_strchr_num(commands[i], '<') + 2] && commands[i][ft_strchr_num(commands[i], '<') + 2] != ' ')
-		{
-				n = ft_strchr_num(commands[i], '<');
-				char *tmp_1 = ft_substr(commands[i], 0, n + 2 );
-				char *tmp_2 = ft_substr(commands[i], n + 2, ft_strlen(commands[i]));
-				arr[j++] = tmp_1;
-				arr[j] = tmp_2;
-		}
-		if(ft_strnstr(commands[i], ">>", -1) && commands[i][ft_strchr_num(commands[i], '>') + 2] && commands[i][ft_strchr_num(commands[i], '>') + 2] != ' ')
-		{
-				n = ft_strchr_num(commands[i], '>');
-				char *tmp_1 = ft_substr(commands[i], 0, n + 2 );
-				char *tmp_2 = ft_substr(commands[i], n + 2, ft_strlen(commands[i]));
-				arr[j++] = tmp_1;
-				arr[j] = tmp_2;
-		}
-		if(ft_strnstr(commands[i], ">", -1) && commands[i][ft_strchr_num(commands[i], '>') + 1] && commands[i][ft_strchr_num(commands[i], '>') + 1] != ' ' && commands[i][ft_strchr_num(commands[i], '>') + 1] != '>')
-		{
-				n = ft_strchr_num(commands[i], '>');
-				char *tmp_1 = ft_substr(commands[i], 0, n + 1 );
-				char *tmp_2 = ft_substr(commands[i], n + 1, ft_strlen(commands[i]));
-				arr[j++] = tmp_1;
-				arr[j] = tmp_2;
-		}
-		if(ft_strnstr(commands[i], "<", -1) && commands[i][ft_strchr_num(commands[i], '<') + 1] && commands[i][ft_strchr_num(commands[i], '<') + 1] != ' ' && commands[i][ft_strchr_num(commands[i], '>') + 1] != '<')
-		{
-				n = ft_strchr_num(commands[i], '<');
-				char *tmp_1 = ft_substr(commands[i], 0, n + 1 );
-				char *tmp_2 = ft_substr(commands[i], n + 1, ft_strlen(commands[i]));
-				arr[j++] = tmp_1;
-				arr[j] = tmp_2;
-		}
-		else
-			arr[j] = commands[i];
-		i++;
-		j++;
-	}
-	arr[j] = NULL;
-
-	i = -1;
-	while(arr[++i])
-		printf("arr[%d]: %s\n",i,arr[i]);
-	return arr;
-}
-
 int	parse_redirections(t_fill_info *info, char ***commands)
 {
 	int	i;
 
-	// *commands = fix_redirections(*commands);
 	i = -1;
 	while (commands[0][++i])
 	{

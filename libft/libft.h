@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 10:29:23 by abouabra          #+#    #+#             */
-/*   Updated: 2023/03/05 18:07:03 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/05/31 17:18:08 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,5 +84,7 @@ void	garbage_collector(void *adress, int arg);
 void	custom_exit(int exit_code);
 
 int		ft_strchr_num(char *s, int c);
+char	**ft_split_charset(char *s, char *charset);
+int		split_charset_word_count(char const *str, char *charset);
 
 #endif
