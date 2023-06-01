@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:27:14 by abouabra          #+#    #+#             */
-/*   Updated: 2023/06/01 15:18:19 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/06/01 19:41:16 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,6 @@ int	test_ambiguous(t_fill_info *in, char **arg)
 	int i = -1;
 	while (arg[++i])
 	{
-
 		if(does_redirection_exist(arg[i]) && arg[i +1] && ft_strncmp(arg[i], "<<", -1))
 		{
 
@@ -115,8 +114,14 @@ int	test_ambiguous(t_fill_info *in, char **arg)
 			// while (arr[++k])
 			// 	printf("before: |%s|\n", arr[k]);
 			arr = expand_variables(in, arr);
-			arr = split_command(*arr);
 			int k = -1;
+			while (arr[++k])
+			{
+				// printf("arr |%s|\n", arr[k]);
+				fix_string(in, arr[i]);
+			}
+			arr = split_command(*arr);
+			k = -1;
 			while (arr[++k]);
 				// printf("after: |%s|\n", arr[k]);
 			if(k != 1)
@@ -162,6 +167,9 @@ static int	retrieve_comm(t_fill_info *in, char **a[3])
 	// while (a[args][++i])
 	// 	printf("a[arr][%d]: |%s|\n", i, a[args][i]);
 	a[args] = remove_empty_args(a[args]);
+	i = -1;
+	while (a[args][++i])
+		fix_string(in, a[args][i]);
 	
 	char *command_path = get_command_path(a[path], a[args][0]);
 
@@ -196,14 +204,14 @@ int	parsing_commands(char **commands)
 		a[arr] = split_command(commands[i]);
 		if(!remove_quotes( info, a[arr]))
 			return 0;
-
-		if(!retrieve_comm(info, a))
-			return 0;
-			
+ 
 		// int i = -1;
 		// while (a[arr][++i])
 		// 	printf("a[arr][%d]: |%s|\n", i, a[arr][i]);
 		// printf("\n\n\n\n");
+		if(!retrieve_comm(info, a))
+			return 0;
+			
 
 		node = ft_new_command(info);
 		add_command_in_back(&vars->command_head, node);

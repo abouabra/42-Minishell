@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:30:01 by abouabra          #+#    #+#             */
-/*   Updated: 2023/06/01 15:18:26 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/06/01 19:33:59 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,6 +182,7 @@ t_cmd_redir	*ft_new_redir(int type, char *file);
 char	**remove_empty_args(char **commands);
 int does_redirection_exist(char *str);
 void	red_help(t_fill_info *info, char **commands, int *i);
+void fix_string(t_fill_info *info, char *str);
 
 
 

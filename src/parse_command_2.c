@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:27:14 by abouabra          #+#    #+#             */
-/*   Updated: 2023/06/01 15:18:24 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/06/01 19:33:15 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,40 +37,71 @@ static void	rm_qts_help(int *num, char **arr, char *q, t_fill_info *info)
 	}
 }
 
-void fix_string(t_fill_info *info, char **arr)
-{
-    char *str = *arr;
-    int len = ft_strlen(str);
-    char *new_str = (char *)my_alloc(len + 1);
-    if (!new_str)
-        return;
-    int i = 0;
-    int j = 0;
-    while (str[i] != '\0')
-    {
-		if(str[0] != '\"' && str[ft_strlen(str)-1] != '\"')
-		{
-			if (str[i] == '\'' && str[i + 1] && str[i + 1] == '\'')
-            	i+= 2;
-			// else if(str[i] == '\'')
-			// 	i++;
-			info->quote_type = 1;
-		}
-		if(str[0] != '\'' && str[ft_strlen(str)-1] != '\'')
-		{
-			if (str[i] == '\"' && str[i + 1] && str[i + 1] == '\"')
-            	i+= 2;
-			// else if(str[i] == '\"')
-			// 	i++;
-			info->quote_type = 2;
-		}
+/*
 
-		new_str[j] = str[i];
-		j++;
-        i++;
+
+echo '"ls"'
+"ls"
+
+remove_quotes
+
+str;
+while (*str)
+{
+	if (*str == '"' || *str == '\'')
+	{
+		c = *str;
+		ft_memmove(str, str+1, ft_strlen(str + 1));
+		str = ft_strchr(str, c);
+		ft_memmove(str, str+1, ft_strlen(str + 1));
+	}
+	else
+		str++;
+}
+
+*/
+
+void fix_string(t_fill_info *info, char *str)
+{
+    (void)info;
+	char c;
+
+	if(str[0] && str[1] && !str[2] && str[0] == str[1])
+		return;
+	if(ft_strchr(str, '=') || ft_strchr(str, '$'))
+		return;
+    char *dest = str;
+    char *src = str;
+	(void) info;
+    while (*src)
+    {
+        if (*src == '"' || *src == '\'')
+        {
+            c = *src;
+			if(c == '\'')
+				info->quote_type = 1;
+			else if(c == '\"')
+				info->quote_type = 2;
+            src++;
+
+            while (*src && *src != c)
+            {
+                *dest = *src;
+                dest++;
+                src++;
+            }
+
+            if (*src == c)
+                src++;
+        }
+        else
+        {
+            *dest = *src;
+            dest++;
+            src++;
+        }
     }
-    new_str[j] = '\0';
-    *arr = new_str;
+    *dest = '\0';
 }
 
 int	remove_quotes(t_fill_info *info, char **arr)
@@ -100,9 +131,12 @@ int	remove_quotes(t_fill_info *info, char **arr)
 		*vars->ex_status = 2;
 		return 0;
 	}
-	// i = -1;
-	// while (arr[++i])
-	// 	fix_string(info, &arr[i]);
+	i = -1;
+	while (arr[++i])
+		fix_string(info, arr[i]);
+
+	// printf("limiter: %s     qt: %d\n", arr[1], info->quote_type);
+	
 	i = -1;
 	while (arr[++i])
 	{
@@ -187,6 +221,7 @@ char	*get_herdoc_data(t_fill_info *info, char *limiter)
 	char	*str;
 	char	*total;
 
+	// printf("limiter: %s     qt: %d\n", limiter, info->quote_type);
 	limiter = expand_env(info,ft_strtrim(limiter,"\"\'"));
 	limiter = ft_strjoin(limiter, "\n");
 	total = "";
