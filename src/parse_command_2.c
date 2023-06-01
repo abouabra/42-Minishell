@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:27:14 by abouabra          #+#    #+#             */
-/*   Updated: 2023/06/01 21:15:57 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/06/01 21:35:00 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	rm_qts_help(int *num, char **arr, char *q, t_fill_info *info)
 	}
 	else
 	{
-		arr[0] = ft_strtrim(arr[0], q);
+		// arr[0] = ft_strtrim(arr[0], q);
 		if (q[0] == '\'')
 			info->quote_type = 1;
 		else
@@ -249,22 +249,40 @@ char	*get_herdoc_data(t_fill_info *info, char *limiter)
 
 void	red_help(t_fill_info *info, char **commands, int *i)
 {
+	char **arr;
+	char *file_name;
+	if(ft_strchr(commands[*i + 1], '$'))
+	{
+		arr = my_alloc(sizeof(char *) * 2);
+		arr[0] = ft_strdup(commands[*i + 1]);;
+		arr[1] = NULL;
+		arr = expand_variables(info, arr);
+		int k = -1;
+		while (arr[++k])
+			fix_string(info, arr[k]);
+		file_name = ft_strtrim(*arr," ");
+	}
+	else
+		file_name = commands[*i + 1];
 	if (!ft_strncmp(commands[*i], ">", -1) )
 	{
-		check_permision(NULL, commands[*i + 1], 3);
-		t_cmd_redir *redir =ft_new_redir(OUTPUT, commands[++(*i)]);
+		check_permision(NULL, file_name, 3);
+		t_cmd_redir *redir =ft_new_redir(OUTPUT, file_name);
+		(*i)++;
 		add_redir_in_back(&info->redir, redir);
 	}
 	if (!ft_strncmp(commands[*i], "<", -1) )
 	{
-		check_permision(NULL, commands[*i + 1], 2);
-		t_cmd_redir *redir =ft_new_redir(INPUT, commands[++(*i)]);
+		check_permision(NULL, file_name, 2);
+		t_cmd_redir *redir =ft_new_redir(INPUT, file_name);
+		(*i)++;
 		add_redir_in_back(&info->redir, redir);
 	}
 	if (!ft_strncmp(commands[*i], ">>", -1))
 	{
-		check_permision(NULL, commands[*i + 1], 3);
-		t_cmd_redir *redir =ft_new_redir(APPEND, commands[++(*i)]);
+		check_permision(NULL, file_name, 3);
+		t_cmd_redir *redir =ft_new_redir(APPEND, file_name);
+		(*i)++;
 		add_redir_in_back(&info->redir, redir);
 	}
 	if (!ft_strncmp(commands[*i], "<<", -1))
