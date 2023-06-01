@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 21:21:54 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/05/31 23:26:21 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/06/01 22:39:50 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,5 +113,6 @@ void	parse_commands(char *line)
 	remove_spaces_in_between();
 	if(!parsing_commands( vars->initial_commands))
 		return;
+	
 	execution_phase();
 }

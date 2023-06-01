@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 11:08:47 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/31 23:57:19 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/06/01 22:40:36 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,14 @@ static void	handle_child3(t_command *tmp)
 
 void do_redirections(t_cmd_redir *head)
 {
+
+	// t_cmd_redir * tmp = vars->command_head->redir;
+	// while(tmp)
+	// {
+	// 	printf("type: %d   file name: %s\n", tmp->type, tmp->file);
+	// 	tmp = tmp->next;
+	// }
+	
 	t_cmd_redir *redir = head;
 	int fd;
 	while(redir)
@@ -108,10 +116,6 @@ void do_redirections(t_cmd_redir *head)
 }
 void	handle_child(t_command *tmp, int i)
 {
-	if (tmp->is_valid_command == 0)
-		custom_exit(127);
-	if (tmp->is_valid_command == 69)
-		custom_exit(0);
 	if (i > 0)
 	{
 		dup2(vars->prev_pipefd[0], 0);
@@ -125,5 +129,9 @@ void	handle_child(t_command *tmp, int i)
 		close(vars->next_pipefd[1]);
 	}
 	do_redirections(tmp->redir);
+	if (tmp->is_valid_command == 0)
+		custom_exit(127);
+	if (tmp->is_valid_command == 69)
+		custom_exit(0);
 	handle_child3(tmp);
 }
