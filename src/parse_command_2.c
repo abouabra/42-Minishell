@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:27:14 by abouabra          #+#    #+#             */
-/*   Updated: 2023/06/01 21:11:05 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/06/01 21:15:57 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,7 +196,6 @@ char *gg(char *original_string,int should_expand)
 			// printf("else: %s\n", final);
 		}
 	}
-	// printf("expand_env: %s\n", final);
 	return (final);
 }
 
