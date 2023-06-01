@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:27:14 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/31 23:30:06 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/06/01 15:18:19 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,10 @@ int	test_ambiguous(t_fill_info *in, char **arg)
 	int i = -1;
 	while (arg[++i])
 	{
-		if(does_redirection_exist(arg[i]) && arg[i +1])
+
+		if(does_redirection_exist(arg[i]) && arg[i +1] && ft_strncmp(arg[i], "<<", -1))
 		{
+
 			char *name = ft_strdup(arg[i + 1]);
 			// printf("name: |%s|\n", name);
 			char **arr = my_alloc(sizeof(char *) * 2);
@@ -123,6 +125,18 @@ int	test_ambiguous(t_fill_info *in, char **arg)
 				*vars->ex_status = 1;
 				return 0;
 			}
+			if(!rederiction_error(arg, i))
+			{
+				// printf("|%s|    |%s|\n", arg[i], arg[i + 1]);
+				return 0;
+			}
+		}
+		else if(does_redirection_exist(arg[i]) && !arg[i +1])
+		{
+			if(!rederiction_error(arg, i))
+			{
+				return 0;
+			}
 		}
 	}
 	return 1;
@@ -133,7 +147,15 @@ static int	retrieve_comm(t_fill_info *in, char **a[3])
 {
 	// printf("\n\n\n\n");
 	if(!test_ambiguous(in, a[arr]))
+	{
 		return 0;
+	}
+	int i = -1;
+	while (a[arr][++i])
+	{
+		red_help(in, a[arr], &i);
+	}
+
 	a[args] = make_new_args(a[arr]);
 	a[args] = expand_variables(in, a[args]);
 	// int i = -1;
@@ -175,9 +197,6 @@ int	parsing_commands(char **commands)
 		if(!remove_quotes( info, a[arr]))
 			return 0;
 
-		
-		if(!parse_redirections(info, &a[arr]))
-			return 0;
 		if(!retrieve_comm(info, a))
 			return 0;
 			

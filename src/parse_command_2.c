@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:27:14 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/31 23:42:04 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/06/01 15:18:24 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,7 +209,7 @@ char	*get_herdoc_data(t_fill_info *info, char *limiter)
 	return (name);
 }
 
-static void	red_help(t_fill_info *info, char **commands, int *i)
+void	red_help(t_fill_info *info, char **commands, int *i)
 {
 	if (!ft_strncmp(commands[*i], ">", -1) )
 	{
@@ -282,19 +282,4 @@ int count_redirections(char *command)
     if (is_parsing_command && (len > 0 && command[len - 1] != ' '))
         count++; // If the command ends with a non-space character, increment count
     return count;
-}
-
-
-int	parse_redirections(t_fill_info *info, char ***commands)
-{
-	int	i;
-
-	i = -1;
-	while (commands[0][++i])
-	{
-		if(!rederiction_error(*commands, i))
-			return 0;
-		red_help(info, *commands, &i);
-	}
-	return 1;
 }

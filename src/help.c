@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 19:52:24 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/05/31 21:38:03 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/06/01 13:41:39 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,10 @@ int	checker(char **commands, int i)
 
 int rederiction_error(char **commands, int i)
 {
-	if ((ft_strnstr(commands[i], "><", -1)) || ft_strnstr(commands[i], "<>", -1)
-	|| ft_strnstr(commands[i], "<<<", -1) || ft_strnstr(commands[i], ">>>", -1)
-	|| ft_strnstr(commands[i], "=>", -1))
+	if (ft_strnstr(commands[i], "<<<", -1) || ft_strnstr(commands[i], ">>>", -1)
+	|| ft_strnstr(commands[i], "=>", -1)
+	|| (!ft_strncmp(commands[i], ">", -1) && commands[i + 1] && !ft_strncmp(commands[i + 1], "<", -1))
+	|| (!ft_strncmp(commands[i], "<", -1) && commands[i + 1] && !ft_strncmp(commands[i + 1], ">", -1)))
 	{
 		ft_dprintf(2, "minishell: syntax error\n");
 		*vars->ex_status = 2;

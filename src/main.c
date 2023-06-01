@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:30:57 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/31 23:56:58 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/06/01 11:56:21 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,19 +76,18 @@ void	execution_phase()
 	{
 		if (!tmp->command_args[0])
 			tmp->is_valid_command = 69;
-		if (tmp->command_args[0] && is_built_in(tmp->command_args[0]) && vars->command_count == 1)
+		if (tmp->command_args[0] && built_in_should_execute_in_main(vars, tmp))
 			execute_built_in( tmp);
 		else
 			execute(vars, tmp, i);
 		tmp = tmp->next;
 	}
-	if(!built_in_should_execute_in_main(vars,vars->command_head) && vars->command_count > 1)
+	if(!built_in_should_execute_in_main(vars,vars->command_head))
 	{
 		i = -1;
 		while (++i < vars->command_count)
 			waitpid(vars->pid[i], &status, 0);
 		*(vars->ex_status) = WEXITSTATUS(status);
-		printf("ttt: %d\n", *vars->ex_status);
 	}
 }
 

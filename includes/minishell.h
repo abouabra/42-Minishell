@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:30:01 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/31 23:55:43 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/06/01 15:18:26 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,6 @@ char					*get_env_data(char *id);
 int					remove_quotes(t_fill_info *info,
 							char **arr);
 char					*get_herdoc_data(t_fill_info *info, char *limiter);
-int						parse_redirections(t_fill_info *info, char ***commands);
 int						count_args(char **commands);
 char					**make_new_args(char **commands);
 int						check_permision(char *command_path, char *name,
@@ -182,6 +181,7 @@ void	add_redir_in_back(t_cmd_redir **head, t_cmd_redir *node);
 t_cmd_redir	*ft_new_redir(int type, char *file);
 char	**remove_empty_args(char **commands);
 int does_redirection_exist(char *str);
+void	red_help(t_fill_info *info, char **commands, int *i);
 
 
 
