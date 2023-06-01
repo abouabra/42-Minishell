@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:27:14 by abouabra          #+#    #+#             */
-/*   Updated: 2023/06/01 19:41:16 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/06/01 21:10:24 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,8 +117,8 @@ int	test_ambiguous(t_fill_info *in, char **arg)
 			int k = -1;
 			while (arr[++k])
 			{
-				// printf("arr |%s|\n", arr[k]);
-				fix_string(in, arr[i]);
+				// printf("ambigius |%s|\n", arr[k]);
+				fix_string(in, arr[k]);
 			}
 			arr = split_command(*arr);
 			k = -1;

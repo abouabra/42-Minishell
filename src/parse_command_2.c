@@ -6,7 +6,7 @@
 /*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:27:14 by abouabra          #+#    #+#             */
-/*   Updated: 2023/06/01 19:33:15 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/06/01 21:11:05 by abouabra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,6 +207,10 @@ char	*expand_env(t_fill_info *info, char *str)
 		return (str);
 	int should_expand;
 	should_expand = 1;
+	// printf("expand env: %s\n", str);
+	// char *tmp = ft_strchr(str, '$');
+	// if(tmp && tmp[-1] && (tmp[-1] != '\'' || tmp[-1] != '"'))
+	// 	info->quote_type = 0;
 	if(info->quote_type == 1 || info->quote_type == 2)
 		should_expand = 0;
 		
