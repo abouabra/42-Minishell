@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_shell.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ayman <ayman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 11:55:49 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/31 23:53:15 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/08/02 16:56:17 by ayman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void	the_search_built(t_env *search, char *old_path)
 	while (search)
 	{
 		if (!ft_strncmp(search->env_id, "PWD", -1))
-			search->env_data = getcwd(NULL, -1);
+			search->env_data = getcwd(NULL, 0);
 		else if (!ft_strncmp(search->env_id, "OLDPWD", -1))
 			search->env_data = old_path;
 		search = search->next;
@@ -54,7 +54,7 @@ void	cd(t_command *command)
 		*vars->ex_status = 1;
 		return ;
 	}
-	char *old_path = getcwd(NULL, -1);
+	char *old_path = getcwd(NULL, 0);
 	chdir(command->command_args[1]);
 	search = vars->env_head;
 	the_search_built(search,old_path);
@@ -123,6 +123,6 @@ void					my_exit(t_command *command)
 
 void	pwd(void)
 {
-	ft_dprintf(1,"%s\n", getcwd(NULL, -1));
+	ft_dprintf(1,"%s\n", getcwd(NULL, 0));
 	*vars->ex_status = 0;
 }

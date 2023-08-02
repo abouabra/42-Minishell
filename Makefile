@@ -18,7 +18,7 @@ YELLOW = \033[1;33m
 RESET = \033[0m
 
 READ_LINE = -lreadline -L ${HOME}/brew/homebrew/opt/readline/lib -I${HOME}/brew/homebrew/opt/readline/include
-WWW = -Wall -Wextra -Werror # -g -fsanitize=address
+WWW = # -Wall -Wextra -Werror # -g -fsanitize=address
 
 all: $(NAME)
 
@@ -29,7 +29,7 @@ $(NAME): ascci_art $(OSRC) src/main.c
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c includes/minishell.h # main.c
 	@mkdir -p $(OBJ_DIR)
-	@$(CC) -Wall -Wextra -Werror -c $< -o $@
+	@$(CC) $(WWW) -c $< -o $@
 
 bonus: all
 

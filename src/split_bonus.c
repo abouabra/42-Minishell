@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ayman <ayman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 18:37:37 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/05/26 22:14:01 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/08/02 17:16:58 by ayman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,14 @@ static int	word_len(char *s, char *c)
 	return (i);
 }
 
+
+static void	split_char_init1(int n[4])
+{
+	n[i] = -1;
+	n[j] = -1;
+	n[ac] = 0;
+}
+
 static void	split_par_help(char **arr, char *s, int n[4])
 {
 	n[ac]++;
@@ -108,7 +116,7 @@ char	**split_par(char *s)
 	char	**arr;
 	int		n[4];
 
-	split_char_init(n);
+	split_char_init1(n);
 	if (!s || !s[0])
 		return (0);
 	n[w] = count_par(s);
@@ -130,3 +138,14 @@ char	**split_par(char *s)
 	arr[++n[j]] = 0;
 	return (arr);
 }
+
+/*
+int main(){
+	char *str;
+	str = "ls && (ls -l || (ls -la && (cat-e || cc)))";
+	char **split;
+	split = split_par(str);
+	for (int i = 0; split[i]; i++)
+		printf("%s\n", split[i]);
+	return 0;
+}*/
