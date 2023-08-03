@@ -50,7 +50,7 @@ void	execute(t_command *tmp, int *index)
 	
 	i = *index;
 	if (i > 0 && vars->op[(i - 1) * 2] == '2'){
-		
+
 		int j = -1;
 		while (++j < i)
 			waitpid(vars->pid[j], &status, 0);
@@ -109,12 +109,18 @@ void	execution_phase()
 			execute( tmp, &i);
 		tmp = tmp->next;
 	}
-	if(!built_in_should_execute_in_main(vars->command_head))
+	tmp = vars->command_head;
+	i=-1;
+	while (++i < vars->command_count)
 	{
-		i = -1;
-		while (++i < vars->command_count)
-			waitpid(vars->pid[i], &status, 0);
-		*(vars->ex_status) = WEXITSTATUS(status);
+		if(!built_in_should_execute_in_main(tmp) || (built_in_should_execute_in_main(tmp) && (!vars->op[0] || (vars->op[0] && (i - 1 >= 0 && vars->op[(i - 1) * 2] != '1') && (vars->op[i * 2] && vars->op[i * 2] != '1')))))
+		{
+			int j = -1;
+			while (++j <= i)
+				waitpid(vars->pid[j], &status, 0);
+			*(vars->ex_status) = WEXITSTATUS(status);
+		}
+		tmp = tmp->next;
 	}
 }
 
