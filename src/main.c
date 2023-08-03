@@ -24,19 +24,16 @@ void	handle_signals(int signum)
 	if (signum == SIGINT)
 	{
 		vars->interrupted_mode = 1;
+		// if(vars->is_running == 1)
+		// 	printf("^C");
 		printf("\n");
 		rl_on_new_line();
 		rl_replace_line("", 0);
-		// g_var[ex_status] = 130;
 		vars->is_interrupted = 1;
-		// g_var[is_interrupted] = 1;
-		// printf("interupted\n");
-		// if (g_var[is_running])
 		if(vars->is_running == 3)
 		{
 			vars->interrupted_mode = 3;
 			close(vars->heredocs_fd);
-			return;
 		}
 		if(vars->is_running == 0)
 		{
@@ -183,6 +180,8 @@ void	start_ter()
 {
 	char	*line;
 
+	vars->is_running = 0;
+	tcsetattr(STDIN_FILENO, TCSANOW, &vars->new_term);
 	if(isatty(STDIN_FILENO))
 	{	
 		line = readline("minishell> ");
@@ -206,8 +205,7 @@ void	start_ter()
 		vars->command_head = NULL;
 	}
 	// g_var[is_running] = 1;
-	vars->is_running = 0;
-	tcsetattr(STDIN_FILENO, TCSANOW, &vars->new_term);
+	
 }
 
 int	main(int ac, char **av, char **ev)
