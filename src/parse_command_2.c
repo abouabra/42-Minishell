@@ -233,12 +233,9 @@ char	*get_herdoc_data(t_fill_info *info, char *limiter)
 	tcsetattr(STDIN_FILENO, TCSANOW, &vars->new_term);
 	while (1)
 	{
-		if(vars->interrupted_mode == 0)
-		{
-			if(isatty(STDIN_FILENO))
-				ft_dprintf(1, "> ");
-			str = get_next_line(vars->heredocs_fd);
-		}
+		if(!vars->interrupted_mode && isatty(STDIN_FILENO))
+			ft_dprintf(1, "> ");
+		str = get_next_line(vars->heredocs_fd);
 		if(vars->interrupted_mode == 3)
 		{
 			vars->ex_status = 1;
