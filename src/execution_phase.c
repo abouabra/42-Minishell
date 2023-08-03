@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_phase.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ayman <ayman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 11:08:47 by abouabra          #+#    #+#             */
-/*   Updated: 2023/06/01 22:40:36 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/08/02 23:08:55 by ayman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,7 @@ void do_redirections(t_cmd_redir *head)
 		redir = redir->next;
 	}
 }
+
 void	handle_child(t_command *tmp, int i)
 {
 	if (i > 0)

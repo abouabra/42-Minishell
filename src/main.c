@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ayman <ayman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:30:57 by abouabra          #+#    #+#             */
-/*   Updated: 2023/06/01 11:56:21 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/08/03 02:58:32 by ayman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,17 +42,44 @@ void	handle_signals(int signum)
 	}
 }
 
-void	execute(t_args *vars, t_command *tmp, int i)
+void	execute(t_command *tmp, int *index)
 {
 	// int		status;
-	if (i < vars->command_count - 1)
+	int i;
+	int status;
+	
+	i = *index;
+	if (i > 0 && vars->op[(i - 1) * 2] == '2'){
+		
+		int j = -1;
+		while (++j < i)
+			waitpid(vars->pid[j], &status, 0);
+		*(vars->ex_status) = WEXITSTATUS(status);
+
+		
+		if (*vars->ex_status != 0 && vars->op[(i - 1) * 2 + 1] == '&')
+		{
+			while (vars->op[(i - 1) * 2] && ((vars->op[(i - 1) * 2] == '1' && vars->op[(i - 1) * 2 + 1] == '|') || (vars->op[(i - 1) * 2] == '2' && vars->op[(i - 1) * 2 + 1] != '|')))
+				i++;
+		}
+		if (*vars->ex_status == 0 && vars->op[(i - 1) * 2 + 1] == '|')
+		{
+			while (vars->op[(i - 1) * 2] && ((vars->op[(i - 1) * 2] == '1' && vars->op[(i - 1) * 2 + 1] == '|') || (vars->op[(i - 1) * 2] == '2' && vars->op[(i - 1) * 2 + 1] != '&')))
+				i++;
+		}
+		*index = i;
+		if (i == vars->command_count)
+			return;
+	}
+	if (i < vars->command_count - 1 && vars->op[i * 2] == '1')
 		pipe(vars->next_pipefd);
 	vars->pid[i] = fork();
 	if (vars->pid[i] == -1)
 		return ;
 	if (vars->pid[i] == 0)
-		handle_child( tmp, i);
-	fd_handler(i);
+		handle_child(tmp, i);
+	if ((i == 0 && vars->op[i * 2] == '1') || (i > 0 && vars->op[(i - 1) * 2] == '1'))
+		fd_handler(i);
 	if (g_var[is_interupted] && (g_var[ex_status] == 130
 			|| g_var[ex_status] == 131))
 	{
@@ -76,13 +103,13 @@ void	execution_phase()
 	{
 		if (!tmp->command_args[0])
 			tmp->is_valid_command = 69;
-		if (tmp->command_args[0] && built_in_should_execute_in_main(vars, tmp))
-			execute_built_in( tmp);
+		if (tmp->command_args[0] && built_in_should_execute_in_main(tmp) && (!vars->op[0] || (vars->op[0] && (i - 1 >= 0 && vars->op[(i - 1) * 2] != '1') && (vars->op[i * 2] && vars->op[i * 2] != '1'))))
+			execute_built_in(tmp);
 		else
-			execute(vars, tmp, i);
+			execute( tmp, &i);
 		tmp = tmp->next;
 	}
-	if(!built_in_should_execute_in_main(vars,vars->command_head))
+	if(!built_in_should_execute_in_main(vars->command_head))
 	{
 		i = -1;
 		while (++i < vars->command_count)

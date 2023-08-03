@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ayman <ayman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:30:01 by abouabra          #+#    #+#             */
-/*   Updated: 2023/06/01 21:26:32 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/08/03 00:11:13 by ayman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ typedef struct t_args
 	int					*is_running;
 	int					*ex_status;
 	int					*is_interupted;
+	char				*op;
 }						t_args;
 
 
@@ -150,12 +151,12 @@ void					handle_child(t_command *tmp, int i);
 
 void					execution_phase();
 void					execute_built_in(t_command *command);
-void	execute(t_args *vars, t_command *tmp, int i);
+void					execute( t_command *tmp, int *index);
 char					**convert_env_to_arr(t_env *head);
 
 //builtins
 int						is_built_in(char *name);
-int						built_in_should_execute_in_main(t_args *vars ,t_command *tmp); 
+int						built_in_should_execute_in_main(t_command *tmp); 
 void					echo(t_command *command);
 void					cd(t_command *command);
 void					pwd(void);

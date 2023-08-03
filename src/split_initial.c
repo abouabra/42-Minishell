@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_initial.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ayman <ayman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 17:31:10 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/29 12:45:23 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/08/03 00:24:52 by ayman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,30 @@ static int	check_validity(char **phrases, int phrase_count)
 	return (1);
 }
 
+char *operations(char *s){
+	char *op;
+	int i;
+	
+	op="";
+	i = -1;
+	while (s[++i])
+	{
+		if (i + 1 < ft_strlen(s) && s[i] == '|' && s[i + 1] != '|')
+			op = ft_strjoin(op, "1|");
+		if (i + 1 < ft_strlen(s) && s[i] == '|' && s[i + 1] == '|')
+		{
+			op = ft_strjoin(op, "2|");
+			i++;
+			}
+		if (i + 1 < ft_strlen(s) && s[i] == '&' && s[i + 1] == '&')
+		{
+			op = ft_strjoin(op, "2&");
+			i++;
+		}
+	}
+	return (op);
+}
+
 char	**initial_split(char *s, int sw)
 {
 	int		n[6];
@@ -127,6 +151,7 @@ char	**initial_split(char *s, int sw)
 	phrase_count = count_words(s);
 	vars->command_count = phrase_count;
 	phrases = (char **)my_alloc((phrase_count + 1) * sizeof(char *));
+	vars->op = operations(s);
 	while (++n[i] < ft_strlen(s))
 		split_cases(n, ph_len, s, phrases);
 	ph_len = n[i] - n[j];
