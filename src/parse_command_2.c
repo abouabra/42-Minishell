@@ -266,21 +266,21 @@ void	red_help(t_fill_info *info, char **commands, int *i)
 		file_name = commands[*i + 1];
 	if (!ft_strncmp(commands[*i], ">", -1) )
 	{
-		check_permision(NULL, file_name, 3);
+		// check_permision(NULL, file_name, 3);
 		t_cmd_redir *redir =ft_new_redir(OUTPUT, file_name);
 		(*i)++;
 		add_redir_in_back(&info->redir, redir);
 	}
 	if (!ft_strncmp(commands[*i], "<", -1) )
 	{
-		check_permision(NULL, file_name, 2);
+		// check_permision(NULL, file_name, 2);
 		t_cmd_redir *redir =ft_new_redir(INPUT, file_name);
 		(*i)++;
 		add_redir_in_back(&info->redir, redir);
 	}
 	if (!ft_strncmp(commands[*i], ">>", -1))
 	{
-		check_permision(NULL, file_name, 3);
+		// check_permision(NULL, file_name, 3);
 		t_cmd_redir *redir =ft_new_redir(APPEND, file_name);
 		(*i)++;
 		add_redir_in_back(&info->redir, redir);

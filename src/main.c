@@ -12,6 +12,7 @@
 
 #include "../includes/minishell.h"
 #include <stdio.h>
+#include <sys/_types/_pid_t.h>
 
 int		g_var[3];
 t_args	*vars;
@@ -70,6 +71,30 @@ void	execute(t_command *tmp, int *index)
 		if (i == vars->command_count)
 			return;
 	}
+	// check permisions for redir
+	t_cmd_redir *redir = tmp->redir;
+	while(redir)
+	{
+		//check if file exists using check_permision function
+		if (redir->type == OUTPUT)
+			check_permision(NULL, redir->file, 3);
+		else if (redir->type == INPUT)
+			check_permision(NULL, redir->file, 2);
+		else if (redir->type == APPEND)
+			check_permision(NULL, redir->file, 3);
+		redir = redir->next;
+	}
+
+	// check permisions for command
+	if (tmp->command_args && tmp->command_args[0])
+	{
+		if (check_permision(tmp->command_path, tmp->command_args[0], 1))
+			tmp->is_valid_command = 0;
+		else
+			tmp->is_valid_command = 1;
+	}
+
+
 	// if (i < vars->command_count - 1 && vars->op[i * 2] == '1')
 	if (i < vars->command_count - 1 && (!vars->op[0] || (vars->op[0] && vars->op[i * 2] == '1')))
 		pipe(vars->next_pipefd);

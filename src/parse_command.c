@@ -169,13 +169,13 @@ static int	retrieve_comm(t_fill_info *in, char **a[3])
 	char *command_path = get_command_path(a[path], a[args][0]);
 
 	// printf("command: |%s|\n", a[args][0]);
-	if (a[args] && a[args][0])
-	{
-		if (check_permision(command_path, a[args][0], 1))
-			in->is_valid_command = 0;
-		else
-			in->is_valid_command = 1;
-	}
+	// if (a[args] && a[args][0])
+	// {
+	// 	if (check_permision(command_path, a[args][0], 1))
+	// 		in->is_valid_command = 0;
+	// 	else
+	// 		in->is_valid_command = 1;
+	// }
 	in->command_path = command_path;
 	in->command_args = a[args];
 	return 1;
@@ -197,7 +197,7 @@ int	parsing_commands(char **commands)
 			continue ;
 		ft_memset(info, 0, sizeof(t_fill_info));
 		a[arr] = split_command(commands[i]);
-		if(!remove_quotes( info, a[arr]))
+		if(!remove_quotes(info, a[arr]))
 			return 0;
  
 		// int i = -1;
