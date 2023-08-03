@@ -13,6 +13,8 @@
 #include "../includes/minishell.h"
 #include <stdio.h>
 #include <sys/_types/_pid_t.h>
+#include <sys/fcntl.h>
+#include <unistd.h>
 
 // int		g_var[3];
 t_args	*vars;
@@ -21,19 +23,25 @@ void	handle_signals(int signum)
 {
 	if (signum == SIGINT)
 	{
+		vars->interrupted_mode = 1;
 		printf("\n");
 		rl_on_new_line();
 		rl_replace_line("", 0);
-		vars->ex_status = 130;
 		// g_var[ex_status] = 130;
-		vars->is_interupted = 1;
-		// g_var[is_interupted] = 1;
-		printf("interupted\n");
+		vars->is_interrupted = 1;
+		// g_var[is_interrupted] = 1;
+		// printf("interupted\n");
 		// if (g_var[is_running])
-		if(vars->is_running)
+		if(vars->is_running == 3)
 		{
-			vars->is_interupted = 0;
-			// g_var[is_interupted] = 0;
+			vars->interrupted_mode = 3;
+			close(vars->heredocs_fd);
+			return;
+		}
+		if(vars->is_running == 0)
+		{
+			vars->is_interrupted = 0;
+			// g_var[is_interrupted] = 0;
 			vars->ex_status = 1;
 			// g_var[ex_status] = 1;
 			rl_redisplay();
@@ -41,15 +49,18 @@ void	handle_signals(int signum)
 	}
 	if (signum == SIGQUIT)
 	{
+		vars->interrupted_mode = 2;
 		// if (!g_var[is_running])
 		if(vars->is_running)
 		{
-			printf("Quit: 3\n");
+			if(vars->is_running != 3)
+				printf("Quit: 3\n");
 			// g_var[ex_status] = 131;
-			vars->ex_status = 131;
-			vars->is_interupted = 1;
-			// g_var[is_interupted] = 1;
+			vars->is_interrupted = 1;
+			// g_var[is_interrupted] = 1;
+			return;
 		}
+		vars->is_interrupted = 0;
 	}
 }
 
@@ -114,13 +125,7 @@ void	execute(t_command *tmp, int *index)
 		handle_child(tmp, i);
 	if ((i == 0 && vars->op[i * 2] == '1') || (i > 0 && (vars->op[(i - 1) * 2] == '1' || vars->op[(i) * 2] == '1')))
 		fd_handler(i);
-	if(vars->is_interupted && (vars->ex_status == 130 || vars->ex_status == 131))
-	{
-		// g_var[is_interupted] = 0;
-		vars->is_interupted = 0;
-		// g_var[ex_status] = vars->ex_status;
-		// g_var[ex_status] = vars->ex_status;
-	}
+	
 	// else
 	// 	(vars->ex_status) = WEXITSTATUS(status);
 }
@@ -157,6 +162,21 @@ void	execution_phase()
 		}
 		tmp = tmp->next;
 	}
+	if(vars->is_interrupted)
+	{
+		// g_var[is_interrupted] = 0;
+		if(vars->interrupted_mode == 1)
+			vars->ex_status = 130;
+		if(vars->interrupted_mode == 2)
+			vars->ex_status = 131;
+		if(vars->interrupted_mode == 3)
+			vars->ex_status = 1;
+		vars->is_interrupted = 0;
+		vars->interrupted_mode = 0;
+		// g_var[ex_status] = vars->ex_status;
+		// g_var[ex_status] = vars->ex_status;
+	}
+	// printf("interrupted_mode %d || is interupted %d || is_running %d\n", vars->interrupted_mode, vars->is_interrupted,vars->is_running);
 }
 
 void	start_ter()
@@ -171,7 +191,7 @@ void	start_ter()
 	else
 		line = ft_strtrim(get_next_line(0)," \t\n\v\f\r");
 	// g_var[is_running] = 0;
-	vars->is_running = 0;
+	vars->is_running = 1;
 	tcsetattr(STDIN_FILENO, TCSANOW, &vars->old_term);
 	if (!line)
 	{
@@ -186,7 +206,7 @@ void	start_ter()
 		vars->command_head = NULL;
 	}
 	// g_var[is_running] = 1;
-	vars->is_running = 1;
+	vars->is_running = 0;
 	tcsetattr(STDIN_FILENO, TCSANOW, &vars->new_term);
 }
 
@@ -204,10 +224,10 @@ int	main(int ac, char **av, char **ev)
 	signal(SIGINT, handle_signals);
 	signal(SIGQUIT, handle_signals);
 	// g_var[is_running] = 1;
-	vars->is_running = 1;
+	vars->is_running = 0;
 	// vars->is_running = &g_var[is_running];
 	// vars->ex_status = &g_var[ex_status];
-	// vars->is_interupted = &g_var[is_interupted];
+	// vars->is_interrupted = &g_var[is_interrupted];
 	while (1)
 		start_ter();
 	custom_exit(0);

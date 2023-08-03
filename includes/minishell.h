@@ -95,8 +95,10 @@ typedef struct t_args
 	struct termios		old_term;
 	char				*op;
 	int					is_running;
-	int 				is_interupted;
+	int 				is_interrupted;
+	int 				interrupted_mode;
 	int					ex_status;
+	int					heredocs_fd;
 }						t_args;
 
 // enum					e_e

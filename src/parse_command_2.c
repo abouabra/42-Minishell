@@ -228,17 +228,29 @@ char	*get_herdoc_data(t_fill_info *info, char *limiter)
 	limiter = expand_env(info,ft_strtrim(limiter,"\"\'"));
 	limiter = ft_strjoin(limiter, "\n");
 	total = "";
+	vars->is_running = 3;
+	vars->heredocs_fd = dup(0);
+	tcsetattr(STDIN_FILENO, TCSANOW, &vars->new_term);
 	while (1)
 	{
 		if(isatty(STDIN_FILENO))
 			ft_dprintf(1, "> ");
-		str = get_next_line(0);
+		str = get_next_line(vars->heredocs_fd);
+		if(vars->interrupted_mode == 3)
+		{
+			vars->ex_status = 1;
+			total = "";
+			break;
+		}
 		char *ww = expand_env(info,str);
 		if (!ww || (ww && !ft_strncmp(ww, limiter, -1)))
 			break ;
 		// printf("str : |%s| limiter:  |%s|\n", ww,limiter);
 		total = ft_strjoin(total, ww);
 	}
+	vars->is_running = 0;
+	close(vars->heredocs_fd);
+	tcsetattr(STDIN_FILENO, TCSANOW, &vars->old_term);
 	char *name = "/tmp/herdoc_data";
 	unlink(name);
 	int fd = open(name, O_WRONLY | O_TRUNC | O_CREAT, 0644);
