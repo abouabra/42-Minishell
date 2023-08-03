@@ -71,14 +71,15 @@ void	execute(t_command *tmp, int *index)
 		if (i == vars->command_count)
 			return;
 	}
-	if (i < vars->command_count - 1 && vars->op[i * 2] == '1')
+	// if (i < vars->command_count - 1 && vars->op[i * 2] == '1')
+	if (i < vars->command_count - 1 && (!vars->op[0] || (vars->op[0] && vars->op[i * 2] == '1')))
 		pipe(vars->next_pipefd);
 	vars->pid[i] = fork();
 	if (vars->pid[i] == -1)
 		return ;
 	if (vars->pid[i] == 0)
 		handle_child(tmp, i);
-	if ((i == 0 && vars->op[i * 2] == '1') || (i > 0 && vars->op[(i - 1) * 2] == '1'))
+	if ((i == 0 && vars->op[i * 2] == '1') || (i > 0 && (vars->op[(i - 1) * 2] == '1' || vars->op[(i) * 2] == '1')))
 		fd_handler(i);
 	if (g_var[is_interupted] && (g_var[ex_status] == 130
 			|| g_var[ex_status] == 131))
