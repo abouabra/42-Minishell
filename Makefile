@@ -44,7 +44,6 @@ fclean:
 re:fclean all
 
 ascci_art:
-	@clear
 	@printf "$(GREEN)	                                                                                                                                         \n\
 	                                                                                                                                         \n\
                                                                                                                                              \n\

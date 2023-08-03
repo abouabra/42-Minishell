@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include <stdio.h>
 
 int		g_var[3];
 t_args	*vars;
@@ -49,14 +50,12 @@ void	execute(t_command *tmp, int *index)
 	int status;
 	
 	i = *index;
-	if (i > 0 && vars->op[(i - 1) * 2] == '2'){
-
+	if (i > 0 && vars->op[(i - 1) * 2] == '2')
+	{
 		int j = -1;
 		while (++j < i)
 			waitpid(vars->pid[j], &status, 0);
-		*(vars->ex_status) = WEXITSTATUS(status);
-
-		
+		*(vars->ex_status) = WEXITSTATUS(status);		
 		if (*vars->ex_status != 0 && vars->op[(i - 1) * 2 + 1] == '&')
 		{
 			while (vars->op[(i - 1) * 2] && ((vars->op[(i - 1) * 2] == '1' && vars->op[(i - 1) * 2 + 1] == '|') || (vars->op[(i - 1) * 2] == '2' && vars->op[(i - 1) * 2 + 1] != '|')))
@@ -120,6 +119,7 @@ void	execution_phase()
 			while (++j <= i)
 				waitpid(vars->pid[j], &status, 0);
 			*(vars->ex_status) = WEXITSTATUS(status);
+			printf("printing status %d\n", *(vars->ex_status));
 		}
 		tmp = tmp->next;
 	}

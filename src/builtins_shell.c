@@ -58,6 +58,7 @@ void	cd(t_command *command)
 	chdir(command->command_args[1]);
 	search = vars->env_head;
 	the_search_built(search,old_path);
+	*vars->ex_status = 0;
 }
 
 void	echo(t_command *command)
