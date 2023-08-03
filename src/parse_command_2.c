@@ -128,7 +128,7 @@ int	remove_quotes(t_fill_info *info, char **arr)
 	if(sin % 2 != 0 || dubl % 2 != 0)
 	{
 		ft_dprintf(2, "minishell: unexpected EOF while looking for matching\n");
-		*vars->ex_status = 2;
+		vars->ex_status = 2;
 		return 0;
 	}
 	i = -1;
@@ -166,7 +166,7 @@ char *gg(char *original_string,int should_expand)
 			i++;
 			if(original_string[i] == '?')
 			{
-				char *data = ft_itoa(*vars->ex_status);
+				char *data = ft_itoa(vars->ex_status);
 				final = ft_strjoin(final, data);
 			}
 			else

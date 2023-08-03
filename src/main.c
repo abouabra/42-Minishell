@@ -14,7 +14,7 @@
 #include <stdio.h>
 #include <sys/_types/_pid_t.h>
 
-int		g_var[3];
+// int		g_var[3];
 t_args	*vars;
 
 void	handle_signals(int signum)
@@ -24,22 +24,31 @@ void	handle_signals(int signum)
 		printf("\n");
 		rl_on_new_line();
 		rl_replace_line("", 0);
-		g_var[ex_status] = 130;
-		g_var[is_interupted] = 1;
-		if (g_var[is_running])
+		vars->ex_status = 130;
+		// g_var[ex_status] = 130;
+		vars->is_interupted = 1;
+		// g_var[is_interupted] = 1;
+		printf("interupted\n");
+		// if (g_var[is_running])
+		if(vars->is_running)
 		{
-			g_var[is_interupted] = 0;
-			g_var[ex_status] = 1;
+			vars->is_interupted = 0;
+			// g_var[is_interupted] = 0;
+			vars->ex_status = 1;
+			// g_var[ex_status] = 1;
 			rl_redisplay();
 		}
 	}
 	if (signum == SIGQUIT)
 	{
-		if (!g_var[is_running])
+		// if (!g_var[is_running])
+		if(vars->is_running)
 		{
 			printf("Quit: 3\n");
-			g_var[ex_status] = 131;
-			g_var[is_interupted] = 1;
+			// g_var[ex_status] = 131;
+			vars->ex_status = 131;
+			vars->is_interupted = 1;
+			// g_var[is_interupted] = 1;
 		}
 	}
 }
@@ -56,13 +65,13 @@ void	execute(t_command *tmp, int *index)
 		int j = -1;
 		while (++j < i)
 			waitpid(vars->pid[j], &status, 0);
-		*(vars->ex_status) = WEXITSTATUS(status);		
-		if (*vars->ex_status != 0 && vars->op[(i - 1) * 2 + 1] == '&')
+		(vars->ex_status) = WEXITSTATUS(status);		
+		if (vars->ex_status != 0 && vars->op[(i - 1) * 2 + 1] == '&')
 		{
 			while (vars->op[(i - 1) * 2] && ((vars->op[(i - 1) * 2] == '1' && vars->op[(i - 1) * 2 + 1] == '|') || (vars->op[(i - 1) * 2] == '2' && vars->op[(i - 1) * 2 + 1] != '|')))
 				i++;
 		}
-		if (*vars->ex_status == 0 && vars->op[(i - 1) * 2 + 1] == '|')
+		if (vars->ex_status == 0 && vars->op[(i - 1) * 2 + 1] == '|')
 		{
 			while (vars->op[(i - 1) * 2] && ((vars->op[(i - 1) * 2] == '1' && vars->op[(i - 1) * 2 + 1] == '|') || (vars->op[(i - 1) * 2] == '2' && vars->op[(i - 1) * 2 + 1] != '&')))
 				i++;
@@ -105,14 +114,15 @@ void	execute(t_command *tmp, int *index)
 		handle_child(tmp, i);
 	if ((i == 0 && vars->op[i * 2] == '1') || (i > 0 && (vars->op[(i - 1) * 2] == '1' || vars->op[(i) * 2] == '1')))
 		fd_handler(i);
-	if (g_var[is_interupted] && (g_var[ex_status] == 130
-			|| g_var[ex_status] == 131))
+	if(vars->is_interupted && (vars->ex_status == 130 || vars->ex_status == 131))
 	{
-		*(vars->ex_status) = g_var[ex_status];
-		g_var[is_interupted] = 0;
+		// g_var[is_interupted] = 0;
+		vars->is_interupted = 0;
+		// g_var[ex_status] = vars->ex_status;
+		// g_var[ex_status] = vars->ex_status;
 	}
 	// else
-	// 	*(vars->ex_status) = WEXITSTATUS(status);
+	// 	(vars->ex_status) = WEXITSTATUS(status);
 }
 
 void	execution_phase()
@@ -143,7 +153,7 @@ void	execution_phase()
 			int j = -1;
 			while (++j <= i)
 				waitpid(vars->pid[j], &status, 0);
-			*(vars->ex_status) = WEXITSTATUS(status);
+			(vars->ex_status) = WEXITSTATUS(status);
 		}
 		tmp = tmp->next;
 	}
@@ -160,13 +170,14 @@ void	start_ter()
 	}
 	else
 		line = ft_strtrim(get_next_line(0)," \t\n\v\f\r");
-	g_var[is_running] = 0;
+	// g_var[is_running] = 0;
+	vars->is_running = 0;
 	tcsetattr(STDIN_FILENO, TCSANOW, &vars->old_term);
 	if (!line)
 	{
 		// ft_dprintf(1, "exit\n");
 		tcsetattr(STDIN_FILENO, TCSANOW, &vars->old_term);
-		custom_exit(*vars->ex_status);
+		custom_exit(vars->ex_status);
 	}
 	if (line && line[0])
 	{
@@ -174,7 +185,8 @@ void	start_ter()
 		parse_commands(line);
 		vars->command_head = NULL;
 	}
-	g_var[is_running] = 1;
+	// g_var[is_running] = 1;
+	vars->is_running = 1;
 	tcsetattr(STDIN_FILENO, TCSANOW, &vars->new_term);
 }
 
@@ -191,10 +203,11 @@ int	main(int ac, char **av, char **ev)
 	init_termio();
 	signal(SIGINT, handle_signals);
 	signal(SIGQUIT, handle_signals);
-	g_var[is_running] = 1;
-	vars->is_running = &g_var[is_running];
-	vars->ex_status = &g_var[ex_status];
-	vars->is_interupted = &g_var[is_interupted];
+	// g_var[is_running] = 1;
+	vars->is_running = 1;
+	// vars->is_running = &g_var[is_running];
+	// vars->ex_status = &g_var[ex_status];
+	// vars->is_interupted = &g_var[is_interupted];
 	while (1)
 		start_ter();
 	custom_exit(0);

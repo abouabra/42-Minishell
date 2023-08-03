@@ -93,12 +93,18 @@ typedef struct t_args
 	t_env				*env_head;
 	struct termios		new_term;
 	struct termios		old_term;
-	int					*is_running;
-	int					*ex_status;
-	int					*is_interupted;
 	char				*op;
+	int					is_running;
+	int 				is_interupted;
+	int					ex_status;
 }						t_args;
 
+// enum					e_e
+// {
+// 	aais_running,
+// 	aaex_status,
+// 	aais_interupted
+// };
 
 void					prepare_commands(char **commands);
 void					parsing_initial_split(char **commands);
@@ -236,10 +242,5 @@ enum					e_expand
 	news,
 	str
 };
-enum					e_e
-{
-	is_running,
-	ex_status,
-	is_interupted
-};
+
 #endif

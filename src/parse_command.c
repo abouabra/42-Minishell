@@ -34,7 +34,7 @@ static void	check_permision_help(char *command_path, char *name, int a)
 		if (access(name, F_OK) == -1)
 		{
 			ft_dprintf(2, "minishell: %s: No such file or directory\n", name);
-			*vars->ex_status = 1;
+			vars->ex_status = 1;
 		}
 		else if (access(name, R_OK) == -1)
 			ft_dprintf(2, "minishell: %s: Permission denied\n", name);
@@ -126,7 +126,7 @@ int	test_ambiguous(t_fill_info *in, char **arg)
 			if(k != 1)
 			{
 				ft_dprintf(2, "minishell: %s: ambiguous redirect\n", name);
-				*vars->ex_status = 1;
+				vars->ex_status = 1;
 				return 0;
 			}
 			if(!rederiction_error(arg, i))

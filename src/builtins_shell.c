@@ -36,7 +36,7 @@ void	cd(t_command *command)
 	if(!command->command_args[1])
 	{
 		ft_dprintf(2, "minishell: cd: HOME not set\n");
-		*vars->ex_status = 1;
+		vars->ex_status = 1;
 		return ;
 	}
 	else if (ft_strchr(command->command_args[1], '~'))
@@ -51,14 +51,14 @@ void	cd(t_command *command)
 	{
 		ft_dprintf(2, "minishell: cd: %s: No such file or directory\n",
 			command->command_args[1]);
-		*vars->ex_status = 1;
+		vars->ex_status = 1;
 		return ;
 	}
 	char *old_path = getcwd(NULL, 0);
 	chdir(command->command_args[1]);
 	search = vars->env_head;
 	the_search_built(search,old_path);
-	*vars->ex_status = 0;
+	vars->ex_status = 0;
 }
 
 void	echo(t_command *command)
@@ -94,7 +94,7 @@ void					my_exit(t_command *command)
 	int	status = 0;
 
 	if (!command->command_args[1])
-		status = *vars->ex_status;
+		status = vars->ex_status;
 	else if(command->command_args[1] && command->command_args[2])
 	{
 		if((is_arg_number(command->command_args[1]) && !is_arg_number(command->command_args[2]))
@@ -125,5 +125,5 @@ void					my_exit(t_command *command)
 void	pwd(void)
 {
 	ft_dprintf(1,"%s\n", getcwd(NULL, 0));
-	*vars->ex_status = 0;
+	vars->ex_status = 0;
 }

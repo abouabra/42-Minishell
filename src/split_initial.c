@@ -101,7 +101,7 @@ static int	check_validity(char **phrases, int phrase_count)
 			if (phrase_count > 1)
 			{
 				ft_dprintf(1, "minishell: syntax error\n");
-				*vars->ex_status = 2;
+				vars->ex_status = 2;
 				return (0);
 			}
 			else

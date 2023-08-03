@@ -43,7 +43,7 @@ int rederiction_error(char **commands, int i)
 	|| (!ft_strncmp(commands[i], "<", -1) && commands[i + 1] && !ft_strncmp(commands[i + 1], ">", -1)))
 	{
 		ft_dprintf(2, "minishell: syntax error\n");
-		*vars->ex_status = 2;
+		vars->ex_status = 2;
 		return 0;
 	}
 	if ((!ft_strncmp(commands[i], ">", -1) || !ft_strncmp(commands[i],
@@ -52,7 +52,7 @@ int rederiction_error(char **commands, int i)
 	{
 		ft_dprintf(2,
 			"minishell: syntax error near unexpected token `newline'\n");
-		*vars->ex_status = 2;
+		vars->ex_status = 2;
 		return(0);
 	}
 	if (commands[i + 1] && (!ft_strncmp(commands[i], ">", -1)
@@ -65,7 +65,7 @@ int rederiction_error(char **commands, int i)
 	{
 		ft_dprintf(1, "minishell: syntax error near unexpected token `%s'\n",
 			commands[i + 1]);
-		*vars->ex_status = 2;
+		vars->ex_status = 2;
 		return 0;
 	}
 	return 1;
@@ -119,7 +119,7 @@ void	dollar_active(t_fill_info *info, int n[4], char *strings[4], char **args)
 		if(!strings[tmp][0])
 			strings[data] = "$";
 		else if(strings[tmp][0] == '?')
-			strings[data] = ft_itoa(*vars->ex_status);
+			strings[data] = ft_itoa(vars->ex_status);
 		else if(strings[tmp][0] == '@')
 			strings[data] = "";
 		else if(ft_isdigit(strings[tmp][0]))
@@ -141,7 +141,7 @@ void	dollar_active(t_fill_info *info, int n[4], char *strings[4], char **args)
 		// ft_dprintf(1, "substr: |%s|   %d   data: |%s|\n\n\n\n\n",strings[tmp],sould_remove_space,strings[data]);
 
 		if (!ft_strncmp(strings[str] + 1, "?", -1))
-			args[n[i]] = ft_strjoin(strings[news], ft_itoa(*(vars->ex_status)));
+			args[n[i]] = ft_strjoin(strings[news], ft_itoa((vars->ex_status)));
 		else
 		{
 			if (strings[data])

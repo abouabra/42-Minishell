@@ -94,7 +94,7 @@ void	env_export(t_command *command)
 		if(!analyze_args(args))
 		{
 			ft_dprintf(2,"minishell: not a valid identifier\n");
-			*vars->ex_status = 1;
+			vars->ex_status = 1;
 		}
 		else
 		{	
