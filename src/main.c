@@ -132,7 +132,7 @@ void	execution_phase()
 	t_command	*tmp;
 	int			i;
 	int			status;
-	
+
 	vars->pid = my_alloc(sizeof(int) * vars->command_count);
 	tmp = vars->command_head;
 	i = -1;

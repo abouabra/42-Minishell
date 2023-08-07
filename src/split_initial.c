@@ -114,19 +114,26 @@ static int	check_validity(char **phrases, int phrase_count)
 char *operations(char *s){
 	char *op;
 	int i;
+	int quote[2];
 	
 	op="";
 	i = -1;
+	quote[sin] = 0;
+	quote[doub] = 0;
 	while (s[++i])
 	{
-		if (i + 1 < ft_strlen(s) && s[i] == '|' && s[i + 1] != '|')
+		if (s[i] == '\'' && !quote[doub])
+			quote[sin] = !quote[sin];
+		if (s[i] == '\"' && !quote[sin])
+			quote[doub] = !quote[doub];
+		if (i + 1 < ft_strlen(s) && s[i] == '|' && s[i + 1] != '|' && !quote[doub] && !quote[sin])
 			op = ft_strjoin(op, "1|");
-		if (i + 1 < ft_strlen(s) && s[i] == '|' && s[i + 1] == '|')
+		if (i + 1 < ft_strlen(s) && s[i] == '|' && s[i + 1] == '|' && !quote[doub] && !quote[sin])
 		{
 			op = ft_strjoin(op, "2|");
 			i++;
 			}
-		if (i + 1 < ft_strlen(s) && s[i] == '&' && s[i + 1] == '&')
+		if (i + 1 < ft_strlen(s) && s[i] == '&' && s[i + 1] == '&' && !quote[doub] && !quote[sin])
 		{
 			op = ft_strjoin(op, "2&");
 			i++;

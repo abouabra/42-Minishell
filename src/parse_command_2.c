@@ -229,13 +229,17 @@ char	*get_herdoc_data(t_fill_info *info, char *limiter)
 	limiter = ft_strjoin(limiter, "\n");
 	total = "";
 	vars->is_running = 3;
-	vars->heredocs_fd = dup(0);
+	if(!isatty(0))
+		vars->heredocs_fd = 0;
+	else
+		vars->heredocs_fd = dup(0);
 	tcsetattr(STDIN_FILENO, TCSANOW, &vars->new_term);
 	while (1)
 	{
 		if(!vars->interrupted_mode && isatty(STDIN_FILENO))
 			ft_dprintf(1, "> ");
 		str = get_next_line(vars->heredocs_fd);
+		// str = get_next_line(0);
 		if(vars->interrupted_mode == 3)
 		{
 			vars->ex_status = 1;
@@ -249,7 +253,8 @@ char	*get_herdoc_data(t_fill_info *info, char *limiter)
 		total = ft_strjoin(total, ww);
 	}
 	vars->is_running = 0;
-	close(vars->heredocs_fd);
+	if(isatty(0))
+		close(vars->heredocs_fd);
 	tcsetattr(STDIN_FILENO, TCSANOW, &vars->old_term);
 	char *name = "/tmp/herdoc_data";
 	unlink(name);
