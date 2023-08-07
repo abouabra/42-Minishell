@@ -61,7 +61,7 @@ void	handle_signals(int signum)
 	}
 }
 
-void	execute(t_command *tmp, int *index)
+void	execute(t_command **tmp, int *index)
 {
 	// int		status;
 	int i;
@@ -72,24 +72,33 @@ void	execute(t_command *tmp, int *index)
 	{
 		int j = -1;
 		while (++j < i)
-			waitpid(vars->pid[j], &status, 0);
-		(vars->ex_status) = WEXITSTATUS(status);		
+		{
+			if(waitpid(vars->pid[j], &status, 0) != -1)
+				(vars->ex_status) = WEXITSTATUS(status);
+		}
 		if (vars->ex_status != 0 && vars->op[(i - 1) * 2 + 1] == '&')
 		{
 			while (vars->op[(i - 1) * 2] && ((vars->op[(i - 1) * 2] == '1' && vars->op[(i - 1) * 2 + 1] == '|') || (vars->op[(i - 1) * 2] == '2' && vars->op[(i - 1) * 2 + 1] != '|')))
+			{
 				i++;
+				(*tmp) = (*tmp)->next;
+			}
 		}
 		if (vars->ex_status == 0 && vars->op[(i - 1) * 2 + 1] == '|')
 		{
 			while (vars->op[(i - 1) * 2] && ((vars->op[(i - 1) * 2] == '1' && vars->op[(i - 1) * 2 + 1] == '|') || (vars->op[(i - 1) * 2] == '2' && vars->op[(i - 1) * 2 + 1] != '&')))
+			{
 				i++;
+				(*tmp) = (*tmp)->next;
+			}
 		}
 		*index = i;
 		if (i == vars->command_count)
 			return;
+		// printf("total: %s || operator: %c || cmd: %s\n",vars->op, vars->op[(i - 1) * 2 +1], (*tmp)->command_args[0]);
 	}
 	// check permisions for redir
-	t_cmd_redir *redir = tmp->redir;
+	t_cmd_redir *redir = (*tmp)->redir;
 	while(redir)
 	{
 		//check if file exists using check_permision function
@@ -103,12 +112,12 @@ void	execute(t_command *tmp, int *index)
 	}
 
 	// check permisions for command
-	if (tmp->command_args && tmp->command_args[0])
+	if ((*tmp)->command_args && (*tmp)->command_args[0])
 	{
-		if (check_permision(tmp->command_path, tmp->command_args[0], 1))
-			tmp->is_valid_command = 0;
+		if (check_permision((*tmp)->command_path, (*tmp)->command_args[0], 1))
+			(*tmp)->is_valid_command = 0;
 		else
-			tmp->is_valid_command = 1;
+			(*tmp)->is_valid_command = 1;
 	}
 
 
@@ -119,7 +128,7 @@ void	execute(t_command *tmp, int *index)
 	if (vars->pid[i] == -1)
 		return ;
 	if (vars->pid[i] == 0)
-		handle_child(tmp, i);
+		handle_child((*tmp), i);
 	if ((i == 0 && vars->op[i * 2] == '1') || (i > 0 && (vars->op[(i - 1) * 2] == '1' || vars->op[(i) * 2] == '1')))
 		fd_handler(i);
 	
@@ -132,7 +141,6 @@ void	execution_phase()
 	t_command	*tmp;
 	int			i;
 	int			status;
-
 	vars->pid = my_alloc(sizeof(int) * vars->command_count);
 	tmp = vars->command_head;
 	i = -1;
@@ -143,9 +151,13 @@ void	execution_phase()
 		if (tmp->command_args[0] && built_in_should_execute_in_main(tmp) && (!vars->op[0] || (vars->op[0] && (i - 1 >= 0 && vars->op[(i - 1) * 2] != '1') && (vars->op[i * 2] && vars->op[i * 2] != '1'))))
 			execute_built_in(tmp);
 		else
-			execute( tmp, &i);
-		tmp = tmp->next;
+		{
+			execute(&tmp, &i);
+		}
+		if(tmp)
+			tmp = tmp->next;
 	}
+	// printf("op: %s\n", vars->op);
 	tmp = vars->command_head;
 	i=-1;
 	while (++i < vars->command_count)
@@ -154,8 +166,10 @@ void	execution_phase()
 		{
 			int j = -1;
 			while (++j <= i)
-				waitpid(vars->pid[j], &status, 0);
-			(vars->ex_status) = WEXITSTATUS(status);
+			{
+				if(waitpid(vars->pid[j], &status, 0) != -1)
+					(vars->ex_status) = WEXITSTATUS(status);
+			}
 		}
 		tmp = tmp->next;
 	}

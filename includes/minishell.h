@@ -159,7 +159,7 @@ void					handle_child(t_command *tmp, int i);
 
 void					execution_phase();
 void					execute_built_in(t_command *command);
-void					execute( t_command *tmp, int *index);
+void					execute( t_command **tmp, int *index);
 char					**convert_env_to_arr(t_env *head);
 
 //builtins

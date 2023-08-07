@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include <stdio.h>
 
 int	has_separator(int i, int j, char *s)
 {
@@ -44,14 +45,14 @@ static int	count_words(char *s)
 	while (++i < ft_strlen(s))
 	{
 		doub_sin_skip(&q[sin], &q[doub], s, i);
-		if (s[i] == '|' && s[i + 1] != '|' && !q[doub] && !q[doub])
+		if (s[i] == '|' && s[i + 1] != '|' && !q[doub] && !q[sin])
 			phrase_count++;
-		else if (s[i] == '&' && s[i + 1] == '&' && !q[doub] && !q[doub])
+		else if (s[i] == '&' && s[i + 1] == '&' && !q[doub] && !q[sin])
 		{
 			phrase_count++;
 			i++;
 		}
-		else if (s[i] == '|' && s[i + 1] == '|' && !q[doub] && !q[doub])
+		else if (s[i] == '|' && s[i + 1] == '|' && !q[doub] && !q[sin])
 		{
 			phrase_count++;
 			i++;
