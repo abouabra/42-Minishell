@@ -139,13 +139,17 @@ char	**split_par(char *s)
 	return (arr);
 }
 
-/*
-int main(){
-	char *str;
-	str = "ls && (ls -l || (ls -la && (cat-e || cc)))";
-	char **split;
-	split = split_par(str);
-	for (int i = 0; split[i]; i++)
-		printf("%s\n", split[i]);
-	return 0;
-}*/
+// void result()
+// {
+// 	if()
+
+// }
+// int main(){
+// 	char *str;
+// 	str = "ls && (ls -l || (ls -la && (cat-e || cc)))";
+// 	char **split;
+// 	split = split_par(str);
+// 	for (int i = 0; split[i]; i++)
+// 		printf("%s\n", split[i]);
+// 	return 0;
+// }

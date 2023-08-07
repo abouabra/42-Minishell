@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include <stdio.h>
+#include <sys/wait.h>
 
 int	checker(char **commands, int i)
 {
@@ -164,21 +166,79 @@ void	nested_par(char **arr)
 	char	**tmp;
 	int		i;
 	int		j;
-
+	
+	static int iteration;
 	i = -1;
+	int status;
 	while (arr[++i])
 	{
+		arr[i] = ft_strtrim(arr[i], " \t");
 		if (has_char(arr[i], '('))
-			nested_par(split_par(arr[i]));
+		{
+			// int pid = fork();
+			// if(pid == 0)
+			// {
+				nested_par(split_par(arr[i]));
+			// 	exit(0);
+			// }
+			// else
+			// {
+			// 	waitpid(pid, &status, -1);
+			// }
+		}
 		else
 		{
-			j = -1;
-			tmp = initial_split( arr[i], 1);
-			if (!tmp)
+			// j = -1;
+			// tmp = initial_split( arr[i], 1);
+			// if (!tmp)
+			// 	return ;
+			// while (tmp[++j])
+			// 	tmp[j] = ft_strtrim(tmp[j], " ");
+			// parsing_commands( tmp);
+			// vars->command_head = NULL;
+
+			// printf("index: %d\n",index);
+			// printf("index: %d\n",index);
+			// index++;
+			// printf("im currently on: %s\n", arr[i]);
+			// int j = -1;
+			// while(arr[++j])
+			// 	printf("arr: %s\n", arr[j]);
+			// printf("op: %s || iteration: %d\n", vars->op,iteration);
+			if (iteration > 0 &&  vars->op[0] && vars->op[0] == '2')
+			{
+				int j = -1;
+				while (++j < iteration)
+				{
+					if(waitpid(-1, &status, 0) != -1)
+						(vars->ex_status) = WEXITSTATUS(status);
+				}
+				if (vars->ex_status != 0 && vars->op[0 + 1] == '&')
+				{
+					if (vars->op[0] && ((vars->op[0] == '1' && vars->op[0 + 1] == '|') || (vars->op[0] == '2' && vars->op[0 + 1] != '|')))
+						i++;
+				}
+				if (vars->ex_status == 0 && vars->op[0 + 1] == '|')
+				{
+					if (vars->op[0] && ((vars->op[0] == '1' && vars->op[0 + 1] == '|') || (vars->op[0] == '2' && vars->op[0 + 1] != '&')))
+						i++;
+				}
+				if (!arr[i])
+					return;
+				// printf("total: %s || operator: %c || cmd: %s\n",vars->op, vars->op[(i - 1) * 2 +1], (*tmp)->command_args[0]);
+			}
+
+			iteration++;
+			if(arr[i + 1])
+				vars->initial_commands = initial_split( arr[i], 1);
+			else
+				vars->initial_commands = initial_split( arr[i], 0);
+			if (!vars->initial_commands)
 				return ;
-			while (tmp[++j])
-				tmp[j] = ft_strtrim(tmp[j], " ");
-			parsing_commands( tmp);
+			remove_spaces_in_between();
+			if(!parsing_commands( vars->initial_commands))
+				return;
+			execution_phase();
 			vars->command_head = NULL;
 		}
 	}

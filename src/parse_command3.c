@@ -107,12 +107,9 @@ void	parse_commands(char *line)
 {
 	vars->initial_commands = initial_split( line, 0);
 	if (!vars->initial_commands)
-	{
 		return ;
-	}
 	remove_spaces_in_between();
 	if(!parsing_commands( vars->initial_commands))
 		return;
-	
 	execution_phase();
 }

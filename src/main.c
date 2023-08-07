@@ -215,7 +215,9 @@ void	start_ter()
 	if (line && line[0])
 	{
 		add_history(line);
-		parse_commands(line);
+		// parse_commands(line);
+		char *arr[2] = {line, NULL};
+		nested_par(arr);
 		vars->command_head = NULL;
 	}
 	// g_var[is_running] = 1;

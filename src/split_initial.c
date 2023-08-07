@@ -158,6 +158,9 @@ char	**initial_split(char *s, int sw)
 	ph_len = 0;
 	phrase_count = count_words(s);
 	vars->command_count = phrase_count;
+	if(sw == 1)
+		vars->command_count--;
+	// printf("string: %s || count: %d\n", s, vars->command_count);
 	phrases = (char **)my_alloc((phrase_count + 1) * sizeof(char *));
 	vars->op = operations(s);
 	while (++n[i] < ft_strlen(s))

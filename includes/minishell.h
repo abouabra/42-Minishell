@@ -154,6 +154,7 @@ void					dollar_active(t_fill_info *info, int n[4], char *strings[4], char **arg
 void					split_char_init(int n[4]);
 void					doub_sin_skip(int *sin, int *doub, char *s, int i);
 void					handle_child(t_command *tmp, int i);
+void	remove_spaces_in_between();
 
 //executing phase
 
