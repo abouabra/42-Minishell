@@ -263,12 +263,20 @@ char	*get_herdoc_data(t_fill_info *info, char *limiter)
 	close(fd);
 	return (name);
 }
+static int is_a_redirection(char *str)
+{
+	if(!str)
+		return 0;
+	if(!ft_strncmp(str, ">", -1) || !ft_strncmp(str, "<", -1) || !ft_strncmp(str, ">>", -1) || !ft_strncmp(str, "<<", -1))
+		return 1;
+	return 0;
+}
 
 void	red_help(t_fill_info *info, char **commands, int *i)
 {
 	char **arr;
 	char *file_name;
-	if(ft_strchr(commands[*i + 1], '$'))
+	if(is_a_redirection(commands[*i]) && ft_strchr(commands[*i + 1], '$'))
 	{
 		arr = my_alloc(sizeof(char *) * 2);
 		arr[0] = ft_strdup(commands[*i + 1]);;
@@ -281,7 +289,7 @@ void	red_help(t_fill_info *info, char **commands, int *i)
 	}
 	else
 		file_name = commands[*i + 1];
-	if (!ft_strncmp(commands[*i], ">", -1) )
+	if (!ft_strncmp(commands[*i], ">", -1))
 	{
 		// check_permision(NULL, file_name, 3);
 		t_cmd_redir *redir =ft_new_redir(OUTPUT, file_name);

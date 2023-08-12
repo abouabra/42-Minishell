@@ -97,6 +97,9 @@ void	execute(t_command **tmp, int *index)
 			return;
 		// printf("total: %s || operator: %c || cmd: %s\n",vars->op, vars->op[(i - 1) * 2 +1], (*tmp)->command_args[0]);
 	}
+
+
+	// a[args] = expand_variables(in, a[args]);
 	// check permisions for redir
 	t_cmd_redir *redir = (*tmp)->redir;
 	while(redir)
@@ -140,6 +143,7 @@ void	execution_phase()
 {
 	t_command	*tmp;
 	int			i;
+	int			j;
 	int			status;
 	vars->pid = my_alloc(sizeof(int) * vars->command_count);
 	tmp = vars->command_head;
@@ -148,8 +152,16 @@ void	execution_phase()
 	{
 		if (!tmp->command_args[0])
 			tmp->is_valid_command = 69;
-		if (tmp->command_args[0] && built_in_should_execute_in_main(tmp) && (!vars->op[0] || (vars->op[0] && (i - 1 >= 0 && vars->op[(i - 1) * 2] != '1') && (vars->op[i * 2] && vars->op[i * 2] != '1'))))
+		
+		tmp->command_args = expand_variables(tmp->info, tmp->command_args);
+		j = -1;
+		while (tmp->command_args[++j])
+			fix_string(tmp->info, tmp->command_args[j]);
+		// printf("0: %s || 1: %s || is: %d\n", tmp->command_args[0], tmp->command_args[1],built_in_should_execute_in_main(tmp));
+		if (tmp->command_args[0] && built_in_should_execute_in_main(tmp) && (!vars->op[0] || (vars->op[0] && (i - 1 >= 0 && vars->op[(i - 1) * 2] != '1') && (vars->op[i * 2] && vars->op[i * 2] != '1')) || (vars->op[0] && (i == 0 && (vars->op[i * 2] && vars->op[i * 2] != '1')))))
+		{
 			execute_built_in(tmp);
+		}
 		else
 		{
 			execute(&tmp, &i);
@@ -217,7 +229,12 @@ void	start_ter()
 		add_history(line);
 		// parse_commands(line);
 		char *arr[2] = {line, NULL};
-		nested_par(arr);
+		vars->iteration = 0;
+		if(nested_par(arr,0))
+		{
+			vars->iteration = 0;
+			nested_par(arr,1);
+		}
 		vars->command_head = NULL;
 	}
 	// g_var[is_running] = 1;

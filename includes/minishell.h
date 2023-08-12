@@ -76,7 +76,7 @@ typedef struct t_command
 
 
 	t_cmd_redir			*redir;
-
+	t_fill_info			*info;
 	struct t_command	*next;
 }						t_command;
 
@@ -99,6 +99,7 @@ typedef struct t_args
 	int 				interrupted_mode;
 	int					ex_status;
 	int					heredocs_fd;
+	int 				iteration;
 }						t_args;
 
 // enum					e_e
@@ -143,18 +144,18 @@ int						count_args(char **commands);
 char					**make_new_args(char **commands);
 int						check_permision(char *command_path, char *name,
 							int arg);
-int					parsing_commands(char **commands);
+int						parsing_commands(char **commands);
 char					**split_par(char *s);
 int						has_char(char *s, char c);
-void					nested_par(char **arr);
+int						nested_par(char **arr, int check);
 char					*wildcard(char *av);
-int					rederiction_error(char **commands, int i);
+int						rederiction_error(char **commands, int i);
 int						checker(char **commands, int i);
 void					dollar_active(t_fill_info *info, int n[4], char *strings[4], char **args);
 void					split_char_init(int n[4]);
 void					doub_sin_skip(int *sin, int *doub, char *s, int i);
 void					handle_child(t_command *tmp, int i);
-void	remove_spaces_in_between();
+void					remove_spaces_in_between();
 
 //executing phase
 

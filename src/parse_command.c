@@ -157,15 +157,16 @@ static int	retrieve_comm(t_fill_info *in, char **a[3])
 		red_help(in, a[arr], &i);
 	
 	a[args] = make_new_args(a[arr]);
-	a[args] = expand_variables(in, a[args]);
+	// a[args] = expand_variables(in, a[args]);
 	// int i = -1;
 	// while (a[args][++i])
 	// 	printf("a[arr][%d]: |%s|\n", i, a[args][i]);
-	a[args] = remove_empty_args(a[args]);
+	// if(a[args][1])
+	// 	printf("command: |%s|\n", a[args][1]);
+	// a[args] = remove_empty_args(a[args]);
 	i = -1;
 	while (a[args][++i])
 		fix_string(in, a[args][i]);
-	
 	char *command_path = get_command_path(a[path], a[args][0]);
 
 	// printf("command: |%s|\n", a[args][0]);

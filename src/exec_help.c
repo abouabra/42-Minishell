@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include <stdio.h>
 
 int built_in_should_execute_in_main(t_command *cmd)
 {
@@ -22,7 +23,9 @@ int built_in_should_execute_in_main(t_command *cmd)
 	// if(!ft_strncmp(cmd->command_args[0], "cd", -1) && vars->command_count == 1)
 	// 	return 1;
 	if(!ft_strncmp(cmd->command_args[0], "export", -1) && cmd->command_args[1])
+	{
 		return 1;
+	}
 	built_in = "cd|unset|exit";
 	arr = ft_split(built_in, '|');
 	i = -1;

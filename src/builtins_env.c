@@ -38,18 +38,18 @@ char **split_arg(char *arg)
 
 int analyze_args(char **arg)
 {
-	int i = -1;
-
-	while(arg[++i])
+	// int i = -1;
+	// while(arg[++i])
+	if(arg[0])
 	{
 		int j = -1;
-		while(arg[i][++j])
+		while(arg[0][++j])
 		{
-			if(arg[i][j] == '_')
+			if(arg[0][j] == '_')
 				j++;
-			if(arg[i][j] && ft_isdigit(arg[i][j]) && j==0)
+			if(arg[0][j] && ft_isdigit(arg[0][j]) && j==0)
 				return 0;
-			if(arg[i][j] && arg[i][j] == '@')
+			if(arg[0][j] &&( arg[0][j] == '@' ||  arg[0][j] == '.'))
 				return 0;
 		}
 	}

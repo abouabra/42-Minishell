@@ -90,16 +90,18 @@ static void	split_cases(int n[6], int ph_len, char *s, char **phrases)
 	}
 }
 
-static int	check_validity(char **phrases, int phrase_count)
+static int	check_validity(char **phrases, int phrase_count, int sw)
 {
 	int	i;
-
 	i = -1;
 	while (phrases[++i])
 	{
-		if (!phrases[i][0] || !ft_strtrim(phrases[i], " \t\n")[0])
+		phrases[i] = ft_strtrim(phrases[i], " \t\n");
+		// printf("0: |%s| || +1: |%s|\n",phrases[i] , phrases[i+1]);
+		if ((!sw && (!phrases[i][0]))
+			|| (sw && !phrases[i][0] && phrases[i+1]))
 		{
-			if (phrase_count > 1)
+			if ((!sw &&phrase_count > 1) || (sw))
 			{
 				ft_dprintf(1, "minishell: syntax error\n");
 				vars->ex_status = 2;
@@ -163,6 +165,12 @@ char	**initial_split(char *s, int sw)
 	// printf("string: %s || count: %d\n", s, vars->command_count);
 	phrases = (char **)my_alloc((phrase_count + 1) * sizeof(char *));
 	vars->op = operations(s);
+	
+	// printf("gg\n");
+	if(sw && !vars->op[0])
+		return NULL;
+	// if(sw && vars->op[0] && (ft_strlen(vars->op)/2) != vars->command_count -1)
+	// 	return NULL;
 	while (++n[i] < ft_strlen(s))
 		split_cases(n, ph_len, s, phrases);
 	ph_len = n[i] - n[j];
@@ -171,7 +179,7 @@ char	**initial_split(char *s, int sw)
 	phrases[n[k]][ph_len] = '\0';
 	n[k]++;
 	phrases[n[k]] = NULL;
-	if (!sw && !check_validity(phrases, phrase_count))
+	if (!check_validity(phrases, phrase_count,sw))
 		return (NULL);
 	return (phrases);
 }

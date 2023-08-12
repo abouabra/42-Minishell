@@ -12,6 +12,7 @@
 
 #include "../includes/minishell.h"
 #include <stdio.h>
+#include <sys/_types/_pid_t.h>
 #include <sys/wait.h>
 
 int	checker(char **commands, int i)
@@ -79,7 +80,6 @@ void	dollar_active(t_fill_info *info, int n[4], char *strings[4], char **args)
 	int sould_remove_space = 0;
 	if(info->quote_type == 0)
 		sould_remove_space = 1;
-	
 	n[k] = 0;
 	if(strings[str][n[k] -1] && strings[str][n[k] -1] == '\'')
 	{
@@ -161,13 +161,13 @@ void	dollar_active(t_fill_info *info, int n[4], char *strings[4], char **args)
 	}
 }
 
-void	nested_par(char **arr)
+int	nested_par(char **arr, int check)
 {
 	char	**tmp;
 	int		i;
 	int		j;
 	
-	static int iteration;
+	// static int iteration;
 	i = -1;
 	int status;
 	while (arr[++i])
@@ -178,7 +178,8 @@ void	nested_par(char **arr)
 			// int pid = fork();
 			// if(pid == 0)
 			// {
-				nested_par(split_par(arr[i]));
+				return nested_par(split_par(arr[i]), check);
+				// return 0;
 			// 	exit(0);
 			// }
 			// else
@@ -205,10 +206,13 @@ void	nested_par(char **arr)
 			// while(arr[++j])
 			// 	printf("arr: %s\n", arr[j]);
 			// printf("op: %s || iteration: %d\n", vars->op,iteration);
-			if (iteration > 0 &&  vars->op[0] && vars->op[0] == '2')
+			// printf("command: %s || op: %s || it: %d || status: %d\n",arr[i],vars->op,vars->iteration,vars->ex_status);
+			if (check  && vars->iteration > 0 &&  vars->op[0] && vars->op[0] == '2')
 			{
+				// printf("cmd: %s || gg1 || i: %d || it: %d\n",arr[i],i,vars->iteration);
+				
 				int j = -1;
-				while (++j < iteration)
+				while (++j < vars->iteration)
 				{
 					if(waitpid(-1, &status, 0) != -1)
 						(vars->ex_status) = WEXITSTATUS(status);
@@ -224,24 +228,35 @@ void	nested_par(char **arr)
 						i++;
 				}
 				if (!arr[i])
-					return;
+				{
+					// printf("cmd: %s || gg2 || i: %d || it: %d\n",arr[i],i,vars->iteration);
+					return 0;
+				}
 				// printf("total: %s || operator: %c || cmd: %s\n",vars->op, vars->op[(i - 1) * 2 +1], (*tmp)->command_args[0]);
 			}
-
-			iteration++;
+			if (!vars->op)
+				vars->op = ft_strdup("");
+			vars->iteration++;
 			if(arr[i + 1])
 				vars->initial_commands = initial_split( arr[i], 1);
 			else
 				vars->initial_commands = initial_split( arr[i], 0);
 			if (!vars->initial_commands)
-				return ;
-			remove_spaces_in_between();
-			if(!parsing_commands( vars->initial_commands))
-				return;
-			execution_phase();
-			vars->command_head = NULL;
+			{
+				// printf("ll\n");
+				return 0;
+			}
+			if(check)
+			{
+				remove_spaces_in_between();
+				if(!parsing_commands( vars->initial_commands))
+					return 0;
+				execution_phase();
+				vars->command_head = NULL;
+			}
 		}
 	}
+	return (1);
 }
 
 void	split_char_init(int n[4])

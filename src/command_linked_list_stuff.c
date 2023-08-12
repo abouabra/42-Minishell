@@ -54,7 +54,8 @@ t_command	*ft_new_command(t_fill_info *info)
 	node->command_args = info->command_args;
 	node->quote_type = info->quote_type;
 	node->is_valid_command = info->is_valid_command;
-
+	node->info = my_alloc(sizeof(t_fill_info));
+	node->info = ft_memmove(node->info,info, sizeof(t_fill_info));
 	node->redir = info->redir;
 	node->next = NULL;
 	return (node);
