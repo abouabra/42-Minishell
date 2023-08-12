@@ -172,6 +172,7 @@ int	nested_par(char **arr, int check)
 	int status;
 	while (arr[++i])
 	{
+
 		arr[i] = ft_strtrim(arr[i], " \t");
 		if (has_char(arr[i], '('))
 		{
@@ -229,6 +230,7 @@ int	nested_par(char **arr, int check)
 				}
 				if (!arr[i])
 				{
+					// printf("gg\n");
 					// printf("cmd: %s || gg2 || i: %d || it: %d\n",arr[i],i,vars->iteration);
 					return 0;
 				}
@@ -237,12 +239,19 @@ int	nested_par(char **arr, int check)
 			if (!vars->op)
 				vars->op = ft_strdup("");
 			vars->iteration++;
-			if(arr[i + 1])
+			// if(arr[i + 1] || (!arr[i+1] && vars->op[0]))
+			if(arr[i + 1] || (!arr[i+1] && vars->op[0]) || (!arr[i+1] && !vars->op[0] && (arr[i][0] == '&' || arr[i][0] == '|') && vars->iteration > 0))
+			{
 				vars->initial_commands = initial_split( arr[i], 1);
+			}
 			else
+			{
+				printf("aaaaarr: %s || i: %d || op: |%s| \n",arr[i],i,vars->op);
 				vars->initial_commands = initial_split( arr[i], 0);
+			}
 			if (!vars->initial_commands)
 			{
+				// printf("cmd: %s || gg2 || op: %s || it: %d\n",arr[i],vars->op,vars->iteration);
 				// printf("ll\n");
 				return 0;
 			}
@@ -255,6 +264,7 @@ int	nested_par(char **arr, int check)
 				vars->command_head = NULL;
 			}
 		}
+
 	}
 	return (1);
 }

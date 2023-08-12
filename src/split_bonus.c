@@ -146,7 +146,7 @@ char	**split_par(char *s)
 // }
 // int main(){
 // 	char *str;
-// 	str = "ls && (ls -l || (ls -la && (cat-e || cc)))";
+// 	str = "ls && (ls -a) && ls -a";
 // 	char **split;
 // 	split = split_par(str);
 // 	for (int i = 0; split[i]; i++)

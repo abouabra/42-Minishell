@@ -99,10 +99,11 @@ static int	check_validity(char **phrases, int phrase_count, int sw)
 		phrases[i] = ft_strtrim(phrases[i], " \t\n");
 		// printf("0: |%s| || +1: |%s|\n",phrases[i] , phrases[i+1]);
 		if ((!sw && (!phrases[i][0]))
-			|| (sw && !phrases[i][0] && phrases[i+1]))
+			|| (sw && !phrases[i][0] && phrases[i+1] ))
 		{
 			if ((!sw &&phrase_count > 1) || (sw))
 			{
+				printf("ph: |%s|\n",phrases[i]);
 				ft_dprintf(1, "minishell: syntax error\n");
 				vars->ex_status = 2;
 				return (0);
@@ -151,6 +152,7 @@ char	**initial_split(char *s, int sw)
 	int		phrase_count;
 	int		ph_len;
 	char	**phrases;
+	// printf("enter: |%s|\n",s);
 
 	n[i] = -1;
 	n[j] = 0;
@@ -167,8 +169,8 @@ char	**initial_split(char *s, int sw)
 	vars->op = operations(s);
 	
 	// printf("gg\n");
-	if(sw && !vars->op[0])
-		return NULL;
+	// if(sw && !vars->op[0])
+	// 	return NULL;
 	// if(sw && vars->op[0] && (ft_strlen(vars->op)/2) != vars->command_count -1)
 	// 	return NULL;
 	while (++n[i] < ft_strlen(s))
@@ -183,3 +185,4 @@ char	**initial_split(char *s, int sw)
 		return (NULL);
 	return (phrases);
 }
+// i= 0; itt > 0; cureent => emty; next => full
