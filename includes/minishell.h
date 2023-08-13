@@ -99,6 +99,7 @@ typedef struct t_args
 	int 				interrupted_mode;
 	int					ex_status;
 	int					heredocs_fd;
+	int 				iter_else_count;
 	int 				iteration;
 }						t_args;
 
@@ -108,6 +109,7 @@ typedef struct t_args
 // 	aaex_status,
 // 	aais_interupted
 // };
+int ft_strrevcmp(char *s1, char *s2);
 
 void					prepare_commands(char **commands);
 void					parsing_initial_split(char **commands);
@@ -147,7 +149,7 @@ int						check_permision(char *command_path, char *name,
 int						parsing_commands(char **commands);
 char					**split_par(char *s);
 int						has_char(char *s, char c);
-int						nested_par(char **arr, int check);
+int						nested_par(char **arr, int check, int index);
 char					*wildcard(char *av);
 int						rederiction_error(char **commands, int i);
 int						checker(char **commands, int i);
@@ -156,6 +158,7 @@ void					split_char_init(int n[4]);
 void					doub_sin_skip(int *sin, int *doub, char *s, int i);
 void					handle_child(t_command *tmp, int i);
 void					remove_spaces_in_between();
+char					*operations(char *s);
 
 //executing phase
 

@@ -70,11 +70,15 @@ void	execute(t_command **tmp, int *index)
 	i = *index;
 	if (i > 0 && vars->op[(i - 1) * 2] == '2')
 	{
+		// printf("op: %s   im working on: %s I: %d\n", vars->op, (*tmp)->command_args[0],*index);
 		int j = -1;
 		while (++j < i)
 		{
 			if(waitpid(vars->pid[j], &status, 0) != -1)
+			{
+				// printf
 				(vars->ex_status) = WEXITSTATUS(status);
+			}
 		}
 		if (vars->ex_status != 0 && vars->op[(i - 1) * 2 + 1] == '&')
 		{
@@ -123,10 +127,17 @@ void	execute(t_command **tmp, int *index)
 			(*tmp)->is_valid_command = 1;
 	}
 
-
+	// printf("im working on: %s I: %d\n", (*tmp)->command_args[0],*index);
 	// if (i < vars->command_count - 1 && vars->op[i * 2] == '1')
+	// printf("before: prev[0]: %d   prev[1]: %d\n",vars->prev_pipefd[0],vars->prev_pipefd[1]);
+	// printf("before: next[0]: %d   next[1]: %d\n",vars->next_pipefd[0],vars->next_pipefd[1]);
 	if (i < vars->command_count - 1 && (!vars->op[0] || (vars->op[0] && vars->op[i * 2] == '1')))
+	{
+		// printf("gg\n");
 		pipe(vars->next_pipefd);
+	}
+	// printf("after: prev[0]: %d   prev[1]: %d\n",vars->prev_pipefd[0],vars->prev_pipefd[1]);
+	// printf("after: next[0]: %d   next[1]: %d\n",vars->next_pipefd[0],vars->next_pipefd[1]);
 	vars->pid[i] = fork();
 	if (vars->pid[i] == -1)
 		return ;
@@ -151,7 +162,10 @@ void	execution_phase()
 	while (++i < vars->command_count)
 	{
 		if (!tmp->command_args[0])
+		{
+			// printf("pp\n");
 			tmp->is_valid_command = 69;
+		}
 		
 		tmp->command_args = expand_variables(tmp->info, tmp->command_args);
 		j = -1;
@@ -164,6 +178,7 @@ void	execution_phase()
 		}
 		else
 		{
+			// printf("pp\n");
 			execute(&tmp, &i);
 		}
 		if(tmp)
@@ -229,11 +244,17 @@ void	start_ter()
 		add_history(line);
 		// parse_commands(line);
 		char *arr[2] = {line, NULL};
+		vars->iter_else_count = 0;
 		vars->iteration = 0;
-		if(nested_par(arr,0))
+		vars->op = "";
+		if(nested_par(arr,0, 0))
 		{
+			// printf("pp\n");
+			vars->op = "";
+			vars->iter_else_count = 0;
 			vars->iteration = 0;
-			nested_par(arr,1);
+			char *arr2[2] = {line, NULL};
+			nested_par(arr2,1,0);
 		}
 		vars->command_head = NULL;
 	}

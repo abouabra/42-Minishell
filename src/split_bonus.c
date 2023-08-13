@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include <stdio.h>
 
 static int	count_par(char *s)
 {
@@ -66,6 +67,8 @@ static int	word_len(char *s, char *c)
 			i++;
 		}
 	}
+	// if(active && !s[i])
+	// 	return -1;
 	return (i);
 }
 
@@ -80,6 +83,7 @@ static void	split_char_init1(int n[4])
 static void	split_par_help(char **arr, char *s, int n[4])
 {
 	n[ac]++;
+	// if()
 	arr[++n[j]] = my_alloc(word_len(s + n[i], ")") + 1);
 	while (n[ac] > 0)
 	{
@@ -99,6 +103,8 @@ static void	split_par_help(char **arr, char *s, int n[4])
 		arr[n[j]][++n[w]] = s[n[i]];
 	}
 	arr[n[j]][++n[w]] = '\0';
+	arr[n[j]] = ft_strjoin("(", arr[n[j]]);
+	arr[n[j]] = ft_strjoin( arr[n[j]],")");
 }
 
 static void	split_par_help2(char **arr, char *s, int n[4])
@@ -120,11 +126,13 @@ char	**split_par(char *s)
 	if (!s || !s[0])
 		return (0);
 	n[w] = count_par(s);
+	// printf("count %d\n",n[w]);
 	arr = (char **) my_alloc(sizeof(char *) * n[w] + 1);
 	if (!arr)
 		return (0);
 	while (s[++n[i]])
 	{
+		// printf("gg\n");
 		n[w] = -1;
 		if (s[n[i]] == '(')
 			split_par_help(arr, s, n);
@@ -139,16 +147,16 @@ char	**split_par(char *s)
 	return (arr);
 }
 
-// void result()
-// {
-// 	if()
-
-// }
 // int main(){
 // 	char *str;
-// 	str = "ls && (ls -a) && ls -a";
+// 	str = "ls -a && (ls -l)";
 // 	char **split;
 // 	split = split_par(str);
+// 	if(!split)
+// 	{
+// 		printf("error\n");
+// 		return 0;
+// 	}
 // 	for (int i = 0; split[i]; i++)
 // 		printf("%s\n", split[i]);
 // 	return 0;

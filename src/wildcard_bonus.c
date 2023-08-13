@@ -12,7 +12,8 @@
 
 #include "../includes/minishell.h"
 
-int ft_strrevcmp(char *s1, char *s2) {
+int ft_strrevcmp(char *s1, char *s2)
+{
   int i;
   int j;
 

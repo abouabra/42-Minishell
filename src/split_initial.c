@@ -97,25 +97,30 @@ static int	check_validity(char **phrases, int phrase_count, int sw)
 	while (phrases[++i])
 	{
 		phrases[i] = ft_strtrim(phrases[i], " \t\n");
+		// printf("ph: |%s| && ph+1: |%s| && condition: %d && sw: %d\n",phrases[i], phrases[i+1],(sw && !phrases[i][0] && phrases[i+1] && !phrases[i+1][0]),sw);
 		// printf("0: |%s| || +1: |%s|\n",phrases[i] , phrases[i+1]);
 		if ((!sw && (!phrases[i][0]))
-			|| (sw && !phrases[i][0] && phrases[i+1] ))
+			|| (sw && !phrases[i][0] && phrases[i+1] && !ft_strtrim(phrases[i+1]," \t\n")[0]))
 		{
-			if ((!sw &&phrase_count > 1) || (sw))
+			// printf("gg\n");
+			if ((!sw && phrase_count > 1) || (sw) || (!sw && !phrases[i][0]))
 			{
-				printf("ph: |%s|\n",phrases[i]);
+				// printf("sw: %d\n",sw);
 				ft_dprintf(1, "minishell: syntax error\n");
 				vars->ex_status = 2;
 				return (0);
 			}
 			else
+			{
 				return (0);
+			}	
 		}
 	}
 	return (1);
 }
 
-char *operations(char *s){
+char *operations(char *s)
+{
 	char *op;
 	int i;
 	int quote[2];
@@ -152,7 +157,6 @@ char	**initial_split(char *s, int sw)
 	int		phrase_count;
 	int		ph_len;
 	char	**phrases;
-	// printf("enter: |%s|\n",s);
 
 	n[i] = -1;
 	n[j] = 0;
@@ -162,11 +166,11 @@ char	**initial_split(char *s, int sw)
 	ph_len = 0;
 	phrase_count = count_words(s);
 	vars->command_count = phrase_count;
-	if(sw == 1)
+	vars->op = operations(s);
+	if(sw == 1 && vars->op[0])
 		vars->command_count--;
 	// printf("string: %s || count: %d\n", s, vars->command_count);
 	phrases = (char **)my_alloc((phrase_count + 1) * sizeof(char *));
-	vars->op = operations(s);
 	
 	// printf("gg\n");
 	// if(sw && !vars->op[0])
@@ -185,4 +189,3 @@ char	**initial_split(char *s, int sw)
 		return (NULL);
 	return (phrases);
 }
-// i= 0; itt > 0; cureent => emty; next => full

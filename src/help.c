@@ -12,6 +12,7 @@
 
 #include "../includes/minishell.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <sys/_types/_pid_t.h>
 #include <sys/wait.h>
 
@@ -161,35 +162,74 @@ void	dollar_active(t_fill_info *info, int n[4], char *strings[4], char **args)
 	}
 }
 
-int	nested_par(char **arr, int check)
+static int im_i_in_9aws(char *arr)
+{
+	arr = ft_strtrim(arr, " \t\n");
+	//check if arr has operators
+	if(!ft_strncmp(arr, "|", 1) || !ft_strncmp(arr, "&&", 2)
+		|| !ft_strncmp(arr + ft_strlen(arr) - 1, "|", 1) || !ft_strncmp(arr + ft_strlen(arr) - 2, "&&", 2))
+		return 0;
+	return 1;
+}
+
+int	nested_par(char **arr, int check, int index)
 {
 	char	**tmp;
 	int		i;
 	int		j;
 	
-	// static int iteration;
+	// static int iter_else_count;
 	i = -1;
 	int status;
 	while (arr[++i])
 	{
-
 		arr[i] = ft_strtrim(arr[i], " \t");
 		if (has_char(arr[i], '('))
-		{
-			// int pid = fork();
-			// if(pid == 0)
-			// {
-				return nested_par(split_par(arr[i]), check);
-				// return 0;
-			// 	exit(0);
-			// }
-			// else
-			// {
-			// 	waitpid(pid, &status, -1);
-			// }
+		{	
+			if (arr[i][0] == '&' || arr[i][0] == '|')
+			{
+				ft_dprintf(1, "minishell: syntax error\n");
+				vars->ex_status = 2;
+				return (0);
+			}
+			char *save = ft_strdup (arr[i]);
+			if(arr[i][0] == '(' && arr[i][ft_strlen(arr[i]) - 1] == ')')
+				arr[i] = ft_substr(arr[i], 1, ft_strlen(arr[i]) - 2);
+			// printf("printf :%s\n",arr[i]);
+			char **kobi = split_par(arr[i]);
+			if(!kobi || (!operations(arr[i])[0] && kobi[1] && kobi[1][0]))
+			{
+				ft_dprintf(1, "minishell: syntax error\n");
+				vars->ex_status = 2;
+				return (0);
+			}
+			// printf("ok\n");
+			// vars->iteration++;
+			// printf("arr: |%s|     save: |%s|   index: %d     check: %d\n",arr[i],save,  (index == 0 && save[0] == '('), check);
+			if(check && ( index > 0 || (index == 0 && save[0] == '(' && save[ft_strlen(save) - 1] == ')')))
+			{
+				// printf("ok\n");
+				int pid = fork();
+				if(pid == 0)
+				{
+					// printf("im in child\n");
+					nested_par(kobi, check, index + 1);
+					exit(vars->ex_status);
+				}
+				else
+				{
+					if(waitpid(pid, &status, 0) != -1)
+						(vars->ex_status) = WEXITSTATUS(status);
+				}
+			}
+			else
+				return nested_par(kobi, check, index + 1);
 		}
 		else
 		{
+			// if(check)
+			// 	printf("arr: %s\n",arr[i]);
+			
 			// j = -1;
 			// tmp = initial_split( arr[i], 1);
 			// if (!tmp)
@@ -206,14 +246,14 @@ int	nested_par(char **arr, int check)
 			// int j = -1;
 			// while(arr[++j])
 			// 	printf("arr: %s\n", arr[j]);
-			// printf("op: %s || iteration: %d\n", vars->op,iteration);
-			// printf("command: %s || op: %s || it: %d || status: %d\n",arr[i],vars->op,vars->iteration,vars->ex_status);
-			if (check  && vars->iteration > 0 &&  vars->op[0] && vars->op[0] == '2')
+			// printf("op: %s || iter_else_count: %d\n", vars->op,iter_else_count);
+			// printf("command: %s || op: %s || it: %d || status: %d\n",arr[i],vars->op,vars->iter_else_count,vars->ex_status);
+			if (check  && vars->iter_else_count > 0 &&  vars->op[0] && vars->op[0] == '2')
 			{
-				// printf("cmd: %s || gg1 || i: %d || it: %d\n",arr[i],i,vars->iteration);
+				// printf("cmd: %s || gg1 || i: %d || it: %d\n",arr[i],i,vars->iter_else_count);
 				
 				int j = -1;
-				while (++j < vars->iteration)
+				while (++j < vars->iter_else_count)
 				{
 					if(waitpid(-1, &status, 0) != -1)
 						(vars->ex_status) = WEXITSTATUS(status);
@@ -230,41 +270,82 @@ int	nested_par(char **arr, int check)
 				}
 				if (!arr[i])
 				{
+					// printf("cmd: %s || gg2 || i: %d || it: %d\n",arr[i],i,vars->iter_else_count);
 					// printf("gg\n");
-					// printf("cmd: %s || gg2 || i: %d || it: %d\n",arr[i],i,vars->iteration);
 					return 0;
 				}
 				// printf("total: %s || operator: %c || cmd: %s\n",vars->op, vars->op[(i - 1) * 2 +1], (*tmp)->command_args[0]);
 			}
 			if (!vars->op)
 				vars->op = ft_strdup("");
-			vars->iteration++;
-			// if(arr[i + 1] || (!arr[i+1] && vars->op[0]))
-			if(arr[i + 1] || (!arr[i+1] && vars->op[0]) || (!arr[i+1] && !vars->op[0] && (arr[i][0] == '&' || arr[i][0] == '|') && vars->iteration > 0))
+			if(arr[i + 1] || (!arr[i+1]  && (arr[i][0] == '&' || arr[i][0] == '|') && index > 0))
 			{
+				char *tmp_op = ft_strtrim(arr[i], " \n\t");
+				// if((!ft_strncmp(tmp_op, "&&", -1) || !ft_strncmp(tmp_op, "||", -1) || !ft_strncmp(tmp_op, "|", -1)) && arr[i +1])
+				// {
+				// 	i++;
+				// 	// arr[i] = ft_strtrim(arr[i], " \t\n");
+				// 	// if(arr[i][0] == '(' && arr[i][ft_strlen(arr[i]) - 1] == ')')
+				// 	// {
+				// 	// 	// arr[i] = ft_substr(arr[i], 1, ft_strlen(arr[i]) - 2);
+				// 	// 	return nested_par(split_par(arr[i]), check, index +1);
+				// 	// }
+				// 	//REMIND ME LATER
+				// }
+				// printf("bbbbb  %s\n",arr[i]);
 				vars->initial_commands = initial_split( arr[i], 1);
 			}
 			else
 			{
-				printf("aaaaarr: %s || i: %d || op: |%s| \n",arr[i],i,vars->op);
+				// printf("aaaaaaa  %s  confition: %d\n",arr[i], (!arr[i+1]  && (arr[i][0] == '&' || arr[i][0] == '|') &&index  > 0));
 				vars->initial_commands = initial_split( arr[i], 0);
 			}
+			vars->iter_else_count++;
 			if (!vars->initial_commands)
 			{
-				// printf("cmd: %s || gg2 || op: %s || it: %d\n",arr[i],vars->op,vars->iteration);
-				// printf("ll\n");
+				// printf("ll: |%s|    iter else: %d    index: %d\n",arr[i],vars->iter_else_count,index);
 				return 0;
 			}
 			if(check)
 			{
-				remove_spaces_in_between();
-				if(!parsing_commands( vars->initial_commands))
-					return 0;
-				execution_phase();
-				vars->command_head = NULL;
+				// printf("index count: %d\n",index);
+				// if(vars->iteration > 0 && im_i_in_9aws(arr[i]))
+				// {
+				// 	printf("im in 9aws |%s|\n",arr[i]);
+
+				// 	// if(has pipe)
+				// 	// 	pipe(gggg)
+				// 	int pid = fork();
+				// 	if(pid == 0)
+				// 	{
+				// 		printf("command count in child: %d\n",vars->command_count);
+				// 		remove_spaces_in_between();
+				// 		if(!parsing_commands( vars->initial_commands))
+				// 			return 0;
+				// 		execution_phase();
+				// 		// printf("qq\n");
+				// 		vars->command_head = NULL;
+				// 		exit(vars->ex_status);
+				// 	}
+				// 	else
+				// 	{
+				// 		if(waitpid(pid, &status, 0) != -1)
+				// 			(vars->ex_status) = WEXITSTATUS(status);
+				// 	}
+				// }
+				// else
+				// {
+					// printf("comm count: %d\n",vars->command_count);
+					remove_spaces_in_between();
+					if(!parsing_commands( vars->initial_commands))
+						return 0;
+					execution_phase();
+					// printf("qq\n");
+					vars->command_head = NULL;
+				// }
+				// }
 			}
 		}
-
 	}
 	return (1);
 }
