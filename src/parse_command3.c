@@ -95,11 +95,20 @@ void	remove_spaces_in_between()
 int	has_char(char *s, char c)
 {
 	int	i;
+	int quote[2];
 
+	quote[sin] = 0;
+	quote[doub] = 0;
 	i = -1;
 	while (s[++i])
-		if (s[i] == c)
+	{
+		if (s[i] == '\'' && !quote[doub])
+			quote[sin] = !quote[sin];
+		if (s[i] == '\"' && !quote[sin])
+			quote[doub] = !quote[doub];
+		if (s[i] == c && !quote[doub] && !quote[sin])
 			return (1);
+	}
 	return (0);
 }
 

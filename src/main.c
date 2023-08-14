@@ -102,7 +102,6 @@ void	execute(t_command **tmp, int *index)
 		// printf("total: %s || operator: %c || cmd: %s\n",vars->op, vars->op[(i - 1) * 2 +1], (*tmp)->command_args[0]);
 	}
 
-
 	// a[args] = expand_variables(in, a[args]);
 	// check permisions for redir
 	t_cmd_redir *redir = (*tmp)->redir;

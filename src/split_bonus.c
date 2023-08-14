@@ -149,7 +149,7 @@ char	**split_par(char *s)
 
 // int main(){
 // 	char *str;
-// 	str = "ls -a && (ls -l)";
+// 	str = "ls -a && '(ls -l)'";
 // 	char **split;
 // 	split = split_par(str);
 // 	if(!split)

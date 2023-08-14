@@ -172,6 +172,32 @@ static int im_i_in_9aws(char *arr)
 	return 1;
 }
 
+
+static int	par_coount(char *s)
+{
+	int	i;
+	int	active;
+	int par_c;
+
+	i = 0;
+	active = 0;
+	par_c = 0;
+	while (s[i])
+	{
+		if (s[i] == '(')
+			active++;
+		if (s[i] == ')')
+		{
+			active--;
+			if (!active)
+				par_c++;
+		}
+		i++;
+	}
+	if (active)
+		return (-1);
+	return (par_c);
+}
 int	nested_par(char **arr, int check, int index)
 {
 	char	**tmp;
@@ -184,24 +210,114 @@ int	nested_par(char **arr, int check, int index)
 	while (arr[++i])
 	{
 		arr[i] = ft_strtrim(arr[i], " \t");
-		if (has_char(arr[i], '('))
+		if (has_char(arr[i], '(') || has_char(arr[i], ')'))
 		{	
-			if (arr[i][0] == '&' || arr[i][0] == '|')
+
+			// printf("arr: %s\n",arr[i]);
+			// if (arr[i][0] == '&' || arr[i][0] == '|')
+			int parentheses_c = par_coount(arr[i]);
+			if (!check && parentheses_c == -1)
 			{
 				ft_dprintf(1, "minishell: syntax error\n");
 				vars->ex_status = 2;
 				return (0);
 			}
+			// printf("test: %d  arr: %s\n",par_coount(arr[i]),arr[i]);
 			char *save = ft_strdup (arr[i]);
-			if(arr[i][0] == '(' && arr[i][ft_strlen(arr[i]) - 1] == ')')
+			if(parentheses_c == 1 && arr[i][0] == '(' && arr[i][ft_strlen(arr[i]) - 1] == ')')
+			{
 				arr[i] = ft_substr(arr[i], 1, ft_strlen(arr[i]) - 2);
+				// printf("ta malk: %s\n", arr[i]);
+				if(!arr[i][0])
+				{
+					ft_dprintf(1, "minishell: syntax error\n");
+					vars->ex_status = 2;
+					return (0);
+				}
+			}
+			
+			// printf("after substr arr: %s\n",arr[i]);
+			
 			// printf("printf :%s\n",arr[i]);
 			char **kobi = split_par(arr[i]);
-			if(!kobi || (!operations(arr[i])[0] && kobi[1] && kobi[1][0]))
+			int x = -1;
+			while(!check && kobi[++x])
 			{
-				ft_dprintf(1, "minishell: syntax error\n");
-				vars->ex_status = 2;
-				return (0);
+				kobi[x] = ft_strtrim(kobi[x], " \t");
+				// printf("kobi: |%s| x: %d\n",kobi[x],x);
+				char **op_err = ft_split_charset(kobi[x], " \t");
+				int y = -1;
+				while(op_err[++y])
+				{
+					int w = -1;
+					int op_c = 0;
+					while(op_err[y][++w])
+					{
+						if (op_err[y][w] == '|' || op_err[y][w] == '&')
+							op_c++;
+						if (op_c > 2)
+						{
+							ft_dprintf(1, "minishell: syntax error\n");
+							vars->ex_status = 2;	
+							return 0;
+						}
+					}
+					if(op_err[y + 1] && (op_err[y][ft_strlen(op_err[y]) - 1] == '&' || op_err[y][ft_strlen(op_err[y]) - 1] == '|')
+					&& (op_err[y + 1][0] == '&' || op_err[y +1][0] == '|'))
+					{
+						ft_dprintf(1, "minishell: syntax error\n");
+						vars->ex_status = 2;
+						return (0);
+					}
+				}
+				// if(par_coount(kobi[x]) == 1 && kobi[x][0] == '(' && kobi[x][ft_strlen(kobi[x]) - 1] == ')')
+				if(kobi[x][0] == '&' || kobi[x][0] == '|')
+				{
+					if (!x || (x - 1 >= 0 && par_coount(kobi[x -1]) == 0))
+					{
+						ft_dprintf(1, "minishell: syntax error\n");
+						vars->ex_status = 2;
+						return (0);
+					}
+				}
+				if (kobi[x][ft_strlen(kobi[x]) - 1] == '&' || kobi[x][ft_strlen(kobi[x]) - 1] == '|')
+				{
+					if (!kobi[x + 1] || (kobi[x + 1] && par_coount(kobi[x + 1]) == 0))
+					{
+						ft_dprintf(1, "minishell: syntax error\n");
+						vars->ex_status = 2;
+						return (0);
+					}
+				}
+				if (par_coount(kobi[x]) == 1 && kobi[x][0] == '(' && kobi[x][ft_strlen(kobi[x]) - 1] == ')')
+				{
+					if (kobi[x + 1])
+					{
+						kobi[x + 1] = ft_strtrim(kobi[x+1], " \t");
+						if (kobi[x + 1][0] != '&' && kobi[x + 1][0] != '|')
+						{
+							ft_dprintf(1, "minishell: syntax error\n");
+							vars->ex_status = 2;
+							return (0);
+						}
+					}
+					if (x > 0)
+					{
+						kobi[x -1] = ft_strtrim(kobi[x - 1], " \t");
+						if (kobi[x -1][ft_strlen(kobi[x - 1]) - 1] != '&' && kobi[x -1][ft_strlen(kobi[x - 1]) - 1] != '|')
+						{
+							ft_dprintf(1, "minishell: syntax error\n");
+							vars->ex_status = 2;
+							return (0);
+						}
+					}
+				}
+				// if(!kobi || (!operations(arr[i])[0] && kobi[1] && kobi[1][0]))
+				// {
+				// 	ft_dprintf(1, "minishell: syntax error\n");
+				// 	vars->ex_status = 2;
+				// 	return (0);
+				// }
 			}
 			// printf("ok\n");
 			// vars->iteration++;
@@ -248,6 +364,8 @@ int	nested_par(char **arr, int check, int index)
 			// 	printf("arr: %s\n", arr[j]);
 			// printf("op: %s || iter_else_count: %d\n", vars->op,iter_else_count);
 			// printf("command: %s || op: %s || it: %d || status: %d\n",arr[i],vars->op,vars->iter_else_count,vars->ex_status);
+
+			// printf("else arr: %s\n",arr[i]);
 			if (check  && vars->iter_else_count > 0 &&  vars->op[0] && vars->op[0] == '2')
 			{
 				// printf("cmd: %s || gg1 || i: %d || it: %d\n",arr[i],i,vars->iter_else_count);
@@ -281,23 +399,23 @@ int	nested_par(char **arr, int check, int index)
 			if(arr[i + 1] || (!arr[i+1]  && (arr[i][0] == '&' || arr[i][0] == '|') && index > 0))
 			{
 				char *tmp_op = ft_strtrim(arr[i], " \n\t");
-				// if((!ft_strncmp(tmp_op, "&&", -1) || !ft_strncmp(tmp_op, "||", -1) || !ft_strncmp(tmp_op, "|", -1)) && arr[i +1])
-				// {
-				// 	i++;
-				// 	// arr[i] = ft_strtrim(arr[i], " \t\n");
-				// 	// if(arr[i][0] == '(' && arr[i][ft_strlen(arr[i]) - 1] == ')')
-				// 	// {
-				// 	// 	// arr[i] = ft_substr(arr[i], 1, ft_strlen(arr[i]) - 2);
-				// 	// 	return nested_par(split_par(arr[i]), check, index +1);
-				// 	// }
-				// 	//REMIND ME LATER
-				// }
+				if((!ft_strncmp(tmp_op, "&&", -1) || !ft_strncmp(tmp_op, "||", -1) || !ft_strncmp(tmp_op, "|", -1)) && arr[i +1])
+				{
+					i++;
+					arr[i] = ft_strtrim(arr[i], " \t\n");
+					if(par_coount(arr[i]) == 1 &&  arr[i][0] == '(' && arr[i][ft_strlen(arr[i]) - 1] == ')')
+					{
+						// arr[i] = ft_substr(arr[i], 1, ft_strlen(arr[i]) - 2);
+						return nested_par(split_par(arr[i]), check, index +1);
+					}
+					//REMIND ME LATER
+				}
 				// printf("bbbbb  %s\n",arr[i]);
 				vars->initial_commands = initial_split( arr[i], 1);
 			}
 			else
 			{
-				// printf("aaaaaaa  %s  confition: %d\n",arr[i], (!arr[i+1]  && (arr[i][0] == '&' || arr[i][0] == '|') &&index  > 0));
+				// printf("aaaaaaa  %s\n",arr[i]);
 				vars->initial_commands = initial_split( arr[i], 0);
 			}
 			vars->iter_else_count++;
