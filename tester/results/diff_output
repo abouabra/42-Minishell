@@ -12,7 +12,7 @@ PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki              
 PWD=/private/tmp/test_env                                                                                                                           PWD=/private/tmp/test_env
 SHELL=/bin/zsh                                                                                                                                      SHELL=/bin/zsh
 SHLVL=IGNORED                                                                                                                                       SHLVL=IGNORED
-SSH_AUTH_SOCK=/private/tmp/com.apple.launchd.VyclG3eFYX/Listeners                                                                                   SSH_AUTH_SOCK=/private/tmp/com.apple.launchd.VyclG3eFYX/Listeners
+SSH_AUTH_SOCK=/private/tmp/com.apple.launchd.GdYfQpHYk6/Listeners                                                                                   SSH_AUTH_SOCK=/private/tmp/com.apple.launchd.GdYfQpHYk6/Listeners
 TERM=xterm-256color                                                                                                                                 TERM=xterm-256color
 TERM_PROGRAM=vscode                                                                                                                                 TERM_PROGRAM=vscode
 TERM_PROGRAM_VERSION=1.79.2                                                                                                                         TERM_PROGRAM_VERSION=1.79.2
@@ -21,7 +21,7 @@ USER_ZDOTDIR=/Users/abouabra                                                    
 VSCODE_GIT_ASKPASS_EXTRA_ARGS=--ms-enable-electron-run-as-node                                                                                      VSCODE_GIT_ASKPASS_EXTRA_ARGS=--ms-enable-electron-run-as-node
 VSCODE_GIT_ASKPASS_MAIN=/Applications/Visual Studio Code.app/Contents/Resources/app/extensions/git/dist/askpass-main.js                             VSCODE_GIT_ASKPASS_MAIN=/Applications/Visual Studio Code.app/Contents/Resources/app/extensions/git/dist/askpass-main.js
 VSCODE_GIT_ASKPASS_NODE=/Applications/Visual Studio Code.app/Contents/Frameworks/Code Helper (Plugin).app/Contents/MacOS/Code Helper (Plugin)       VSCODE_GIT_ASKPASS_NODE=/Applications/Visual Studio Code.app/Contents/Frameworks/Code Helper (Plugin).app/Contents/MacOS/Code Helper (Plugin)
-VSCODE_GIT_IPC_HANDLE=/var/folders/zz/zyxvpxvq6csfxvn_n000cbc00032v0/T/vscode-git-cf1f4bc4a7.sock                                                   VSCODE_GIT_IPC_HANDLE=/var/folders/zz/zyxvpxvq6csfxvn_n000cbc00032v0/T/vscode-git-cf1f4bc4a7.sock
+VSCODE_GIT_IPC_HANDLE=/var/folders/zz/zyxvpxvq6csfxvn_n000cbc00032v0/T/vscode-git-0f53c61b89.sock                                                   VSCODE_GIT_IPC_HANDLE=/var/folders/zz/zyxvpxvq6csfxvn_n000cbc00032v0/T/vscode-git-0f53c61b89.sock
 VSCODE_INJECTION=1                                                                                                                                  VSCODE_INJECTION=1
 XPC_FLAGS=0x0                                                                                                                                       XPC_FLAGS=0x0
 XPC_SERVICE_NAME=0                                                                                                                                  XPC_SERVICE_NAME=0

@@ -98,11 +98,11 @@ static int	check_validity(char **phrases, int phrase_count, int sw)
 	{
 		phrases[i] = ft_strtrim(phrases[i], " \t\n");
 		// printf("ph: |%s| && ph+1: |%s| && condition: %d && sw: %d\n",phrases[i], phrases[i+1],(sw && !phrases[i][0] && phrases[i+1] && !phrases[i+1][0]),sw);
-		// printf("0: |%s| || +1: |%s|\n",phrases[i] , phrases[i+1]);
+		// printf("0: |%s|\n",phrases[i]);
 		if ((!sw && (!phrases[i][0])))
 		{
 			// printf("gg\n");
-			if ((!sw && phrase_count > 1) || (sw) || (!sw && !phrases[i][0]))
+			if ((!sw && phrase_count > 1) || (!sw && !phrases[i][0]))
 			{
 				// printf("sw: %d\n",sw);
 				ft_dprintf(1, "minishell: syntax error ttt\n");

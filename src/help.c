@@ -376,22 +376,92 @@ int	nested_par(char **arr, int check, int index)
 					if(waitpid(-1, &status, 0) != -1)
 						(vars->ex_status) = WEXITSTATUS(status);
 				}
-				if (vars->ex_status != 0 && vars->op[0 + 1] == '&')
+
+
+				if (arr[i][0] == '&' || arr[i][0] == '|')
 				{
-					if (vars->op[0] && ((vars->op[0] == '1' && vars->op[0 + 1] == '|') || (vars->op[0] == '2' && vars->op[0 + 1] != '|')))
-						i++;
+					int s;
+					char op;
+
+					s = -1;
+					if(vars->ex_status == 0 && arr[i][0] == '|')
+					{
+						op = '&';
+						while(arr[i][++s])
+						{
+							if(arr[i][s+1] && arr[i][s] == op && arr[i][s+1] == op)
+							{
+								s += 2;
+								break;
+							}
+						}
+					}
+					else if (vars->ex_status != 0 && arr[i][0] == '&')
+					{
+						op = '|';
+						while(arr[i][++s])
+						{
+							if(arr[i][s+1] && arr[i][s] == op && arr[i][s+1] == op)
+							{
+								s += 2;
+								break;
+							}
+						}
+						// printf("%d tt\n", s);
+					}
+					//  printf("before substr arr: |%s|    s: %d\n",arr[i],s);
+					int valid = 0;
+					if (s == -1)
+					{
+						s = 2;
+						valid = 1;
+					}
+					arr[i] = ft_substr(arr[i], s, -1);
+
+					// printf("after substr arr: |%s|    s: %d\n",arr[i],s);
+					if(!arr[i][0])
+					{
+						// i++;
+						if(valid && arr[i + 1])
+						{
+							// printf("gg\n");
+							return nested_par(split_par(arr[i + 1]), check, index +1);
+						}
+						else if (!valid)
+						{
+							while (arr[i] && ft_strtrim(arr[i], " \t")[0] != op)
+								i++;
+							if (arr[i])
+							{
+								// vars->op = operations(arr[i]);
+								if(ft_strtrim(arr[i], " \t")[0] == op && ft_strlen(ft_strtrim(arr[i], " \t")) == 2)
+									i++;
+								return nested_par(split_par(arr[i]), check, index +1);
+							}
+						}
+					}
 				}
-				if (vars->ex_status == 0 && vars->op[0 + 1] == '|')
+				else
 				{
-					if (vars->op[0] && ((vars->op[0] == '1' && vars->op[0 + 1] == '|') || (vars->op[0] == '2' && vars->op[0 + 1] != '&')))
-						i++;
+					// printf("op: %s   arr[i]: |%s|    arr[i-1]: |%s|\n",vars->op,arr[i],arr[i-1]);
+					if (vars->ex_status != 0 && vars->op[0 + 1] == '&')
+					{
+						if (vars->op[0] && ((vars->op[0] == '1' && vars->op[0 + 1] == '|') || (vars->op[0] == '2' && vars->op[0 + 1] != '|')))
+							i++;
+					}
+					if (vars->ex_status == 0 && vars->op[0 + 1] == '|')
+					{
+						if (vars->op[0] && ((vars->op[0] == '1' && vars->op[0 + 1] == '|') || (vars->op[0] == '2' && vars->op[0 + 1] != '&')))
+							i++;
+					}
 				}
+					// printf("gg\n");
 				if (!arr[i])
 				{
 					// printf("cmd: %s || gg2 || i: %d || it: %d\n",arr[i],i,vars->iter_else_count);
-					// printf("gg\n");
 					return 0;
 				}
+
 				// printf("total: %s || operator: %c || cmd: %s\n",vars->op, vars->op[(i - 1) * 2 +1], (*tmp)->command_args[0]);
 			}
 			if (!vars->op)
@@ -399,17 +469,17 @@ int	nested_par(char **arr, int check, int index)
 			if(arr[i + 1] || (!arr[i+1]  && (arr[i][0] == '&' || arr[i][0] == '|') && index > 0))
 			{
 				char *tmp_op = ft_strtrim(arr[i], " \n\t");
-				if((!ft_strncmp(tmp_op, "&&", -1) || !ft_strncmp(tmp_op, "||", -1) || !ft_strncmp(tmp_op, "|", -1)) && arr[i +1])
-				{
-					i++;
-					arr[i] = ft_strtrim(arr[i], " \t\n");
-					if(par_coount(arr[i]) == 1 &&  arr[i][0] == '(' && arr[i][ft_strlen(arr[i]) - 1] == ')')
-					{
-						// arr[i] = ft_substr(arr[i], 1, ft_strlen(arr[i]) - 2);
-						return nested_par(split_par(arr[i]), check, index +1);
-					}
-					//REMIND ME LATER
-				}
+				// if((!ft_strncmp(tmp_op, "&&", -1) || !ft_strncmp(tmp_op, "||", -1) || !ft_strncmp(tmp_op, "|", -1)) && arr[i +1])
+				// {
+				// 	i++;
+				// 	arr[i] = ft_strtrim(arr[i], " \t\n");
+				// 	if(par_coount(arr[i]) == 1 &&  arr[i][0] == '(' && arr[i][ft_strlen(arr[i]) - 1] == ')')
+				// 	{
+				// 		// arr[i] = ft_substr(arr[i], 1, ft_strlen(arr[i]) - 2);
+				// 		return nested_par(split_par(arr[i]), check, index +1);
+				// 	}
+				// 	//REMIND ME LATER
+				// }
 				// printf("bbbbb  %s\n",arr[i]);
 				vars->initial_commands = initial_split( arr[i], 1);
 			}
