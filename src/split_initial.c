@@ -98,14 +98,14 @@ static int	check_validity(char **phrases, int phrase_count, int sw)
 	{
 		phrases[i] = ft_strtrim(phrases[i], " \t\n");
 		// printf("ph: |%s| && ph+1: |%s| && condition: %d && sw: %d\n",phrases[i], phrases[i+1],(sw && !phrases[i][0] && phrases[i+1] && !phrases[i+1][0]),sw);
-		// printf("0: |%s|\n",phrases[i]);
+		// printf("0: |%s|\n",phrases[i]ls | wc && ls | wc && ls | wc ));
 		if ((!sw && (!phrases[i][0])))
 		{
 			// printf("gg\n");
 			if ((!sw && phrase_count > 1) || (!sw && !phrases[i][0]))
 			{
 				// printf("sw: %d\n",sw);
-				ft_dprintf(1, "minishell: syntax error ttt\n");
+				ft_dprintf(1, "minishell: syntax error\n");
 				vars->ex_status = 2;
 				return (0);
 			}
@@ -134,7 +134,8 @@ char *operations(char *s)
 			quote[sin] = !quote[sin];
 		if (s[i] == '\"' && !quote[sin])
 			quote[doub] = !quote[doub];
-		if (i + 1 < ft_strlen(s) && s[i] == '|' && s[i + 1] != '|' && !quote[doub] && !quote[sin])
+		if (((i + 1 < ft_strlen(s) && s[i] == '|' && s[i + 1] != '|')
+		|| (i + 1 == ft_strlen(s) && s[i] == '|' && !s[i + 1])) && !quote[doub] && !quote[sin])
 			op = ft_strjoin(op, "1|");
 		if (i + 1 < ft_strlen(s) && s[i] == '|' && s[i + 1] == '|' && !quote[doub] && !quote[sin])
 		{
@@ -168,7 +169,10 @@ char	**initial_split(char *s, int sw)
 	vars->op = operations(s);
 	if(sw == 1 && vars->op[0])
 		vars->command_count--;
-	// printf("string: %s || count: %d\n", s, vars->command_count);
+	if(sw == 1 && ft_strlen(vars->op) >=2 && (s[i] == '|' || s[i] == '&') && (s[ft_strlen(s)-1] == '|' || s[ft_strlen(s)-1] == '&'))
+		vars->command_count--;
+
+	// printf("string: |%s| && count: %d && sw: %d && op: %s\n", s, vars->command_count,sw,vars->op);
 	phrases = (char **)my_alloc((phrase_count + 1) * sizeof(char *));
 	
 	// printf("gg\n");

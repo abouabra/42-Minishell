@@ -78,7 +78,9 @@ void many_wild(int n[5], char *av, struct dirent *read, t_chars *chars) {
 }
 
 void initialize_vals(DIR **dir, t_chars *chars, int n[5], char *av) {
-  *dir = opendir(getcwd(NULL, 0));
+  char *tmp_path = getcwd(NULL, 0);
+  garbage_collector(tmp_path, 0);
+  *dir = opendir(tmp_path);
   chars->arr = ft_split(av, '*');
   n[valid] = 0;
   chars->strings[final] = "";

@@ -15,6 +15,7 @@
 #include <stdlib.h>
 #include <sys/_types/_pid_t.h>
 #include <sys/wait.h>
+#include <unistd.h>
 
 int	checker(char **commands, int i)
 {
@@ -212,8 +213,8 @@ int	nested_par(char **arr, int check, int index)
 		arr[i] = ft_strtrim(arr[i], " \t");
 		if (has_char(arr[i], '(') || has_char(arr[i], ')'))
 		{	
-
-			// printf("arr: %s\n",arr[i]);
+			// if(check)
+			// 	printf("arr: %s\n",arr[i]);
 			// if (arr[i][0] == '&' || arr[i][0] == '|')
 			int parentheses_c = par_coount(arr[i]);
 			if (!check && parentheses_c == -1)
@@ -254,7 +255,9 @@ int	nested_par(char **arr, int check, int index)
 					while(op_err[y][++w])
 					{
 						if (op_err[y][w] == '|' || op_err[y][w] == '&')
+						{
 							op_c++;
+						}
 						if (op_c > 2)
 						{
 							ft_dprintf(1, "minishell: syntax error\n");
@@ -322,12 +325,23 @@ int	nested_par(char **arr, int check, int index)
 			// printf("ok\n");
 			// vars->iteration++;
 			// printf("arr: |%s|     save: |%s|   index: %d     check: %d\n",arr[i],save,  (index == 0 && save[0] == '('), check);
+
 			if(check && ( index > 0 || (index == 0 && save[0] == '(' && save[ft_strlen(save) - 1] == ')')))
 			{
 				// printf("ok\n");
 				int pid = fork();
 				if(pid == 0)
 				{
+					// if(arr[i-1])
+					// 	printf("child: arr-1: |%s|\n",arr[i-1]);
+					if(i>0 && arr[i-1] && arr[i-1][ft_strlen(arr[i-1]) -1] && arr[i-1][ft_strlen(arr[i-1]) -1] == '|' && (!arr[i-1][ft_strlen(arr[i-1]) -2] || (arr[i-1][ft_strlen(arr[i-1]) -2] && arr[i-1][ft_strlen(arr[i-1]) -2] != '|')))
+					{
+						printf("in child && pipe before me arr: |%s| && arr-1: |%s|\n",arr[i],arr[i-1]);
+					}
+					if(arr[i+1] && arr[i+1][0] && arr[i+1][0] == '|' && arr[i+1][1] && arr[i+1][1] != '|')
+					{
+						printf("in child && pipe after me arr: |%s| && arr+1: |%s|\n",arr[i],arr[i+1]);
+					}
 					// printf("im in child\n");
 					nested_par(kobi, check, index + 1);
 					exit(vars->ex_status);
@@ -343,8 +357,22 @@ int	nested_par(char **arr, int check, int index)
 		}
 		else
 		{
+
+			if(check && arr[i-1] && arr[i][0] && arr[i][0] == '|' && (!arr[i][1] || (arr[i][1] && arr[i][1] != '|')))
+			{
+				//end with pipe && next is subshell
+				printf("in main && subshell before me and i start with pipe arr: |%s| && arr-1: |%s|\n",arr[i],arr[i-1]);
+
+			}
+			if(check && arr[i+1] && par_coount(arr[i+1]) == 1 && arr[i+1][0] == '(' && arr[i + 1][ft_strlen(arr[i + 1]) - 1] == ')'
+				&& arr[i][ft_strlen(arr[i]) -1] && arr[i][ft_strlen(arr[i]) -1] == '|' &&(!arr[i][ft_strlen(arr[i]) - 2] || (arr[i][ft_strlen(arr[i]) - 2] && arr[i][ft_strlen(arr[i]) - 2] != '|')))
+			{
+				//end with pipe && next is subshell
+				printf("in main && subshell after me and i end with pipe arr: |%s| && arr+1: |%s|\n",arr[i],arr[i+1]);
+
+			}
 			// if(check)
-			// 	printf("arr: %s\n",arr[i]);
+			// 	printf("1       arr: %s || ex status: %d      || op: %s\n",arr[i],vars->ex_status,vars->op);
 			
 			// j = -1;
 			// tmp = initial_split( arr[i], 1);
@@ -377,8 +405,8 @@ int	nested_par(char **arr, int check, int index)
 						(vars->ex_status) = WEXITSTATUS(status);
 				}
 
-
-				if (arr[i][0] == '&' || arr[i][0] == '|')
+				
+				if (arr[i][0] == '&' || (arr[i][0] == '|' && arr[i][1] && arr[i][1] != '|'))
 				{
 					int s;
 					char op;
@@ -410,6 +438,7 @@ int	nested_par(char **arr, int check, int index)
 						// printf("%d tt\n", s);
 					}
 					//  printf("before substr arr: |%s|    s: %d\n",arr[i],s);
+					
 					int valid = 0;
 					if (s == -1)
 					{
@@ -446,6 +475,12 @@ int	nested_par(char **arr, int check, int index)
 					// printf("op: %s   arr[i]: |%s|    arr[i-1]: |%s|\n",vars->op,arr[i],arr[i-1]);
 					if (vars->ex_status != 0 && vars->op[0 + 1] == '&')
 					{
+						//REMINDER
+						//  ls && gg || (pp || ps)
+						// problem is that it will skip the second arr cuz op[0] is && even tho it should check ||
+						// if(check)
+						// 	printf("2      arr: %s || ex status: %d      || op: %s\n",arr[i],vars->ex_status,vars->op);
+				
 						if (vars->op[0] && ((vars->op[0] == '1' && vars->op[0 + 1] == '|') || (vars->op[0] == '2' && vars->op[0 + 1] != '|')))
 							i++;
 					}
@@ -464,6 +499,7 @@ int	nested_par(char **arr, int check, int index)
 
 				// printf("total: %s || operator: %c || cmd: %s\n",vars->op, vars->op[(i - 1) * 2 +1], (*tmp)->command_args[0]);
 			}
+			
 			if (!vars->op)
 				vars->op = ft_strdup("");
 			if(arr[i + 1] || (!arr[i+1]  && (arr[i][0] == '&' || arr[i][0] == '|') && index > 0))
@@ -496,6 +532,7 @@ int	nested_par(char **arr, int check, int index)
 			}
 			if(check)
 			{
+
 				// printf("index count: %d\n",index);
 				// if(vars->iteration > 0 && im_i_in_9aws(arr[i]))
 				// {

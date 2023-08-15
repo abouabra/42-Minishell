@@ -17,7 +17,11 @@ static void	the_search_built(t_env *search, char *old_path)
 	while (search)
 	{
 		if (!ft_strncmp(search->env_id, "PWD", -1))
-			search->env_data = getcwd(NULL, 0);
+		{
+			char *tmp_search  = getcwd(NULL, 0);
+			garbage_collector(tmp_search, 0);
+			search->env_data = tmp_search;
+		}
 		else if (!ft_strncmp(search->env_id, "OLDPWD", -1))
 			search->env_data = old_path;
 		search = search->next;
@@ -55,6 +59,7 @@ void	cd(t_command *command)
 		return ;
 	}
 	char *old_path = getcwd(NULL, 0);
+	garbage_collector(old_path, 0);
 	chdir(command->command_args[1]);
 	search = vars->env_head;
 	the_search_built(search,old_path);
@@ -124,6 +129,8 @@ void					my_exit(t_command *command)
 
 void	pwd(void)
 {
-	ft_dprintf(1,"%s\n", getcwd(NULL, 0));
+	char *path = getcwd(NULL, 0);
+	garbage_collector(path, 0);
+	ft_dprintf(1,"%s\n", path);
 	vars->ex_status = 0;
 }
