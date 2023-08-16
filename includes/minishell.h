@@ -101,6 +101,7 @@ typedef struct t_args
 	int					heredocs_fd;
 	int 				iter_else_count;
 	int 				iteration;
+	int 				pipe;
 }						t_args;
 
 // enum					e_e

@@ -123,7 +123,7 @@ void	handle_child(t_command *tmp, int i)
 		close(vars->prev_pipefd[0]);
 		close(vars->prev_pipefd[1]);
 	}
-	if (i < vars->command_count - 1 && (!vars->op[0] || (vars->op[0] && vars->op[i * 2] == '1')))
+	if (vars->pipe || (i < vars->command_count - 1 && (!vars->op[0] || (vars->op[0] && vars->op[i * 2] == '1'))))
 	{
 		dup2(vars->next_pipefd[1], 1);
 		close(vars->next_pipefd[0]);

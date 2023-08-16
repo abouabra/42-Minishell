@@ -130,20 +130,25 @@ void	execute(t_command **tmp, int *index)
 	// if (i < vars->command_count - 1 && vars->op[i * 2] == '1')
 	// printf("before: prev[0]: %d   prev[1]: %d\n",vars->prev_pipefd[0],vars->prev_pipefd[1]);
 	// printf("before: next[0]: %d   next[1]: %d\n",vars->next_pipefd[0],vars->next_pipefd[1]);
-	if (i < vars->command_count - 1 && (!vars->op[0] || (vars->op[0] && vars->op[i * 2] == '1')))
+
+	if (vars->pipe || (i < vars->command_count - 1 && (!vars->op[0] || (vars->op[0] && vars->op[i * 2] == '1'))))
 	{
-		// printf("gg\n");
+		// vars->pipe = 0;
+		// printf("gg %s\n", (*tmp)->command_args[0]);
 		pipe(vars->next_pipefd);
 	}
-	// printf("after: prev[0]: %d   prev[1]: %d\n",vars->prev_pipefd[0],vars->prev_pipefd[1]);
-	// printf("after: next[0]: %d   next[1]: %d\n",vars->next_pipefd[0],vars->next_pipefd[1]);
+
+	// printf("pipe after: prev[0]: %d   prev[1]: %d\n",vars->prev_pipefd[0],vars->prev_pipefd[1]);
+	// printf("pipe after: next[0]: %d   next[1]: %d\n",vars->next_pipefd[0],vars->next_pipefd[1]);
 	vars->pid[i] = fork();
 	if (vars->pid[i] == -1)
 		return ;
 	if (vars->pid[i] == 0)
 		handle_child((*tmp), i);
 	if ((i == 0 && vars->op[i * 2] == '1') || (i > 0 && (vars->op[(i - 1) * 2] == '1' || vars->op[(i) * 2] == '1')))
+	{
 		fd_handler(i);
+	}
 	
 	// else
 	// 	(vars->ex_status) = WEXITSTATUS(status);

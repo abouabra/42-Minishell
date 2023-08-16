@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include <stdio.h>
 
 void	doub_sin_skip(int *sin, int *doub, char *s, int i)
 {
@@ -62,8 +63,9 @@ void	fd_handler(int i)
 		close(vars->prev_pipefd[0]);
 		close(vars->prev_pipefd[1]);
 	}
-	if (i < vars->command_count - 1 && (!vars->op[0] || (vars->op[0] && vars->op[i * 2] == '1')))
+	if (vars->pipe || (i < vars->command_count - 1 && (!vars->op[0] || (vars->op[0] && vars->op[i * 2] == '1'))))
 	{
+		vars->pipe = 0;
 		vars->prev_pipefd[0] = vars->next_pipefd[0];
 		vars->prev_pipefd[1] = vars->next_pipefd[1];
 	}

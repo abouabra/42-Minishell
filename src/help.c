@@ -395,6 +395,13 @@ int	nested_par(char **arr, int check, int index)
 			if(check && ( index > 0 || (index == 0 && save[0] == '(' && save[ft_strlen(save) - 1] == ')')))
 			{
 				// printf("ok\n");
+				if(arr[i+1] && arr[i+1][0] && arr[i+1][0] == '|' && arr[i+1][1] && arr[i+1][1] != '|')
+				{
+					printf("in child && pipe after me arr: |%s| && arr+1: |%s|\n",arr[i],arr[i+1]);
+				}
+				// ft_dprintf(2,"prev 0: %d      prev 1: %d\n",vars->prev_pipefd[0],vars->prev_pipefd[1]);
+				// ft_dprintf(2,"next 0: %d      next 1: %d\n",vars->next_pipefd[0],vars->next_pipefd[1]);
+				close(vars->prev_pipefd[1]);
 				int pid = fork();
 				if(pid == 0)
 				{
@@ -402,20 +409,37 @@ int	nested_par(char **arr, int check, int index)
 					// 	printf("child: arr-1: |%s|\n",arr[i-1]);
 					if(i>0 && arr[i-1] && arr[i-1][ft_strlen(arr[i-1]) -1] && arr[i-1][ft_strlen(arr[i-1]) -1] == '|' && (!arr[i-1][ft_strlen(arr[i-1]) -2] || (arr[i-1][ft_strlen(arr[i-1]) -2] && arr[i-1][ft_strlen(arr[i-1]) -2] != '|')))
 					{
+						dup2(vars->prev_pipefd[0], 0);
+						close(vars->prev_pipefd[1]);
+						close(vars->prev_pipefd[0]);
+					
+
+						// char line[101];
+						// int r =read(vars->next_pipefd[0], line, 100);
+						// line[r] = 0;
+						// write(2,line,ft_strlen(line));
+
+						// close(vars->next_pipefd[1]);
+						// close(vars->next_pipefd[0]);
+
+
+
 						printf("in child && pipe before me arr: |%s| && arr-1: |%s|\n",arr[i],arr[i-1]);
-					}
-					if(arr[i+1] && arr[i+1][0] && arr[i+1][0] == '|' && arr[i+1][1] && arr[i+1][1] != '|')
-					{
-						printf("in child && pipe after me arr: |%s| && arr+1: |%s|\n",arr[i],arr[i+1]);
 					}
 					// printf("im in child\n");
 					nested_par(kobi, check, index + 1);
+					// close(vars->prev_pipefd[1]);
+					// close(vars->prev_pipefd[0]);
 					exit(vars->ex_status);
 				}
 				else
 				{
 					if(waitpid(pid, &status, 0) != -1)
 						(vars->ex_status) = WEXITSTATUS(status);
+
+					
+					// close(vars->prev_pipefd[1]);
+					close(vars->prev_pipefd[0]);
 				}
 			}
 			else
@@ -437,7 +461,13 @@ int	nested_par(char **arr, int check, int index)
 			{
 				//end with pipe && next is subshell
 				printf("in main && subshell after me and i end with pipe arr: |%s| && arr+1: |%s|\n",arr[i],arr[i+1]);
+				vars->pipe = 1;
+				// pipe(vars->next_pipefd);
+				// vars->std_out = dup(1);
+				// dup2(vars->next_pipefd[1],1);
 
+				// close(vars->next_pipefd[1]);
+				// close(vars->next_pipefd[0]);
 			}
 			// if(check)
 			// 	printf("1       arr: %s || ex status: %d      || op: %s\n",arr[i],vars->ex_status,vars->op);
