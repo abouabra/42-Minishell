@@ -205,16 +205,21 @@ int	nested_par(char **arr, int check, int index)
 	int		i;
 	int		j;
 	
+	// if(check)
+	// 	printf("nested: %s\n",arr[0]);
 	// static int iter_else_count;
 	i = -1;
 	int status;
+	// printf("arr: %s %d %d\n",arr[0], vars->ex_status, index);
 	while (arr[++i])
 	{
 		arr[i] = ft_strtrim(arr[i], " \t");
+		
+		
+		
 		if (has_char(arr[i], '(') || has_char(arr[i], ')'))
 		{	
 			// if(check)
-			// 	printf("arr: %s\n",arr[i]);
 			// if (arr[i][0] == '&' || arr[i][0] == '|')
 			int parentheses_c = par_coount(arr[i]);
 			if (!check && parentheses_c == -1)
@@ -227,6 +232,68 @@ int	nested_par(char **arr, int check, int index)
 			char *save = ft_strdup (arr[i]);
 			if(parentheses_c == 1 && arr[i][0] == '(' && arr[i][ft_strlen(arr[i]) - 1] == ')')
 			{
+
+								// printf("op: %s   arr[i]: |%s|    ex status: |%d|\n",vars->op,arr[i],vars->ex_status);
+				if (check && arr[i -1] && (arr[i -1][ft_strlen(arr[i - 1]) - 1] == '&' || (arr[i - 1][ft_strlen(arr[i - 1]) - 1] == '|' && arr[i - 1][ft_strlen(arr[i - 1]) - 2] && arr[i - 1][ft_strlen(arr[i - 1]) - 2] == '|')))
+				{
+					if (vars->ex_status != 0 && vars->op[ft_strlen(vars->op) -1] == '&')
+					{
+						//REMINDER
+						//  ls && gg || (pp || ps)
+						// problem is that it will skip the second arr cuz op[0] is && even tho it should check ||
+						//SKIP
+						while(arr[i] && ((par_coount(arr[i]) == 1 && arr[i][0] == '(' && arr[i][ft_strlen(arr[i]) - 1] == ')' )|| !ft_strnstr(arr[i], "||", -1)))
+						{
+							if(arr[++i])
+								arr[i] = ft_strtrim(arr[i], " \t");
+						}
+						if (arr[i])
+						{
+							if(ft_strlen(arr[i]) == 2)
+								i++;
+							if(!par_coount(arr[i]) && arr[i][0] != '(' && arr[i][ft_strlen(arr[i]) - 1] != ')')
+								return nested_par(&arr[i], check, index +1);
+						}
+						// if (vars->op[0] && ((vars->op[0] == '1' && vars->op[0 + 1] == '|') || (vars->op[0] == '2' && vars->op[0 + 1] != '|')))
+						// 	i++;
+					}
+					if (vars->ex_status == 0 && vars->op[ft_strlen(vars->op) -1] == '|')
+					{
+						// printf("2      arr: %s || ex status: %d      || op: %s\n",arr[i],vars->ex_status,vars->op);
+
+						while(arr[i] && ((par_coount(arr[i]) == 1 && arr[i][0] == '(' && arr[i][ft_strlen(arr[i]) - 1] == ')' )|| !ft_strnstr(arr[i], "&&", -1)))
+						{
+							if(arr[++i])
+								arr[i] = ft_strtrim(arr[i], " \t");
+						}
+						if (arr[i])
+						{
+							if(ft_strlen(arr[i]) == 2)
+								i++;
+							if(!par_coount(arr[i]) && arr[i][0] != '(' && arr[i][ft_strlen(arr[i]) - 1] != ')')
+								return nested_par(&arr[i], check, index +1);
+						}
+						//SKIP
+						// if (vars->op[0] && ((vars->op[0] == '1' && vars->op[0 + 1] == '|') || (vars->op[0] == '2' && vars->op[0 + 1] != '&')))
+						// 	i++;
+					}
+				}
+
+
+
+
+
+				if(!arr[i])
+				{
+					// printf("printf :%s\n",arr[i]);
+					return 0;
+				}
+
+
+
+
+
+
 				arr[i] = ft_substr(arr[i], 1, ft_strlen(arr[i]) - 2);
 				// printf("ta malk: %s\n", arr[i]);
 				if(!arr[i][0])
@@ -239,7 +306,6 @@ int	nested_par(char **arr, int check, int index)
 			
 			// printf("after substr arr: %s\n",arr[i]);
 			
-			// printf("printf :%s\n",arr[i]);
 			char **kobi = split_par(arr[i]);
 			int x = -1;
 			while(!check && kobi[++x])
@@ -353,12 +419,14 @@ int	nested_par(char **arr, int check, int index)
 				}
 			}
 			else
+			{
 				return nested_par(kobi, check, index + 1);
+			}
 		}
 		else
 		{
 
-			if(check && arr[i-1] && arr[i][0] && arr[i][0] == '|' && (!arr[i][1] || (arr[i][1] && arr[i][1] != '|')))
+			if(check && i-1>0 && arr[i][0] && arr[i][0] == '|' && (!arr[i][1] || (arr[i][1] && arr[i][1] != '|')))
 			{
 				//end with pipe && next is subshell
 				printf("in main && subshell before me and i start with pipe arr: |%s| && arr-1: |%s|\n",arr[i],arr[i-1]);
@@ -394,20 +462,22 @@ int	nested_par(char **arr, int check, int index)
 			// printf("command: %s || op: %s || it: %d || status: %d\n",arr[i],vars->op,vars->iter_else_count,vars->ex_status);
 
 			// printf("else arr: %s\n",arr[i]);
-			if (check  && vars->iter_else_count > 0 &&  vars->op[0] && vars->op[0] == '2')
+			if (check)
 			{
 				// printf("cmd: %s || gg1 || i: %d || it: %d\n",arr[i],i,vars->iter_else_count);
 				
 				int j = -1;
-				while (++j < vars->iter_else_count)
+				while (vars->iter_else_count > 0 && ++j < vars->iter_else_count)
 				{
 					if(waitpid(-1, &status, 0) != -1)
 						(vars->ex_status) = WEXITSTATUS(status);
 				}
 
-				
-				if (arr[i][0] == '&' || (arr[i][0] == '|' && arr[i][1] && arr[i][1] != '|'))
+				arr[i] = ft_strtrim(arr[i], " \t");
+
+				if (arr[i][0] == '&' || (arr[i][0] == '|' && arr[i][1] && arr[i][1] == '|'))
 				{
+					//printf("arr[i]: %s   i: %d\n",arr[i],i);
 					int s;
 					char op;
 
@@ -419,7 +489,8 @@ int	nested_par(char **arr, int check, int index)
 						{
 							if(arr[i][s+1] && arr[i][s] == op && arr[i][s+1] == op)
 							{
-								s += 2;
+								if (arr[i][s+2])
+									s += 2;
 								break;
 							}
 						}
@@ -427,11 +498,13 @@ int	nested_par(char **arr, int check, int index)
 					else if (vars->ex_status != 0 && arr[i][0] == '&')
 					{
 						op = '|';
+						//printf("|%s| =>>>>>>> \n", arr[i]);
 						while(arr[i][++s])
 						{
 							if(arr[i][s+1] && arr[i][s] == op && arr[i][s+1] == op)
 							{
-								s += 2;
+								if (arr[i][s+2])
+									s += 2;
 								break;
 							}
 						}
@@ -445,6 +518,7 @@ int	nested_par(char **arr, int check, int index)
 						s = 2;
 						valid = 1;
 					}
+					// printf("%d\n", s);
 					arr[i] = ft_substr(arr[i], s, -1);
 
 					// printf("after substr arr: |%s|    s: %d\n",arr[i],s);
@@ -454,7 +528,7 @@ int	nested_par(char **arr, int check, int index)
 						if(valid && arr[i + 1])
 						{
 							// printf("gg\n");
-							return nested_par(split_par(arr[i + 1]), check, index +1);
+							return nested_par(&arr[i + 1], check, index +1);
 						}
 						else if (!valid)
 						{
@@ -470,25 +544,10 @@ int	nested_par(char **arr, int check, int index)
 						}
 					}
 				}
-				else
-				{
-					// printf("op: %s   arr[i]: |%s|    arr[i-1]: |%s|\n",vars->op,arr[i],arr[i-1]);
-					if (vars->ex_status != 0 && vars->op[0 + 1] == '&')
-					{
-						//REMINDER
-						//  ls && gg || (pp || ps)
-						// problem is that it will skip the second arr cuz op[0] is && even tho it should check ||
-						// if(check)
-						// 	printf("2      arr: %s || ex status: %d      || op: %s\n",arr[i],vars->ex_status,vars->op);
 				
-						if (vars->op[0] && ((vars->op[0] == '1' && vars->op[0 + 1] == '|') || (vars->op[0] == '2' && vars->op[0 + 1] != '|')))
-							i++;
-					}
-					if (vars->ex_status == 0 && vars->op[0 + 1] == '|')
-					{
-						if (vars->op[0] && ((vars->op[0] == '1' && vars->op[0 + 1] == '|') || (vars->op[0] == '2' && vars->op[0 + 1] != '&')))
-							i++;
-					}
+				else //if (arr[i][ft_strlen(arr[i]) - 1] == '&' || (arr[i][ft_strlen(arr[i]) - 1] == '|' && arr[i][ft_strlen(arr[i]) - 2] && arr[i][ft_strlen(arr[i]) - 2] == '|'))
+				{
+					// raha lfo9
 				}
 					// printf("gg\n");
 				if (!arr[i])
