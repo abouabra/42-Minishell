@@ -58,13 +58,15 @@ char	*is_arg_number(char *str)
 
 void	fd_handler(int i)
 {
-	if (i > 0 && (!vars->op[0] || (vars->op[0] && vars->op[(i - 1) * 2] == '1')))
+	if (vars->pipe == 2 || (i > 0 && (!vars->op[0] || (vars->op[0] && vars->op[(i - 1) * 2] == '1'))))
 	{
+		vars->pipe = 0;
 		close(vars->prev_pipefd[0]);
 		close(vars->prev_pipefd[1]);
 	}
 	if (vars->pipe || (i < vars->command_count - 1 && (!vars->op[0] || (vars->op[0] && vars->op[i * 2] == '1'))))
 	{
+		printf("gg\n");
 		vars->pipe = 0;
 		vars->prev_pipefd[0] = vars->next_pipefd[0];
 		vars->prev_pipefd[1] = vars->next_pipefd[1];

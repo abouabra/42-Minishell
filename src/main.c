@@ -131,10 +131,10 @@ void	execute(t_command **tmp, int *index)
 	// printf("before: prev[0]: %d   prev[1]: %d\n",vars->prev_pipefd[0],vars->prev_pipefd[1]);
 	// printf("before: next[0]: %d   next[1]: %d\n",vars->next_pipefd[0],vars->next_pipefd[1]);
 
-	if (vars->pipe || (i < vars->command_count - 1 && (!vars->op[0] || (vars->op[0] && vars->op[i * 2] == '1'))))
+	if (vars->pipe== 1 || (i < vars->command_count - 1 && (!vars->op[0] || (vars->op[0] && vars->op[i * 2] == '1'))))
 	{
 		// vars->pipe = 0;
-		// printf("gg %s\n", (*tmp)->command_args[0]);
+		printf("gg %s\n", (*tmp)->command_args[0]);
 		pipe(vars->next_pipefd);
 	}
 

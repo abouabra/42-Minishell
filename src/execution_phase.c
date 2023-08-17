@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include <stdio.h>
 #include <unistd.h>
 
 void	execute_built_in(t_command *command)
@@ -117,14 +118,30 @@ void do_redirections(t_cmd_redir *head)
 
 void	handle_child(t_command *tmp, int i)
 {
-	if (i > 0 && (!vars->op[0] || (vars->op[0] && vars->op[(i - 1) * 2] == '1')))
+	if (vars->pipe == 2||  (i > 0 && (!vars->op[0] || (vars->op[0] && vars->op[(i - 1) * 2] == '1'))))
 	{
+		printf("handle child pipe: 2 cmd: %s\n",tmp->command_args[0]);
+
+		// if(vars->pipe == 2)
+		// {
+
+		// char line[101];
+		// int r =read(vars->prev_pipefd[0], line, 100);
+		// line[r] = 0;
+		// write(2,line,ft_strlen(line));
+
+		// }
+
 		dup2(vars->prev_pipefd[0], 0);
+
+
+
 		close(vars->prev_pipefd[0]);
 		close(vars->prev_pipefd[1]);
 	}
-	if (vars->pipe || (i < vars->command_count - 1 && (!vars->op[0] || (vars->op[0] && vars->op[i * 2] == '1'))))
+	if (vars->pipe == 1 || (i < vars->command_count - 1 && (!vars->op[0] || (vars->op[0] && vars->op[i * 2] == '1'))))
 	{
+		printf("handle child pipe: 1 cmd: %s\n",tmp->command_args[0]);
 		dup2(vars->next_pipefd[1], 1);
 		close(vars->next_pipefd[0]);
 		close(vars->next_pipefd[1]);
