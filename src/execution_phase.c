@@ -118,9 +118,9 @@ void do_redirections(t_cmd_redir *head)
 
 void	handle_child(t_command *tmp, int i)
 {
-	if (vars->pipe == 2||  (i > 0 && (!vars->op[0] || (vars->op[0] && vars->op[(i - 1) * 2] == '1'))))
+	if ((vars->pipe == 2 || vars->pipe == 3)||  (i > 0 && (!vars->op[0] || (vars->op[0] && vars->op[(i - 1) * 2] == '1'))))
 	{
-		printf("handle child pipe: 2 cmd: %s\n",tmp->command_args[0]);
+		// printf("handle child pipe: 2 cmd: %s\n",tmp->command_args[0]);
 
 		// if(vars->pipe == 2)
 		// {
@@ -139,9 +139,9 @@ void	handle_child(t_command *tmp, int i)
 		close(vars->prev_pipefd[0]);
 		close(vars->prev_pipefd[1]);
 	}
-	if (vars->pipe == 1 || (i < vars->command_count - 1 && (!vars->op[0] || (vars->op[0] && vars->op[i * 2] == '1'))))
+	if ((vars->pipe == 1  || vars->pipe == 3)|| (i < vars->command_count - 1 && (!vars->op[0] || (vars->op[0] && vars->op[i * 2] == '1'))))
 	{
-		printf("handle child pipe: 1 cmd: %s\n",tmp->command_args[0]);
+		// printf("handle child pipe: 1 cmd: %s\n",tmp->command_args[0]);
 		dup2(vars->next_pipefd[1], 1);
 		close(vars->next_pipefd[0]);
 		close(vars->next_pipefd[1]);
