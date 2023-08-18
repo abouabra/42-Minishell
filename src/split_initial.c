@@ -105,7 +105,7 @@ static int	check_validity(char **phrases, int phrase_count, int sw)
 			if ((!sw && phrase_count > 1) || (!sw && !phrases[i][0]))
 			{
 				// printf("sw: %d\n",sw);
-				ft_dprintf(1, "minishell: syntax error\n");
+				ft_dprintf(2, "minishell: syntax error\n");
 				vars->ex_status = 2;
 				return (0);
 			}

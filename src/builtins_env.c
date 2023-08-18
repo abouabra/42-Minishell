@@ -132,9 +132,9 @@ void	env()
 		{
 			char *tmp = env->env_data;
 			if(!tmp)
-				printf("%s=\n", env->env_id);
+				ft_dprintf(1,"%s=\n", env->env_id);
 			else
-				printf("%s=%s\n", env->env_id, env->env_data);
+				ft_dprintf(1,"%s=%s\n", env->env_id, env->env_data);
 		}
 		env = env->next;
 	}	

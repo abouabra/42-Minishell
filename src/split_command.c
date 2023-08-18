@@ -119,7 +119,6 @@ char **extended_splitting(char **phrases)
 		if(ft_strchr(phrases[i], '=') || phrases[i][0] == '"' || phrases[i][0] == '\'')
 			count++;
     }
-    // ft_dprintf(1, "count: %d\n", count);
     char **arr = my_alloc(sizeof(char *) * (count + 1));
     i = 0;
     int j = 0;

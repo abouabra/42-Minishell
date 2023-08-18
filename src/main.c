@@ -26,7 +26,7 @@ void	handle_signals(int signum)
 		vars->interrupted_mode = 1;
 		// if(vars->is_running == 1)
 		// 	printf("^C");
-		printf("\n");
+		ft_dprintf(1,"\n");
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		vars->is_interrupted = 1;
@@ -51,7 +51,7 @@ void	handle_signals(int signum)
 		if(vars->is_running)
 		{
 			if(vars->is_running != 3)
-				printf("Quit: 3\n");
+				ft_dprintf(1,"Quit: 3\n");
 			// g_var[ex_status] = 131;
 			vars->is_interrupted = 1;
 			// g_var[is_interrupted] = 1;
@@ -230,6 +230,7 @@ void	start_ter()
 	tcsetattr(STDIN_FILENO, TCSANOW, &vars->new_term);
 	if(isatty(STDIN_FILENO))
 	{	
+		//user@hostname:/path/to/current/directory$
 		line = readline("minishell> ");
 		garbage_collector(line, 0);
 	}

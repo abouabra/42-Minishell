@@ -75,7 +75,7 @@ void	echo(t_command *command)
 	i = 0;
 	if (!command->command_args[1])
 	{
-		printf("\n");
+		ft_dprintf(1,"\n");
 		return ;
 	}
 	while (!ft_strncmp("-n", command->command_args[i +1], -1)
@@ -86,12 +86,12 @@ void	echo(t_command *command)
 	}
 	while (command->command_args[++i])
 	{
-		printf("%s", command->command_args[i]);
+		ft_dprintf(1,"%s", command->command_args[i]);
 		if (command->command_args[i + 1])
-			printf(" ");
+			ft_dprintf(1," ");
 	}
 	if (is_arg)
-		printf("\n");
+		ft_dprintf(1,"\n");
 }
 
 void					my_exit(t_command *command)

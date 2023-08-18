@@ -68,7 +68,7 @@ int rederiction_error(char **commands, int i)
 			|| !ft_strncmp(commands[i + 1], ">>", -1)
 			|| !ft_strncmp(commands[i + 1], "<<", -1)))
 	{
-		ft_dprintf(1, "minishell: syntax error near unexpected token `%s'\n",
+		ft_dprintf(2, "minishell: syntax error near unexpected token `%s'\n",
 			commands[i + 1]);
 		vars->ex_status = 2;
 		return 0;
@@ -78,7 +78,6 @@ int rederiction_error(char **commands, int i)
 
 void	dollar_active(t_fill_info *info, int n[4], char *strings[4], char **args)
 {
-	// ft_dprintf(1, "Start: |%s|   |%d|\n", strings[str],info->quote_type);
 	int sould_remove_space = 0;
 	if(info->quote_type == 0)
 		sould_remove_space = 1;
@@ -92,7 +91,6 @@ void	dollar_active(t_fill_info *info, int n[4], char *strings[4], char **args)
 	{		
 		if(!ft_strchr(strings[str], '$'))
 			return;
-		// ft_dprintf(1, "loop: |%s|\n",strings[str]);
 		while (strings[str][++n[k]] && strings[str][n[k]] != '\''
 			&& strings[str][n[k]] != '"' && strings[str][n[k]] != ' '
 			&& strings[str][n[k]] != '-')
@@ -142,7 +140,6 @@ void	dollar_active(t_fill_info *info, int n[4], char *strings[4], char **args)
 			// strings[data] = ft_strtrim(strings[data], " ");
 		
 
-		// ft_dprintf(1, "substr: |%s|   %d   data: |%s|\n\n\n\n\n",strings[tmp],sould_remove_space,strings[data]);
 
 		if (!ft_strncmp(strings[str] + 1, "?", -1))
 			args[n[i]] = ft_strjoin(strings[news], ft_itoa((vars->ex_status)));
@@ -224,7 +221,7 @@ int	nested_par(char **arr, int check, int index)
 			int parentheses_c = par_coount(arr[i]);
 			if (!check && parentheses_c == -1)
 			{
-				ft_dprintf(1, "minishell: syntax error\n");
+				ft_dprintf(2, "minishell: syntax error\n");
 				vars->ex_status = 2;
 				return (0);
 			}
@@ -298,7 +295,7 @@ int	nested_par(char **arr, int check, int index)
 				// printf("ta malk: %s\n", arr[i]);
 				if(!arr[i][0])
 				{
-					ft_dprintf(1, "minishell: syntax error\n");
+					ft_dprintf(2, "minishell: syntax error\n");
 					vars->ex_status = 2;
 					return (0);
 				}
@@ -326,7 +323,7 @@ int	nested_par(char **arr, int check, int index)
 						}
 						if (op_c > 2)
 						{
-							ft_dprintf(1, "minishell: syntax error\n");
+							ft_dprintf(2, "minishell: syntax error\n");
 							vars->ex_status = 2;	
 							return 0;
 						}
@@ -334,7 +331,7 @@ int	nested_par(char **arr, int check, int index)
 					if(op_err[y + 1] && (op_err[y][ft_strlen(op_err[y]) - 1] == '&' || op_err[y][ft_strlen(op_err[y]) - 1] == '|')
 					&& (op_err[y + 1][0] == '&' || op_err[y +1][0] == '|'))
 					{
-						ft_dprintf(1, "minishell: syntax error\n");
+						ft_dprintf(2, "minishell: syntax error\n");
 						vars->ex_status = 2;
 						return (0);
 					}
@@ -344,7 +341,7 @@ int	nested_par(char **arr, int check, int index)
 				{
 					if (!x || (x - 1 >= 0 && par_coount(kobi[x -1]) == 0))
 					{
-						ft_dprintf(1, "minishell: syntax error\n");
+						ft_dprintf(2, "minishell: syntax error\n");
 						vars->ex_status = 2;
 						return (0);
 					}
@@ -353,7 +350,7 @@ int	nested_par(char **arr, int check, int index)
 				{
 					if (!kobi[x + 1] || (kobi[x + 1] && par_coount(kobi[x + 1]) == 0))
 					{
-						ft_dprintf(1, "minishell: syntax error\n");
+						ft_dprintf(2, "minishell: syntax error\n");
 						vars->ex_status = 2;
 						return (0);
 					}
@@ -365,7 +362,7 @@ int	nested_par(char **arr, int check, int index)
 						kobi[x + 1] = ft_strtrim(kobi[x+1], " \t");
 						if (kobi[x + 1][0] != '&' && kobi[x + 1][0] != '|')
 						{
-							ft_dprintf(1, "minishell: syntax error\n");
+							ft_dprintf(2, "minishell: syntax error\n");
 							vars->ex_status = 2;
 							return (0);
 						}
@@ -375,7 +372,7 @@ int	nested_par(char **arr, int check, int index)
 						kobi[x -1] = ft_strtrim(kobi[x - 1], " \t");
 						if (kobi[x -1][ft_strlen(kobi[x - 1]) - 1] != '&' && kobi[x -1][ft_strlen(kobi[x - 1]) - 1] != '|')
 						{
-							ft_dprintf(1, "minishell: syntax error\n");
+							ft_dprintf(2, "minishell: syntax error\n");
 							vars->ex_status = 2;
 							return (0);
 						}
@@ -383,7 +380,7 @@ int	nested_par(char **arr, int check, int index)
 				}
 				// if(!kobi || (!operations(arr[i])[0] && kobi[1] && kobi[1][0]))
 				// {
-				// 	ft_dprintf(1, "minishell: syntax error\n");
+				// 	ft_dprintf(2, "minishell: syntax error\n");
 				// 	vars->ex_status = 2;
 				// 	return (0);
 				// }
@@ -489,7 +486,7 @@ int	nested_par(char **arr, int check, int index)
 				// printf("in main && both i start and end with pipe arr: |%s| && arr+1: |%s|\n",arr[i],arr[i+1]);
 				vars->pipe = 3;
 				vars->prev_pipefd[0] = vars->next_pipefd[0];
-				vars->prev_pipefd[1] = vars->next_pipefd[1];
+				vars->prev_pipefd[1] = vars->next_pipefd[1];				
 			}
 
 			// if(check)
