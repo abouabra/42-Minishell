@@ -402,7 +402,8 @@ int	nested_par(char **arr, int check, int index)
 				}
 				// ft_dprintf(2,"prev 0: %d      prev 1: %d\n",vars->prev_pipefd[0],vars->prev_pipefd[1]);
 				// ft_dprintf(2,"next 0: %d      next 1: %d\n",vars->next_pipefd[0],vars->next_pipefd[1]);
-				close(vars->prev_pipefd[1]);
+				if(vars->prev_pipefd[1] != 0)
+					close(vars->prev_pipefd[1]);
 				int pid = fork();
 				if(pid == 0)
 				{
@@ -447,7 +448,8 @@ int	nested_par(char **arr, int check, int index)
 
 					
 					// close(vars->prev_pipefd[1]);
-					close(vars->prev_pipefd[0]);
+					if(vars->prev_pipefd[0] != 0)
+						close(vars->prev_pipefd[0]);
 				}
 			}
 			else
@@ -458,7 +460,7 @@ int	nested_par(char **arr, int check, int index)
 		else
 		{
 
-			if(check && i-1>0 && arr[i][0] && arr[i][0] == '|' && (!arr[i][1] || (arr[i][1] && arr[i][1] != '|')))
+			if(check && i-1>=0 && arr[i][0] && arr[i][0] == '|' && (!arr[i][1] || (arr[i][1] && arr[i][1] != '|')))
 			{
 				//end with pipe && next is subshell
 				printf("in main && subshell before me and i start with pipe arr: |%s| && arr-1: |%s|\n",arr[i],arr[i-1]);

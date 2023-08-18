@@ -61,6 +61,7 @@ void	fd_handler(int i)
 	if (vars->pipe == 2 || (i > 0 && (!vars->op[0] || (vars->op[0] && vars->op[(i - 1) * 2] == '1'))))
 	{
 		vars->pipe = 0;
+		printf("close prev pipe\n");
 		close(vars->prev_pipefd[0]);
 		close(vars->prev_pipefd[1]);
 	}

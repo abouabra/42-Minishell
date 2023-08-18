@@ -258,6 +258,37 @@ void	start_ter()
 			vars->iter_else_count = 0;
 			vars->iteration = 0;
 			char *arr2[2] = {line, NULL};
+			
+			
+
+			
+			vars->pipe = 0;
+			if(vars->prev_pipefd[0] != 0)
+			{
+				close(vars->prev_pipefd[0]);
+				vars->prev_pipefd[0] = 0;
+			}
+			if(vars->prev_pipefd[1] != 0)
+			{
+				close(vars->prev_pipefd[1]);
+				vars->prev_pipefd[1] = 0;
+			}
+			if(vars->next_pipefd[0] != 0)
+			{
+				close(vars->next_pipefd[0]);
+				vars->next_pipefd[0] = 0;
+			}
+			if(vars->next_pipefd[1] != 0)
+			{
+				close(vars->next_pipefd[1]);
+				vars->next_pipefd[1] = 0;
+			}
+			
+			
+			
+
+
+
 			nested_par(arr2,1,0);
 		}
 		vars->command_head = NULL;
