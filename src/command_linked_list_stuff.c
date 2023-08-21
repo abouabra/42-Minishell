@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_linked_list_stuff.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:41:16 by abouabra          #+#    #+#             */
-/*   Updated: 2023/06/01 21:09:35 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/08/19 13:18:05 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ t_command	*ft_new_command(t_fill_info *info)
 	node->quote_type = info->quote_type;
 	node->is_valid_command = info->is_valid_command;
 	node->info = my_alloc(sizeof(t_fill_info));
-	node->info = ft_memmove(node->info,info, sizeof(t_fill_info));
+	node->info = ft_memmove(node->info, info, sizeof(t_fill_info));
 	node->redir = info->redir;
 	node->next = NULL;
 	return (node);

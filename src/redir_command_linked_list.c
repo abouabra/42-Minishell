@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_command_linked_list.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:41:16 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/28 21:29:39 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/08/19 13:20:28 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ void	add_redir_in_back(t_cmd_redir **head, t_cmd_redir *node)
 	else
 		*head = node;
 }
-
 
 t_cmd_redir	*ft_new_redir(int type, char *file)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path_stuff.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:31:51 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/30 17:28:13 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/08/19 13:20:08 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char	**get_path(void)
 {
 	char	*path;
 
-	path = get_env_data( "PATH");
+	path = get_env_data("PATH");
 	if (!path)
 		path = "";
 	return (ft_split(path, ':'));

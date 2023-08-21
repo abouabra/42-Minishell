@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   split_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayman <ayman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 18:37:37 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/08/02 17:16:58 by ayman            ###   ########.fr       */
+/*   Updated: 2023/08/20 18:56:06 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include <stdio.h>
 
 static int	count_par(char *s)
 {
@@ -67,23 +66,12 @@ static int	word_len(char *s, char *c)
 			i++;
 		}
 	}
-	// if(active && !s[i])
-	// 	return -1;
 	return (i);
-}
-
-
-static void	split_char_init1(int n[4])
-{
-	n[i] = -1;
-	n[j] = -1;
-	n[ac] = 0;
 }
 
 static void	split_par_help(char **arr, char *s, int n[4])
 {
 	n[ac]++;
-	// if()
 	arr[++n[j]] = my_alloc(word_len(s + n[i], ")") + 1);
 	while (n[ac] > 0)
 	{
@@ -104,7 +92,7 @@ static void	split_par_help(char **arr, char *s, int n[4])
 	}
 	arr[n[j]][++n[w]] = '\0';
 	arr[n[j]] = ft_strjoin("(", arr[n[j]]);
-	arr[n[j]] = ft_strjoin( arr[n[j]],")");
+	arr[n[j]] = ft_strjoin(arr[n[j]], ")");
 }
 
 static void	split_par_help2(char **arr, char *s, int n[4])
@@ -122,17 +110,15 @@ char	**split_par(char *s)
 	char	**arr;
 	int		n[4];
 
-	split_char_init1(n);
+	split_char_init(n);
 	if (!s || !s[0])
 		return (0);
 	n[w] = count_par(s);
-	// printf("count %d\n",n[w]);
-	arr = (char **) my_alloc(sizeof(char *) * n[w] + 1);
+	arr = (char **)my_alloc(sizeof(char *) * n[w] + 1);
 	if (!arr)
 		return (0);
 	while (s[++n[i]])
 	{
-		// printf("gg\n");
 		n[w] = -1;
 		if (s[n[i]] == '(')
 			split_par_help(arr, s, n);
@@ -146,18 +132,3 @@ char	**split_par(char *s)
 	arr[++n[j]] = 0;
 	return (arr);
 }
-
-// int main(){
-// 	char *str;
-// 	str = "ls -a && '(ls -l)'";
-// 	char **split;
-// 	split = split_par(str);
-// 	if(!split)
-// 	{
-// 		printf("error\n");
-// 		return 0;
-// 	}
-// 	for (int i = 0; split[i]; i++)
-// 		printf("%s\n", split[i]);
-// 	return 0;
-// }
