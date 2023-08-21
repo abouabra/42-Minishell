@@ -61,6 +61,19 @@ while (*str)
 
 */
 
+void set_quotes_types(t_fill_info *info, char *str)
+{
+	int i;
+
+	i=-1;
+	while (str[++i])
+	{
+		if(str[i] == '\'' && (!str[i + 1] || (str[i + 1]  && str[i + 1] != '\'')))
+			info->quote_type = 1;
+		else if(str[i] == '\"' && (!str[i + 1] || (str[i + 1]  && str[i + 1] != '\"')))
+			info->quote_type = 2;
+	}
+}
 void fix_string(t_fill_info *info, char *str)
 {
     (void)info;
@@ -134,17 +147,23 @@ int	remove_quotes(t_fill_info *info, char **arr)
 	i = -1;
 	while (arr[++i])
 		fix_string(info, arr[i]);
-
-	// printf("limiter: %s     qt: %d\n", arr[1], info->quote_type);
-	
 	i = -1;
 	while (arr[++i])
 	{
-		if (arr[i][0] == '\'' && arr[i][1]  && arr[i][1] != '\'')
-			rm_qts_help(&num_1, &arr[i], "\'", info);
-		else if (arr[i][0] == '\"'  && arr[i][1]  && arr[i][1] != '\"')
-			rm_qts_help(&num_2, &arr[i], "\"", info);
+		// printf("before: %s    type: %d\n", arr[i],info->quote_type);
+		set_quotes_types(info,arr[i]);
+		// printf("after: %s    type: %d\n", arr[i],info->quote_type);
 	}
+	// printf("limiter: %s     qt: %d\n", arr[1], info->quote_type);
+	
+	// i = -1;
+	// while (arr[++i])
+	// {
+	// 	if (arr[i][0] == '\'' && arr[i][1]  && arr[i][1] != '\'')
+	// 		rm_qts_help(&num_1, &arr[i], "\'", info);
+	// 	else if (arr[i][0] == '\"'  && arr[i][1]  && arr[i][1] != '\"')
+	// 		rm_qts_help(&num_2, &arr[i], "\"", info);
+	// }
 	return 1;
 }
 

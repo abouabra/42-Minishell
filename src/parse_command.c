@@ -78,8 +78,22 @@ char	**expand_variables(t_fill_info *info, char **args)
 	while (args[++n[i]])
 	{
 		strings[str] = ft_strchr(args[n[i]], '$');
-		if (strings[str] && info->quote_type != 1)
-			dollar_active(info, n, strings, args);
+		if (strings[str])
+		{
+			if(info->quote_type != 1)
+				dollar_active(info, n, strings, args);
+			else if(info->quote_type == 1)
+			{
+				int i = -1;
+				while (args[++i])
+				{
+					// printf("before: im standing on: %s\n", args[i]);
+					// fix_string(info, args[i]);
+					args[i] = ft_strtrim(args[i],"\'");
+					// printf("after :im standing on: %s\n", args[i]);
+				}
+			}
+		}
 		else if (ft_strchr(args[n[i]], '*') && info->quote_type == 0)
 		{
 			strings[tmp] = "";

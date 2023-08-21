@@ -82,11 +82,11 @@ void	dollar_active(t_fill_info *info, int n[4], char *strings[4], char **args)
 	if(info->quote_type == 0)
 		sould_remove_space = 1;
 	n[k] = 0;
-	if(strings[str][n[k] -1] && strings[str][n[k] -1] == '\'')
-	{
-		info->quote_type = 1;
-		return;	
-	}
+	// if(strings[str][n[k] -1] && strings[str][n[k] -1] == '\'')
+	// {
+	// 	info->quote_type = 1;
+	// 	return;	
+	// }
 	while(strings[str][n[k]])
 	{		
 		if(!ft_strchr(strings[str], '$'))
@@ -117,7 +117,7 @@ void	dollar_active(t_fill_info *info, int n[4], char *strings[4], char **args)
 		if (!strings[str][n[k]])
 			n[k]++;
 		strings[tmp] = ft_substr(strings[str], 1, n[k] - 1);
-
+		
 		if(!strings[tmp][0])
 			strings[data] = "$";
 		else if(strings[tmp][0] == '?')
