@@ -1,2 +1,0 @@
-echo a > "foo ""bar"
-rm "foo bar"

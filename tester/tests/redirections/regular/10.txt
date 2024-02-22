@@ -1,2 +1,0 @@
-echo a > "c"$food
-rm c

@@ -1,2 +1,0 @@
-export a=b a=b
-export | sort

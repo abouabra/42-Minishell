@@ -1,3 +1,0 @@
-rm .
-echo $? >x | echo $? >>x
-cat x

@@ -1,2 +1,0 @@
-echo a > $whitespace_right "foo"
-rm whitespace

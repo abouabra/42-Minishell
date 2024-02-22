@@ -1,2 +1,0 @@
-echo a > "foo" $whitespace_left
-rm foo

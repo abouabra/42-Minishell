@@ -1,3 +1,0 @@
-<< eof echo < bar
-a
-eof

@@ -1,2 +1,0 @@
-export FOO=
-export | grep FOO

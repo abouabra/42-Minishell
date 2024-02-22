@@ -1,5 +1,0 @@
-<< a << b cat
-foo
-a
-bar
-b

@@ -18,7 +18,7 @@ BLUE = \033[1;34m
 YELLOW = \033[1;33m
 RESET = \033[0m
 
-READ_LINE = -lreadline -L ${HOME}/brew/homebrew/opt/readline/lib -I${HOME}/brew/homebrew/opt/readline/include
+READ_LINE = -lreadline  #-L ${HOME}/brew/homebrew/opt/readline/lib -I${HOME}/brew/homebrew/opt/readline/include
 WWW = -Wall -Wextra -Werror
 
 all: $(NAME)
@@ -26,7 +26,6 @@ all: $(NAME)
 $(NAME): ascci_art $(OSRC) src/handle_signals.c
 	@make -C libft > /dev/null
 	@$(CC) $(READ_LINE) $(WWW)  $(INCLUDE) $(OSRC) src/handle_signals.c  libft/libft.a -o $@
-	@printf "$(RED)-------------------------------------------------------------- MiniShell Done --------------------------------------------------------------$(RESET)\n"
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c includes/minishell.h # main.c
 	@mkdir -p $(OBJ_DIR)
@@ -45,6 +44,7 @@ fclean:
 re:fclean all
 
 ascci_art:
+	@clear
 	@printf "$(GREEN)	                                                                                                                                         \n\
 	                                                                                                                                         \n\
                                                                                                                                              \n\
@@ -65,8 +65,8 @@ M::::::M               M::::::Mi::::::i  n::::n    n::::ni::::::iS::::::SSSSSS::
 M::::::M               M::::::Mi::::::i  n::::n    n::::ni::::::iS:::::::::::::::SS  h:::::h     h:::::h  ee:::::::::::::e  l::::::ll::::::l \n\
 MMMMMMMM               MMMMMMMMiiiiiiii  nnnnnn    nnnnnniiiiiiii SSSSSSSSSSSSSSS    hhhhhhh     hhhhhhh    eeeeeeeeeeeeee  llllllllllllllll \n\
                                                                                                                                              \n\
-                                                                                                                     by: abouabra && ykhayri \n\
-                                                                                                                                             \n\$(RESET)"
+                                                                                                                     $(RED)by: abouabra && ykhayri$(RESET) \n\
+                                                                                                                                             \n"
 
 
 .PHONY: all clean fclean re bonus

@@ -1,5 +1,0 @@
-export a="a b"
-
-<< $a cat
-$USER
-$a

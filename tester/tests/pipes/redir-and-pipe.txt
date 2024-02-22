@@ -1,3 +1,0 @@
-ls > foo
-sort < foo | grep t
-rm foo

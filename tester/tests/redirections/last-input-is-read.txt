@@ -1,6 +1,0 @@
-echo a > a
-echo b > b
-echo c > c
-echo d > d
-
-< a < b cat < c < d

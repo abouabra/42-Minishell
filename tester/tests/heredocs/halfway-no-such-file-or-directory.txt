@@ -1,7 +1,0 @@
-echo hello > foo
-rm bar
-<< eof1 cat < bar << eof2 < foo
-a
-eof1
-b
-eof2

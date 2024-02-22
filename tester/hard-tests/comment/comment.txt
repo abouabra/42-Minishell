@@ -1,2 +1,0 @@
-echo foo # prints foo
-echo bar # prints bar

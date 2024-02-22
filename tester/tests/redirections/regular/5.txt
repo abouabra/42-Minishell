@@ -1,2 +1,0 @@
-echo a > "foo "$no_whitespace
-rm "foo no_whitespace"

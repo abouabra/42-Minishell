@@ -1,5 +1,0 @@
-<< a << b
-foo
-a
-bar
-b

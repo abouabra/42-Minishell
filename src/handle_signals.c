@@ -44,7 +44,7 @@ void	handle_signals(int signum)
 		g_vars->interrupted_mode = 1;
 		ft_dprintf(1, "\n");
 		rl_on_new_line();
-		rl_replace_line("", 0);
+		// rl_replace_line("", 0);
 		g_vars->is_interrupted = 1;
 		if (g_vars->is_running == 3)
 		{

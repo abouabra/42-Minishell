@@ -1,2 +1,0 @@
-mkdir test
-rmdir test

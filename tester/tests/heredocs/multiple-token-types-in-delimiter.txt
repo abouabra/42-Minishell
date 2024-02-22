@@ -1,4 +1,0 @@
-<< foo'bar'"baz"$whitespace_center cat
-a
-foobarbaz$whitespace_center
-b
